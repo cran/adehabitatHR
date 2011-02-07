@@ -1,0 +1,24 @@
+useDynLib(adehabitatHR)
+
+import(sp,adehabitatLT)
+importFrom(gpclib, area.poly)
+importFrom(gpclib, union)
+
+exportPattern("^[^\\.]")
+
+S3method(image, estUDm)
+S3method(print, estUDm)
+S3method(image, estUD)
+S3method(as.data.frame, estUD)
+S3method(print, MCHu)
+S3method(plot, MCHu)
+S3method(plot, hrsize)
+S3method(print, liker)
+
+S3method(getverticeshr, estUD)
+S3method(getverticeshr, estUDm)
+S3method(getverticeshr, MCHu)
+S3method(getverticeshr, default)
+
+
+exportMethods(show)
