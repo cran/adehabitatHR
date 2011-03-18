@@ -2768,7 +2768,7 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
     for (i = 0; i < (nrow-1); i++) {
 	dt = REAL(date)[i+1] - REAL(date)[i];
 	dta = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
-	dist = pythag(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
+	dist = hypot(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
 	if ((dt < Tmax)&&(dist > Lmin)) {
 	    nnr = nnr + (int) round(dta/tau);
 	}
@@ -2786,7 +2786,7 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
 
 	dt = REAL(date)[i+1] - REAL(date)[i];
 	dta = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
-	dist = pythag(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
+	dist = hypot(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
 
 	if ((dt < Tmax)&&(dist>Lmin)&&(dta>0.0000001)) {
 	    ni = (int) round(dta/tau);
@@ -2882,7 +2882,7 @@ SEXP mkde(SEXP xyh, SEXP grid)
 	    (REAL(yg)[i] - ymax < hmax)) {
 
 	    for (j = 0; j < nl; j++) {
-		dist= pythag(REAL(x)[j] -REAL(xg)[i], REAL(y)[j] -REAL(yg)[i]);
+		dist= hypot(REAL(x)[j] -REAL(xg)[i], REAL(y)[j] -REAL(yg)[i]);
 		if (dist < 3.0*REAL(h)[j]) {
 		    REAL(dens)[i] = REAL(dens)[i] + exp(-(R_pow(dist,2.0))/
 							(2.0 * R_pow(REAL(h)[j], 2.0))) / 
@@ -2957,7 +2957,7 @@ SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
 	    for (c = (nc-hmaxdis-1); c <(nc+hmaxdis+1); c++) {
 		if ((l<nro)&&(l>0)) {
 		    if ((c<nco)&&(c>0)) {
-			dist= pythag(xlo -REAL(xg)[l + (c * (INTEGER(nrow)[0]))], 
+			dist= hypot(xlo -REAL(xg)[l + (c * (INTEGER(nrow)[0]))], 
 				     ylo -REAL(yg)[l + (c * (INTEGER(nrow)[0]))]);
 			REAL(dens)[ l + (c * (INTEGER(nrow)[0])) ] =
 			    REAL(dens)[ l + (c * (INTEGER(nrow)[0])) ] +
@@ -3019,9 +3019,9 @@ SEXP CalculD(SEXP tra, SEXP Tmaxr, SEXP Lmin, SEXP PA)
     for (i = 0; i < (n-2); i++) {	
 	t1 = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
 	t2 = REAL(PAtmp)[i+2] - REAL(PAtmp)[i+1];
-	l1 = pythag(REAL(x)[i+1] - REAL(x)[i], 
-		    REAL(y)[i+1] - REAL(y)[i]);
-	l2 = pythag(REAL(x)[i+2] - REAL(x)[i+1],
+	l1 = hypot(REAL(x)[i+1] - REAL(x)[i], 
+		   REAL(y)[i+1] - REAL(y)[i]);
+	l2 = hypot(REAL(x)[i+2] - REAL(x)[i+1],
 		    REAL(y)[i+2] - REAL(y)[i+1]);
 	if ((REAL(date)[i+2]-REAL(date)[i]) < Tmax) {
 	    if (t1 > 0.0000000001) {
@@ -3122,8 +3122,8 @@ SEXP calculDparhab(SEXP df, SEXP hab, SEXP xll, SEXP yll, SEXP cs, SEXP nrow,
     for (i = 0; i < (nlocs-2); i++) { 
 	if ((INTEGER(typpas)[i+1] != NA_INTEGER)&&
 	    (INTEGER(typpas)[i+1] == INTEGER(typpas)[i])) {
-	    l2 = pythag(REAL(xl)[i+2] - REAL(xl)[i+1], REAL(yl)[i+2] - REAL(yl)[i+1]);
-	    l1 = pythag(REAL(xl)[i+1] - REAL(xl)[i], REAL(yl)[i+1] - REAL(yl)[i]);
+	    l2 = hypot(REAL(xl)[i+2] - REAL(xl)[i+1], REAL(yl)[i+2] - REAL(yl)[i+1]);
+	    l1 = hypot(REAL(xl)[i+1] - REAL(xl)[i], REAL(yl)[i+1] - REAL(yl)[i]);
 	    t2 = REAL(PAtmp)[i+2] - REAL(PAtmp)[i+1];
 	    t1 = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
 	    if (t1 > 0.0000000001) {
@@ -3192,8 +3192,8 @@ double calcv(SEXP xl, SEXP yl, SEXP da, double D, SEXP pc)
 	    if (INTEGER(pc)[i] == 1) {
 		T = REAL(da)[i+1]-REAL(da)[i-1];
 		t = REAL(da)[i]-REAL(da)[i-1];
-		d = pythag(REAL(xl)[i] - REAL(xl)[i-1] - (t/T)*(REAL(xl)[i+1] - REAL(xl)[i-1]),
-			   REAL(yl)[i] - REAL(yl)[i-1] - (t/T)*(REAL(yl)[i+1] - REAL(yl)[i-1]));
+		d = hypot(REAL(xl)[i] - REAL(xl)[i-1] - (t/T)*(REAL(xl)[i+1] - REAL(xl)[i-1]),
+			  REAL(yl)[i] - REAL(yl)[i-1] - (t/T)*(REAL(yl)[i+1] - REAL(yl)[i-1]));
 		vrais = vrais + log(T/(4.0*M_PI*D*t*(T-t))) - R_pow(d,2.0)/(4.0*D*t*(T-t)/T);
 		k++;
 	    } 

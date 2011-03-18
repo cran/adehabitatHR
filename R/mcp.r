@@ -20,7 +20,7 @@
 
 
 
-    if (!inherits(xy, "SpatialPointsDatFrame")) {
+    if (inherits(xy, "SpatialPointsDataFrame")) {
         if (ncol(xy)!=1) {
             warning("xy should contain only one column (the id of the animals), id ignored")
             id <- factor(rep("a", nrow(as.data.frame(xy))))

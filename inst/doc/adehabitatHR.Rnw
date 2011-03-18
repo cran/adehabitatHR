@@ -17,7 +17,7 @@ the {\tt adehabitatHR} Package }
   Office national de la classe et de la faune
   sauvage\\
   Saint Benoist -- 78610 Auffargis -- France.}
-\date{Feb 2011}
+\date{Mar 2011}
 
 \begin{document}
 
