@@ -1,8 +1,9 @@
 useDynLib(adehabitatHR)
 
 import(sp,adehabitatLT)
-importFrom(gpclib, area.poly)
-importFrom(gpclib, union)
+importFrom(rgeos, gArea)
+importFrom(rgeos, gUnionCascaded)
+
 
 exportPattern("^[^\\.]")
 

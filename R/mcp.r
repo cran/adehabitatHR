@@ -81,9 +81,7 @@
     }))
 
 
-    are <- unlist(lapply(1:nlevels(id), function(i) {
-        area.poly(as(res[i]@polygons[[1]]@Polygons[[1]]@coords, "gpc.poly"))
-    }))
+    are <- unlist(lapply(1:length(res), function(i) gArea(res[i,])))
 
     if (unin == "m") {
         if (unout == "ha")

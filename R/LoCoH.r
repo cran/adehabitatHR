@@ -74,7 +74,7 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
 
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
-            area.poly(as(pol[[i]], "gpc.poly"))
+            gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i))))
         }))
 
         ## sort everything according to the area:
@@ -84,32 +84,25 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
         ar <- ar[order(ar)]
 
         ## then, "incremental" union:
-        lip <- list(as(pol[[1]], "gpc.poly"))
+        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
         n <- k
         dej <- unlist(oo[1,])
 
         for (i in 2:nrow(xy)) {
-            lip[[i]] <- union(as(pol[[i]], "gpc.poly"),
-                              lip[[i-1]])
+            poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
+            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, unlist(oo[i,!(unlist(oo[i,])%in%dej)]))
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- area.poly(lip[[1]])
+        are <- gArea(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- area.poly(lip[[i]])
+            are[i] <- gArea(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
-        spP <- SpatialPolygons(lapply(1:length(lip), function(i) {
-            tmp <- attr(lip[[i]], "pts")
-            Polygons(lapply(tmp, function(x) {
-                xyt <- cbind(x$x, x$y)
-                xyt <- rbind(xyt,xyt[1,])
-                return(Polygon(xyt, hole=x$hole))
-            }), i)
-        }))
+        spP <- do.call("rbind", lip)
 
         ## The data frame:
         if (unin == "m") {
@@ -339,7 +332,11 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
 
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
-            area.poly(as(pol[[i]], "gpc.poly"))
+            if (nrow(pol[[i]])>2) {
+                return(gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
+            } else {
+                return(0)
+            }
         }))
 
         ## Computes the number of relocations in each polygon
@@ -359,31 +356,28 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
             stop("the distance is too small: there were only isolated points\nPlease increase the value of r")
 
         ## then, "incremental" union:
-        lip <- list(as(pol[[1]], "gpc.poly"))
+        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
         dej <- oo[[1]]
         n <- num[1]
         for (i in 2:nrow(xy)) {
-            lip[[i]] <- union(as(pol[[i]], "gpc.poly"),
-                              lip[[i-1]])
+            if (nrow(pol[[i]])>2) {
+                poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
+            } else {
+                poo <- lip[[i-1]]
+            }
+            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- area.poly(lip[[1]])
+        are <- gArea(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- area.poly(lip[[i]])
+            are[i] <- gArea(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
-        spP <- SpatialPolygons(lapply(1:length(lip), function(i) {
-            tmp <- attr(lip[[i]], "pts")
-            Polygons(lapply(tmp, function(x) {
-                xyt <- cbind(x$x, x$y)
-                xyt <- rbind(xyt,xyt[1,])
-                return(Polygon(xyt, hole=x$hole))
-            }), i)
-        }))
+        spP <- do.call("rbind", lip)
 
         ## The data frame:
         n[n>max] <- max
@@ -565,7 +559,11 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
 
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
-            area.poly(as(pol[[i]], "gpc.poly"))
+            if (nrow(pol[[i]])>2) {
+                return(gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
+            } else  {
+                return(0)
+            }
         }))
 
         ## Computes the number of relocations in each polygon
@@ -581,31 +579,28 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         num <- num[ind]
 
         ## then, "incremental" union:
-        lip <- list(as(pol[[1]], "gpc.poly"))
+        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
         dej <- oo[[1]]
         n <- num[1]
         for (i in 2:nrow(xy)) {
-            lip[[i]] <- union(as(pol[[i]], "gpc.poly"),
-                              lip[[i-1]])
+            if (nrow(pol[[i]])>3) {
+                poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
+            } else {
+                poo <- lip[[i-1]]
+            }
+            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- area.poly(lip[[1]])
+        are <- gArea(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- area.poly(lip[[i]])
+            are[i] <- gArea(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
-        spP <- SpatialPolygons(lapply(1:length(lip), function(i) {
-            tmp <- attr(lip[[i]], "pts")
-            Polygons(lapply(tmp, function(x) {
-                xyt <- cbind(x$x, x$y)
-                xyt <- rbind(xyt,xyt[1,])
-                return(Polygon(xyt, hole=x$hole))
-            }), i)
-        }))
+        spP <- do.call("rbind", lip)
 
         ## The data frame:
         df <- data.frame(area=are, percent=100*n/nrow(xy))

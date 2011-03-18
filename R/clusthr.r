@@ -142,7 +142,7 @@ clusthr <-function(xy, unin = c("m", "km"),
         tmp <- as.matrix(x[reloc[step==1],])
         tmp <- rbind(tmp, tmp[1,])
         pc <- Polygons(list(Polygon(tmp)), 1)
-        arre <- area.poly(as(tmp, "gpc.poly"))
+        arre <- gArea(SpatialPolygons(list(pc)))
 
         ## poltot contains the home range
         poltot[1] <- list(pc)
@@ -177,7 +177,7 @@ clusthr <-function(xy, unin = c("m", "km"),
                     tmp <- as.matrix(xy2[chull(xy2[,1], xy2[,2]),])
                     tmp <- rbind(tmp, tmp[1,])
                     pol <- Polygon(tmp)
-                    are <- area.poly(as(tmp, "gpc.poly"))
+                    are <- gArea(SpatialPolygons(list(Polygons(list(pol), 1))))
                     return(list(pol=pol, are=are))
                 }
             })

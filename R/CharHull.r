@@ -1,17 +1,15 @@
 .charhull <- function(xy)
 {
-    require("tripack")
+    require("deldir")
     xy <- as.data.frame(xy)
     names(xy) <- c("x","y")
-    tri <- tri.mesh(xy)
-    tri <- triangles(tri)
-    tri <- tri[,1:3]
-    tri <- lapply(1:nrow(tri), function(i) {
-        rbind(xy[tri[i,1],],xy[tri[i,2],],xy[tri[i,3],],xy[tri[i,1],])
+    tri <- deldir(xy)
+    tri <- triang.list(tri)
+    tri <- lapply(1:length(tri), function(i) {
+        rbind(tri[[i]], tri[[i]][1,])
     })
     area <- sapply(tri, function(x) {
-        y <- as(x, "gpc.poly")
-        area.poly(y)
+        gArea(SpatialPolygons(list(Polygons(list(Polygon(x)), 1))))
     })
     tri <- tri[order(area)]
     area <- area[order(area)]
