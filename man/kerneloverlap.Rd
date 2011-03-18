@@ -1,18 +1,28 @@
 \name{kerneloverlap}
 \alias{kerneloverlap}
+\alias{kerneloverlaphr}
 \title{Spatial Interaction between Animals Monitored Using Radio-Tracking}
 \description{
-  This function implements all the indices of kernel home-range overlap
-  reviewed by Fieberg and Kochanny (2005).
+  These functions implements all the indices of kernel home-range overlap
+  reviewed by Fieberg and Kochanny (2005).  \code{kerneloverlap}
+  computes these indices from a set of relocations, whereas
+  \code{kerneloverlaphr} computes these indices from an object
+  containing the utilization distributions of the animals.
+
 }
 \usage{
 kerneloverlap(xy, method = c("HR", "PHR", "VI", "BA", "UDOI",
               "HD"), percent = 95, conditional = FALSE, \dots)
+
+kerneloverlaphr(x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
+                percent = 95, conditional = FALSE, ...)
 }
 \arguments{
   \item{xy}{an object of class \code{SpatialPointsDataFrame} containing
     only one column (which is a factor indicating the identity
     associated to the relocations))}
+  \item{x}{an object of class \code{estUDm} containing several
+    home-ranges for which the overlap is to be calculated}
   \item{method}{the desired method for the estimation of overlap (see
     details)}
   \item{percent}{the percentage level of the home range estimation}
@@ -86,11 +96,18 @@ importance of the utilization distribution. \emph{Journal of Wildlife
   estimation of home ranges}
 \examples{
 
+\dontrun{
 data(puechabonsp)
 
 kerneloverlap(puechabonsp$relocs[,1],
               grid=200, meth="VI", conditional=TRUE)
 
+## Identical to
+kud <- kernelUD(puechabonsp$relocs[,1],
+                grid=200, same4all=TRUE)
+kerneloverlaphr(kud, meth="VI", conditional=TRUE)
+
+## other indices
 kerneloverlap(puechabonsp$relocs[,1],
               grid=200, meth="HR")
 
@@ -105,6 +122,6 @@ kerneloverlap(puechabonsp$relocs[,1],
 
 kerneloverlap(puechabonsp$relocs[,1],
               grid=200, meth="HD")
-
+}
 }
 \keyword{spatial}

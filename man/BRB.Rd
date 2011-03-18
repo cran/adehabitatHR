@@ -60,8 +60,9 @@ BRB.likD(ltr, Dr=c(0.1,100),
   \item{activity}{
     optionnally, a character indicating the name of the variable in the
     infolocs component of \code{ltr} indicating the proportion of time
-    between relocation i-1 and relocation i during which the animal was
-    active.
+    between relocation i and relocation i+1 during which the animal was
+    active (Users of adehabitatLT prior to version 0.3 should read the
+    section Warning below).
   }
   \item{grid}{
     a number giving the size of the grid on which the UD should
@@ -231,7 +232,9 @@ BRB.likD(ltr, Dr=c(0.1,100),
   
 }
 \value{
-  \code{BRB} returns an object of class \code{estUDm}.
+  \code{BRB} returns an object of class \code{estUDm} when the UD is
+  estimated for several animals, and \code{estUD} when only one animal
+  is studied.
   
   \code{BRB.D} and \code{BRB.likD} returns a list of class \code{DBRB},
   with one component per burst containing a data frame with the
@@ -253,13 +256,23 @@ BRB.likD(ltr, Dr=c(0.1,100),
   translation of the Pascal source code of the program provided by Simon
   Benhamou.
 }
+\section{Warning}{
+  Users of the version 0.2 of adehabitatHR should be careful that there
+  was a slight inconsistency in the package design: whereas all the
+  parameters characterizing the steps in an object of class
+  \code{"ltraj"} (e.g. \code{dist, dx, dy}) describe the step between
+  relocations i and i+1, it was expected for \code{BRB} that the
+  activity described the proportion of activity time between relocation
+  i-1 and i.  This inconsistency has now been corrected since version
+  0.3.
+}
 \seealso{
   \code{\link{kernelbb}} for the Brownian bridge kernel estimation,
-    \code{\link{kernelUD}} for additional information about objects of
-    class \code{estUDm}, \code{\link{infolocs}} for additional
-    information about the \code{infolocs} component,
-    \code{\link{as.ltraj}} for additional information about the class
-    \code{ltraj}.
+    \code{\link{kernelUD}} and \code{\link{estUD-class}} for additional
+    information about objects of class \code{estUDm} and \code{estUD},
+    \code{\link{infolocs}} for additional information about the
+    \code{infolocs} component, \code{\link{as.ltraj}} for additional
+    information about the class \code{ltraj}.
 }
 \examples{
 

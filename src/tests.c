@@ -1251,13 +1251,12 @@ void kernepan(double *grille, double *xgri, double *ygri, int *ncolgri,
 {
     /* Declaration */
     int i, j, k, ncg, nlg, nlo;
-    double **gri, *xg, *yg, *xl, *yl, X, Y, tmp;
+    double **gri, *xg, *yg, *xl, *yl, X, Y;
     
     /* Memory Allocation */
     ncg = *ncolgri;
     nlg = *nliggri;
     nlo = *nloc;
-    tmp = 0;
     
     taballoc(&gri,nlg, ncg);
     vecalloc(&xg, nlg);
@@ -1345,9 +1344,7 @@ double comdi(double *x, double *y, double *dists,
 	     int n)
 {
     int ii,jj,kk;
-    int nn;
 
-    nn = n*(n-1)/2;
     kk=0;
     
     for(ii=1; ii <= n-1; ii++){
@@ -1366,7 +1363,7 @@ void CVmise(int *nloc, double *xlo, double *ylo,
 {
     /* Declaration */
     int i, nlo, nh, ndist;
-    double *xl, *yl, h, di2, *dists;
+    double *xl, *yl, h, *dists;
     
     /* Allocation de mémoire */
     nlo = *nloc;
@@ -1497,7 +1494,7 @@ double maxh(double sig1, double sig2, double *alpha, double maxt)
 double maxdt(double *T)
 {
     int i,nt;
-    double res, tmp;
+    double res;
 
     res = 0;
     nt = T[0];
@@ -1674,7 +1671,7 @@ void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
 {
     /* Declaration */
     int i, j, k, ncg, nlg, nlo, *indcons, ncons;
-    double **gri, *xg, *yg, **XY, tmp, *alpha, *Xgr, *T, maxt,maxvh, res, vol;
+    double **gri, *xg, *yg, **XY, tmp, *alpha, *Xgr, *T, maxt,res, vol;
     
     /* Memory Allocation */
     ncg = *ncolgri;
@@ -1714,7 +1711,6 @@ void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
     
     /* Maximum dt and sigma for the normal distribution*/
     maxt = maxdt(T);
-    maxvh = maxh(*sig1, *sig2, alpha, maxt);
     
 	
     /* Loop on the grid */
@@ -1773,12 +1769,11 @@ void CVL(double *xyr, double *Tr,
 	 int *nloc, double *Lr, double *sigma, int *nsig, double *sigma2)
 {
     int i, j, k, nlo, ns, r;
-    double **xy, *T,s2,ai,*mui,sigmai,res;
+    double **xy, *T,ai,*mui,sigmai,res;
     
     nlo = *nloc;
     ns = *nsig;
-    s2 = *sigma2;
-
+    
     taballoc(&xy, nlo, 2);
     vecalloc(&T, nlo);
     vecalloc(&mui, 2);
@@ -1966,7 +1961,7 @@ void parclust(double **xy, int *clust, int *noclust,
 {
     /* Declaration */
     int i, k, m, nr2, nr, nocl;
-    double **xy2, *xyp, di, di2;
+    double **xy2, *xyp, di;
     
     /* Memory allocation */
     nocl = *noclust;
@@ -1996,7 +1991,6 @@ void parclust(double **xy, int *clust, int *noclust,
     /* Finds the minimum distance between a point and a cluster, 
        performed for all clusters */
     di = 0;
-    di2 = 0;
     m = 0;
     *dist = 0;
     for (i = 1; i <= nr; i++) {
@@ -2388,7 +2382,7 @@ void clusterhrr(double *xyr, int *nr, int *facsor,
 void kcprcirc(double **xyd, double *h, double *x, double t, 
 	      double *val)
 {
-    int i, j, k, nlo;
+    int i, j, nlo;
     double tmp, tmp2, vi, som;
     
     nlo = xyd[0][0];
@@ -2421,7 +2415,7 @@ void kcprcirc(double **xyd, double *h, double *x, double t,
 void kcprlin(double **xyd, double *h, double *x, double t, 
 	      double *val)
 {
-    int i, j, k, nlo;
+    int i, j, nlo;
     double tmp, tmp2, vi, som;
     
     nlo = xyd[0][0];
@@ -3072,11 +3066,10 @@ SEXP calculDparhab(SEXP df, SEXP hab, SEXP xll, SEXP yll, SEXP cs, SEXP nrow,
 {
     SEXP xl, yl, tem, typpas, habp, Nc, Dh, dfso, PAtmp, PA2;
     int i, k, nlocs, lp;
-    double t1, t2, l1, l2, xt, yt, delta2, tau, xll2, yll2;
+    double t1, t2, l1, l2, xt, yt, delta2, xll2, yll2;
 
     k = INTEGER(nombrehab)[0];
     nlocs = length(VECTOR_ELT(df,0));
-    tau = REAL(cs)[0]/100.0;
 
     PROTECT(xl = coerceVector(VECTOR_ELT(df,0), REALSXP));
     PROTECT(yl = coerceVector(VECTOR_ELT(df,1), REALSXP));
@@ -3229,10 +3222,9 @@ double compteN(SEXP xl, SEXP pc)
 SEXP Dmv(SEXP df, SEXP Dr, SEXP pcr)
 {
     SEXP xl, yl, da, D, sor, pc;
-    double fx1, fx2, fx3, fx4, x1, x2, x3, x4, phi, z, tmp;
-    int n, ndr, conv;
+    double fx2, fx4, x1, x2, x3, x4, phi;
+    int conv;
     
-    ndr = length(Dr);
     PROTECT(D = coerceVector(Dr, REALSXP));
     PROTECT(pc = coerceVector(pcr, INTSXP));
     PROTECT(xl = coerceVector(VECTOR_ELT(df,0), REALSXP));
@@ -3244,8 +3236,6 @@ SEXP Dmv(SEXP df, SEXP Dr, SEXP pcr)
     x1 = REAL(D)[0];
     x3 = REAL(D)[1];
     phi = (-1.0 + sqrt(5.0))/2.0;
-    fx1 = calcv(xl, yl, da, x1, pc);
-    fx3 = calcv(xl, yl, da, x3, pc);
     
     conv = 0;
     while (!conv) {
@@ -3256,7 +3246,6 @@ SEXP Dmv(SEXP df, SEXP Dr, SEXP pcr)
 
 	if (fx2 < fx4) {
 	    x1 = x2;
-	    fx1 = fx2;
 	} else {
 	    x3 = x4;
 	}

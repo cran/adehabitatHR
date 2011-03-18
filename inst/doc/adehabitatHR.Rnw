@@ -1273,7 +1273,7 @@ constraints that have to be satisfied:\\
   smoothing;\\
 
 \item The angle between two successive line segments should be greater
-  that $\pi/2$ or lower that $-\pi/2’$.
+  that $\pi/2$ or lower than $-\pi/2$.
 \end{itemize}
 
 \noindent Therefore, the boundary shape should be fairly simple, and
@@ -1886,7 +1886,7 @@ tr
 @
 
 Note that this object has an infolocs component describing the
-proportion of time between relocation $i-1$ and relocation $i$ during
+proportion of time between relocation $i$ and relocation $i+1$ during
 which the animal was active. We show the trajectory of the animal below:
 
 <<label=trajbuff,echo=FALSE,fig=FALSE,eval=FALSE>>=

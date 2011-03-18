@@ -250,8 +250,8 @@ BRB.D <- function(ltr, Tmax=NULL, Lmin=NULL, habitat=NULL, activity=NULL)
             if (any((na.omit(act)<0)|(na.omit(act)>1)))
                 stop("activity should be a proportion.\nIt is actually >1 or <0 in these data")
 
-            ## remove the first value (not used, often NA)
-            act <- act[-1]
+            ## remove the last value (not used, often NA)
+            act <- act[-length(act)]
             ## and checks whether there are missing value elsewhere
             if (any(is.na(act))) {
                 stop("missing values are not allowed in the activity")
@@ -475,8 +475,8 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin,
             if (any((na.omit(act)<0)|(na.omit(act)>1)))
                 stop("activity should be a proportion.\nIt is actually >1 or <0 in these data")
 
-            ## remove the first value (not used, often NA)
-            act <- act[-1]
+            ## remove the last value (not used, often NA)
+            act <- act[-length(act)]
             ## and checks whether there are missing value elsewhere
             if (any(is.na(act))) {
                 stop("missing values are not allowed in the activity")
@@ -565,7 +565,7 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin,
     })
     class(res) <- "estUDm"
     if (length(res) == 1)
-        sorties <- res[[1]]
+        res <- res[[1]]
     return(res)
 }
 
@@ -616,7 +616,7 @@ BRB.likD <- function(ltr, Dr=c(0.1,100),
             act <- inl[, names(inl) == activity]
             if (any((na.omit(act) < 0) | (na.omit(act) > 1)))
                 stop("activity should be a proportion.\nIt is actually >1 or <0 in these data")
-            act <- act[-1]
+            act <- act[-length(act)]
             if (any(is.na(act))) {
                 stop("missing values are not allowed in the activity")
             }
