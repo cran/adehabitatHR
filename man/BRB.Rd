@@ -44,9 +44,10 @@ BRB.likD(ltr, Dr=c(0.1,100),
   \item{Lmin}{
     the minimum distance between successive relocations.  For all steps
     characterized by a distance d lower than \code{Lmin}, the animal is
-    considered inactive and the diffusion parameter is set to 0.  The
-    distance should be specified in units of the relocations coordinates
-    (i.e. in metres if they are specified in metres).
+    considered active and immobile and the diffusion parameter is set to
+    0 (see details below).  The distance should be specified in units
+    of the relocation coordinates (i.e. in metres if they are specified
+    in metres).
   }
   \item{hmin}{
     The minimum smoothing parameter (in units of the relocations
@@ -182,7 +183,6 @@ BRB.likD(ltr, Dr=c(0.1,100),
   hmin should be large enough to encompass potential locations occurring
   in the same habitat patch as the recorded location".\cr
 
-  
   Practically, the BRB approach can be carried out with the help of the
   movement-based kernel density estimation (MKDE) developed by Benhamou
   and Cornelis (2010).  This method consists in dividing each step i
@@ -197,9 +197,31 @@ BRB.likD(ltr, Dr=c(0.1,100),
   function of the habitat type where the interpolated relocation occurs
   if the diffusion parameters are available for each habitat types.
   Note that if a given step covers a distance lower than \code{Lmin},
-  the diffusion parameter for all interpolating parameters is set to 0,
-  so that the smoothing parameter hi is set to \code{hmin}.\cr
-
+  the diffusion parameter is locally set to 0, so that the smoothing
+  parameter hi is set to \code{hmin} for this step. This procedure
+  allows the user to give more weight to the immediate surroundings of
+  this relocation, which is a sensible choice if the animal was active
+  though immobile (indicating an intensive use of these immediate
+  surroundings). Note however that this choice may not be sensible if
+  the animal is inactive, depending on the type of UD that is
+  computed.  It remains a sensible choice only if a total UD is computed
+  (which means that activity is never taken into account whatever the
+  distance between relocations).  In contrast, if an activity UD is
+  computed, resting relocations should be filtered out (as well as
+  possibly resting parts that may occur between relocations, thanks to
+  activity data when available). When a variable containing the activity
+  is available, the function \code{BRB} will automatically identify most
+  of those relocations that will be ignored in the calculation (because
+  of this inactivity.  Note however that activtiy value may sometimes be
+  relatively high while the animal is resting, e.g. if disturbed by
+  flies, possibly requiring manual correction of activity values based
+  on the distance moved between relocations). When this activity
+  variable is not available, if distances lower than \code{Lmin} can be
+  assumed to correspond to resting, computing an UD that represents the
+  activity distribution in space with highest accuracy simply requires
+  to create a fake activity variable whose value is 1 for any relocation
+  followed by another relocation at distance larger than \code{Lmin} and
+  0 otherwise.\cr
   
   Moreover, note that it is often more sensible to use the activity time
   instead of the raw time in these calculations.  That is, if ai is the
@@ -265,6 +287,12 @@ BRB.likD(ltr, Dr=c(0.1,100),
   activity described the proportion of activity time between relocation
   i-1 and i.  This inconsistency has now been corrected since version
   0.3.
+}
+\section{Note}{
+  In some cases, it may be useful to set
+  Benhamou (2011) indicates ""For all steps characterized by a distance d lower than \code{Lmin},
+  the animal is considered active and immobile and the diffusion
+  parameter is set to 0.
 }
 \seealso{
   \code{\link{kernelbb}} for the Brownian bridge kernel estimation,
