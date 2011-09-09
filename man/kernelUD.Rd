@@ -200,7 +200,7 @@ estUDm2spixdf(x)
     analysis}. London: Chapman \& Hall.
   
   Worton, B.J. (1989) Kernel methods for estimating the utilization
-  dirstibution in home-range studies. \emph{Ecology}, \bold{70}, 164--168.
+  distribution in home-range studies. \emph{Ecology}, \bold{70}, 164--168.
 
   Worton, B.J. (1995) Using Monte Carlo simulation to evaluate
   kernel-based home range estimators. \emph{Journal of Wildlife Management},
