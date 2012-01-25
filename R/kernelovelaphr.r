@@ -9,6 +9,15 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
     if (slot(x[[1]],"vol"))
         stop("x should not be a volume under UD")
     vol <- getvolumeUD(x)
+    x <- lapply(x, function(y) {
+        coo <- coordinates(y)
+        y[order(coo[,1], coo[,2]),]
+    })
+    vol <- lapply(vol, function(y) {
+        coo <- coordinates(y)
+        y[order(coo[,1], coo[,2]),]
+    })
+
     gp <- gridparameters(vol[[1]])
     res <- matrix(0, ncol = length(x), nrow = length(x))
     for (i in 1:length(x)) {

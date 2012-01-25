@@ -11,6 +11,14 @@ kerneloverlap <- function(xy, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
     ## UD estimation
     x <- kernelUD(xy, same4all=TRUE, ...)
     vol <- getvolumeUD(x)
+    x <- lapply(x, function(y) {
+        coo <- coordinates(y)
+        y[order(coo[,1], coo[,2]),]
+    })
+    vol <- lapply(vol, function(y) {
+        coo <- coordinates(y)
+        y[order(coo[,1], coo[,2]),]
+    })
     gp <- gridparameters(vol[[1]])
 
     ## Matrix of results

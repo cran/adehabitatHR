@@ -1,4 +1,4 @@
-e5488cbb003b8b06823c40f1b7767ae0 *DESCRIPTION
+8e137b7ea260ae946ea66e80f21e5699 *DESCRIPTION
 30b68a768a610efbad68887d9f551fcb *NAMESPACE
 6110e69837e461b712f3419d17179765 *R/BRB.r
 e9fb4497eb27c85e410dbbc30106534c *R/CharHull.r
@@ -12,16 +12,16 @@ e85223d479bef49d8ad84ed5cb012b07 *R/hr.rast.r
 bb7fe4fecfd4836fe029fe26cc5da711 *R/kernelUD.r
 0076277e7884b699750bbda4b301ba1c *R/kernelbb.r
 930f44b021d887f8068ce208894f0f2b *R/kernelkc.r
-9b908ffa2ed070b94d1a5273220d38ef *R/kernelovelaphr.r
-c65c2d08445f278cc9948e8c3bae333a *R/kerneloverlap.r
+dbd3219a992deb34e4f2ec1f05c7feda *R/kernelovelaphr.r
+a60a038043356d16c5bad93372ab198f *R/kerneloverlap.r
 db64e190000b2ec4b84e648066582f2a *R/khr2estUD.r
 dab6652f836e2b5438405dc4e3e758cc *R/kver2spol.r
 6f1b26d5613a48a9c124b618f0c99a66 *R/mcp.area.r
 18c286f005528f59721d0c776a57f420 *R/mcp.r
 db1bc475ee008167734b0f14d933dd22 *R/plot.hrsize.r
 77730204057935c931ae66b90bbbf9c7 *inst/CITATION
-ece1e4d7da9fbcf8bdb710e12ff9399b *inst/doc/adehabitatHR.Rnw
-268f4e1cc4966be4cb42509fd5f1368b *inst/doc/adehabitatHR.pdf
+dcdb81d5926c2af84e27c46452296283 *inst/doc/adehabitatHR.Rnw
+5ebb25c186c532611c99fa58c83f9bf2 *inst/doc/adehabitatHR.pdf
 2e67edcc1912498b736eb8113eeff827 *man/BRB.Rd
 dd3ca116941314137dc0882a7e2a7950 *man/CharHull.Rd
 c1c00f1380fc6af6240de64119b87c4f *man/LoCoH.Rd

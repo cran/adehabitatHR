@@ -1512,7 +1512,7 @@ The kernel Brownian bridge method is implemented in the function
 
 \item \texttt{sig2}: This parameter controls the width of the ``bumps''
   added over the relocations (see Bullard, 1999; Horne et
-  al. 2007). It is similar to the smoothing parameter of the smoothing
+  al. 2007). It is similar to the smoothing
   parameter $h$ of the classical kernel method, and is therefore
   related to the imprecision of the relocations.\\
 \end{itemize}
