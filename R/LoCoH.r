@@ -7,6 +7,13 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
 {
     if (!inherits(xy, "SpatialPoints"))
         stop("xy should inherit the class \"SpatialPoints\"")
+    if (!require(maptools))
+        stop("The package maptools is required for this function")
+    if (!require(rgeos))
+        stop("the package rgeos is required for this function")
+    if (!require(gpclib))
+        stop("the package gpclib is required for this function")
+    gpclibPermit()
     pfs <- proj4string(xy)
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
@@ -74,7 +81,7 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
 
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
-            gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i))))
+            .arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i))))
         }))
 
         ## sort everything according to the area:
@@ -90,15 +97,18 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
 
         for (i in 2:nrow(xy)) {
             poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
-            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+            pls <- slot(poo, "polygons")
+            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
+            slot(poo, "polygons") <- pls1
+            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, unlist(oo[i,!(unlist(oo[i,])%in%dej)]))
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- gArea(lip[[1]])
+        are <- .arcpspdf(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- gArea(lip[[i]])
+            are[i] <- .arcpspdf(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
@@ -267,6 +277,11 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
         stop("xy should inherit the class \"SpatialPoints\"")
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
+    if (!require(rgeos))
+        stop("The package rgeos is required for this function")
+    if (!require(gpclib))
+        stop("the package gpclib is required for this function")
+    gpclibPermit()
     pfs <- proj4string(xy)
     m <- 1
     duplicates <- match.arg(duplicates)
@@ -333,7 +348,7 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
             if (nrow(pol[[i]])>2) {
-                return(gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
+                return(.arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
             } else {
                 return(0)
             }
@@ -365,15 +380,19 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
             } else {
                 poo <- lip[[i-1]]
             }
-            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+            pls <- slot(poo, "polygons")
+            pls1 <- lapply(pls, checkPolygonsHoles)
+            slot(poo, "polygons") <- pls1
+
+            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- gArea(lip[[1]])
+        are <- .arcpspdf(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- gArea(lip[[i]])
+            are[i] <- .arcpspdf(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
@@ -493,6 +512,11 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         stop("xy should inherit the class \"SpatialPoints\"")
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
+    if (!require(rgeos))
+        stop("The package rgeos is required for this function")
+    if (!require(gpclib))
+        stop("the package gpclib is required for this function")
+    gpclibPermit()
     pfs <- proj4string(xy)
     unin <- match.arg(unin)
     unout <- match.arg(unout)
@@ -560,7 +584,7 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         ## computes area of the polygons
         ar <- unlist(lapply(1:nrow(xy), function(i) {
             if (nrow(pol[[i]])>2) {
-                return(gArea(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
+                return(.arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]], pol[[i]][1,]))), i)))))
             } else  {
                 return(0)
             }
@@ -588,15 +612,19 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
             } else {
                 poo <- lip[[i-1]]
             }
-            lip[[i]] <- gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+            pls <- slot(poo, "polygons")
+            pls1 <- lapply(pls, checkPolygonsHoles)
+            slot(poo, "polygons") <- pls1
+
+            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- gArea(lip[[1]])
+        are <- .arcpspdf(lip[[1]])
         for (i in 2:nrow(xy)) {
-            are[i] <- gArea(lip[[i]])
+            are[i] <- .arcpspdf(lip[[i]])
         }
 
         ## And the results, as a SpatialPolygonDataFrame object

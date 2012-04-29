@@ -2436,9 +2436,8 @@ All of these algorithms can take a significant amount of time.
 We use the fixed k LoCoH method to estimate the home range of the wild
 boars monitored at Puechabon, for example with $k = 5$:
 
-<<>>=
+<<eval=FALSE>>=
 res <- LoCoH.k(puechabonsp$relocs[,1], 10)
-class("res")
 @
 
 The object returned by the function is of the class \texttt{MCHu}, as
@@ -2448,21 +2447,9 @@ objects can be used (including rasterization with \texttt{MCHu.rast},
 computation of home-range size with \texttt{MCHu2hrsize}, etc.).  A
 visual display of the home ranges can be obtained with:
 
-<<label=ksdjkss,echo=FALSE,fig=FALSE,eval=FALSE>>=
+<<eval=FALSE>>=
 plot(res)
 @
-
-<<results=tex,echo=TRUE,fig=FALSE,eval=FALSE>>=
-<<ksdjkss>>
-@
-
-\begin{center}
-<<results=tex,echo=FALSE>>=
-<<afig>>
-<<ksdjkss>>
-<<zfig>>
-@
-\end{center}
 
 Note that the relationship between the home range size and the number
 of chosen neighbours can be investigated thanks to the function

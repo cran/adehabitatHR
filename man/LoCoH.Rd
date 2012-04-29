@@ -94,6 +94,9 @@ LoCoH.a.area(xy, arange, percent=100, unin = c("m", "km"),
   values of k, r (rows) for the different animals (columns).\cr
 }
 \note{
+  These functions rely on the packages rgeos, gpclib, and maptools.
+ \cr
+ \cr
  The LoCoH family of methods for locating Utilization Distributions
  consists of three algorithms: Fixed k LoCoH, Fixed r LoCoH, and
  Adaptive LoCoH.  All the algorithms work by constructing a small convex

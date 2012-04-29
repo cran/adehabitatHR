@@ -9,7 +9,7 @@
         rbind(tri[[i]], tri[[i]][1,])
     })
     area <- sapply(tri, function(x) {
-        gArea(SpatialPolygons(list(Polygons(list(Polygon(x)), 1))))
+        .arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(x)), 1))))
     })
     tri <- tri[order(area)]
     area <- area[order(area)]

@@ -31,7 +31,7 @@ getverticeshr.estUD <- function(x, percent=95, ida=NULL,
     areaa <- unlist(lapply(re, function(y) {
         ttmp <- cbind(y$x,y$y)
         ttmp <- rbind(ttmp, ttmp[1,])
-        gArea(SpatialPolygons(list(Polygons(list(Polygon(ttmp)), 1))))
+        .arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(ttmp)), 1))))
     }))
 
     spatpol <- do.call("cbind",lapply(1:length(re), function(i) {

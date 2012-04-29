@@ -1,9 +1,9 @@
 Package: adehabitatHR
-Version: 0.3.4
-Date: 2012/01/25
-Depends: R (>= 2.10.0), sp, methods, deldir, rgeos, ade4, adehabitatMA,
+Version: 0.4.1
+Date: 2012/04/29
+Depends: R (>= 2.10.0), sp, methods, deldir, ade4, adehabitatMA,
         adehabitatLT
-Suggests: maptools, tkrplot, MASS
+Suggests: maptools, tkrplot, MASS, rgeos, gpclib
 Title: Home range Estimation
 Author: Clement Calenge, contributions from Scott Fortmann-Roe
 Maintainer: Clement Calenge <clement.calenge@oncfs.gouv.fr>
@@ -11,6 +11,6 @@ Description: A collection of tools for the estimation of animals home
         range
 License: GPL (>= 2)
 URL: https://www.faunalia.it/animove/trac/
-Packaged: 2012-01-25 17:10:41 UTC; calenge
+Packaged: 2012-04-29 16:31:37 UTC; calenge
 Repository: CRAN
-Date/Publication: 2012-01-25 19:56:42
+Date/Publication: 2012-04-29 18:44:50

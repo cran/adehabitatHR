@@ -1,5 +1,19 @@
 ### XX plot de la surface en fonction du level
 
+spoldf2MCHu <- function(spdf, nam="a")
+{
+    if (!inherits(spdf,"SpatialPolygonsDataFrame"))
+        stop("spdf should be of class SpatialPolygonsDataFrame")
+    if ((ncol(spdf@data)!=2)||(!all(c("area","percent")%in%names(spdf@data))))
+        stop("The @data component should contain two columns named percent and area")
+    res <- list(spdf)
+    names(res) <- "a"
+    class(res) <- "MCHu"
+    return(res)
+}
+
+
+
 MCHu2hrsize <- function(x, percent=seq(20,100, by=10), plotit=TRUE)
 {
     if (!inherits(x,"MCHu")&!inherits(x, "SpatialPolygonsDataFrame"))
@@ -142,7 +156,7 @@ clusthr <-function(xy, unin = c("m", "km"),
         tmp <- as.matrix(x[reloc[step==1],])
         tmp <- rbind(tmp, tmp[1,])
         pc <- Polygons(list(Polygon(tmp)), 1)
-        arre <- gArea(SpatialPolygons(list(pc)))
+        arre <- .arcpspdf(SpatialPolygons(list(pc)))
 
         ## poltot contains the home range
         poltot[1] <- list(pc)
@@ -177,7 +191,7 @@ clusthr <-function(xy, unin = c("m", "km"),
                     tmp <- as.matrix(xy2[chull(xy2[,1], xy2[,2]),])
                     tmp <- rbind(tmp, tmp[1,])
                     pol <- Polygon(tmp)
-                    are <- gArea(SpatialPolygons(list(Polygons(list(pol), 1))))
+                    are <- .arcpspdf(SpatialPolygons(list(Polygons(list(pol), 1))))
                     return(list(pol=pol, are=are))
                 }
             })

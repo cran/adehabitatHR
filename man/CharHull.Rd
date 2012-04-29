@@ -50,8 +50,7 @@ CharHull(xy, unin = c("m", "km"),
 Clement Calenge \email{clement.calenge@oncfs.gouv.fr}
 }
 \note{
-  This function relies on the function \code{tri.mesh} and
-  \code{triangles} from the package \code{tripack}.
+  This function relies on the package \code{deldir}.
 }
 \seealso{
   \code{\link{MCHu}} for further information on the class
@@ -60,6 +59,8 @@ Clement Calenge \email{clement.calenge@oncfs.gouv.fr}
   to extract a given home range contour.
 }
 \examples{
+
+
 data(puechabonsp)
 lo<-puechabonsp$relocs[,1]
      
@@ -76,6 +77,7 @@ MCHu2hrsize(res)
 ver <- getverticeshr(res)
 ver
 plot(ver)
+
 
 }
 \keyword{spatial}

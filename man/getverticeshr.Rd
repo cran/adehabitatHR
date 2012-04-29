@@ -83,6 +83,7 @@ head(as.data.frame(loc))
 (ud <- kernelUD(loc[,1]))
 
 ## Calculates the home range contour
+
 ver <- getverticeshr(ud, percent=95)
 ver
 plot(ver)

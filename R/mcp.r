@@ -81,7 +81,9 @@
     }))
 
 
-    are <- unlist(lapply(1:length(res), function(i) gArea(res[i,])))
+    are <- unlist(lapply(1:length(res), function(i) {
+        .arcpspdf(res[i,])
+    }))
 
     if (unin == "m") {
         if (unout == "ha")

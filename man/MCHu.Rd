@@ -4,6 +4,7 @@
 \alias{plot.MCHu}
 \alias{MCHu.rast}
 \alias{MCHu2hrsize}
+\alias{spoldf2MCHu}
 \title{The Class "MCHu": Managing Home Ranges Built by Multiple Convex
   Hulls}
 \description{
@@ -15,7 +16,12 @@
   home-ranges.\cr
   \code{MCHu.rast} allows to compute a raster map of the home ranges.\cr
   \code{MCHu2hrsize} allows to compute the home range size for specified
-  percentage levels for the home range (see \code{help(plot.hrsize)}).  
+  percentage levels for the home range (see
+  \code{help(plot.hrsize)}).\cr
+  \code{spoldf2MCHu} allows to convert a SpatialPolygonsDataFrame
+  storing home ranges built by multiple convex hulls into an object of
+  class \code{"MCHu"}.
+  
 }
 \usage{
 \method{print}{MCHu}(x, \dots)
@@ -25,6 +31,8 @@
 MCHu.rast(x, spdf, percent=100)
 
 MCHu2hrsize(x, percent=seq(20,100, by=10), plotit=TRUE)
+
+spoldf2MCHu(spdf, nam="a")
 }
 \arguments{
 
@@ -40,6 +48,8 @@ MCHu2hrsize(x, percent=seq(20,100, by=10), plotit=TRUE)
    displayed.} 
  \item{plotit}{a logical value indicating whether the results should be
    plotted.}
+ \item{nam}{the name of the animal to be used in the object of class
+  \code{"MCHu"}.}
  \item{\dots}{additional arguments to be passed to the functions
    \code{print} and \code{plot}.}
 
@@ -58,7 +68,7 @@ MCHu2hrsize(x, percent=seq(20,100, by=10), plotit=TRUE)
 \seealso{\code{\link{clusthr}} and \code{\link{LoCoH}} for home range
   estimation methods returning this class of objects.}
 \examples{
-
+\dontrun{
 data(puechabonsp)
 
 ## The relocations:
@@ -82,7 +92,7 @@ image(puechabonsp$map)
 (oo <- MCHu.rast(nn, puechabonsp$map))
 image(oo)
 
-
+}
 }
 \keyword{spatial}
 \keyword{hplot}
