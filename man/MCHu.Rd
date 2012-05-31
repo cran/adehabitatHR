@@ -11,13 +11,16 @@
   The class \code{"MCHu"} is designed to store home ranges built by
   multiple convex hulls, for example built using the single-linkage
   cluster algorithm (function \code{clusterhr}) or the LoCoH
-  (e.g. function \code{LoCoH.k}).\cr
+  (e.g. function \code{LoCoH.k}).
+
   The function \code{plot.MCHu} allows to graphically display the
-  home-ranges.\cr
+  home-ranges.
+  
   \code{MCHu.rast} allows to compute a raster map of the home ranges.\cr
   \code{MCHu2hrsize} allows to compute the home range size for specified
   percentage levels for the home range (see
-  \code{help(plot.hrsize)}).\cr
+  \code{help(plot.hrsize)}).
+  
   \code{spoldf2MCHu} allows to convert a SpatialPolygonsDataFrame
   storing home ranges built by multiple convex hulls into an object of
   class \code{"MCHu"}.
@@ -60,7 +63,8 @@ spoldf2MCHu(spdf, nam="a")
 }
 \value{
   The function \code{MCHu.rast} returns an object of class
-  \code{SpatialPixelsDataFrame}.\cr
+  \code{SpatialPixelsDataFrame}.
+  
   The function \code{MCHu2hrsize} returns an object of class
   \code{hrsize} (see \code{?mcp.area}).
 }

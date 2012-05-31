@@ -60,7 +60,7 @@ void integrno(double *XG, double *X1, double *X2,
 	      double *sig2, double *alpha, double *res);
 void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
 	      int *nliggri, int *nloc, double *sig1, double *sig2, 
-	      double *xlo, double *ylo, double *Tr, int *controlbox, 
+	      double *xlo, double *ylo, double *Tr, 
 	      int *nalpha);
 void trouveclustmin(double **xy, int *clust, int *lo1, int *lo2,
 		    int *lo3, double *dist);
@@ -1666,7 +1666,7 @@ void udbbnoeud(double *XG, double **XY, double *T, double *sig1,
 /* Main Function */
 void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
 	      int *nliggri, int *nloc, double *sig1, double *sig2, 
-	      double *xlo, double *ylo, double *Tr, int *controlbox, 
+	      double *xlo, double *ylo, double *Tr,  
 	      int *nalpha)
 {
     /* Declaration */
@@ -2694,30 +2694,145 @@ int HBTl(SEXP xl, SEXP yl, SEXP PAtmp, SEXP hab, SEXP nrow, SEXP cs, double xll2
 }
 
 
+
+
+
+SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
+{
+    SEXP x,y,date, xn, yn, daten, df2, PAn, PA;
+    int nrow, i, k, nfl, fl;
+    double sx, sy, ggg;
+    
+    /* récup des vecteurs */
+    PROTECT(x = coerceVector(VECTOR_ELT(df,0), REALSXP));
+    PROTECT(y = coerceVector(VECTOR_ELT(df,1), REALSXP));
+    PROTECT(date = coerceVector(VECTOR_ELT(df,2), REALSXP));
+    PROTECT(PA = coerceVector(PA2, REALSXP));
+    fl = INTEGER(fll)[0];
+    
+    /* calcul de la taille des vecteurs finaux */
+    nrow = length(x);
+    k = 1;
+    sx = REAL(x)[0];
+    sy = REAL(y)[0];
+    for (i=1; i< nrow; i++) {
+	ggg = 1;
+	if (length(PA) > 1) {
+	    ggg = REAL(PA)[i-1];
+	}
+	if ((hypot(REAL(x)[i] - sx, 
+		   REAL(y)[i] - sy) >= Lmin)||((fl!=1)&&(ggg>0.0000001))) {
+	    k++;
+	    sx = REAL(x)[i];
+	    sy = REAL(y)[i];
+	}
+    }
+    
+    /* allocation mémoire */
+    PROTECT(xn = allocVector(REALSXP, k));
+    PROTECT(yn = allocVector(REALSXP, k));
+    PROTECT(daten = allocVector(REALSXP, k));
+    PROTECT(PAn = allocVector(REALSXP, k));
+
+    /* préparation de la boucle */
+    REAL(xn)[0] = REAL(x)[0];
+    REAL(yn)[0] = REAL(y)[0];
+    REAL(daten)[0] = REAL(date)[0];
+    if (length(PA) > 1) {
+	REAL(PAn)[0] = REAL(PA)[0];
+    } else {
+	REAL(PAn)[0] = 1.0;
+    }
+    sx = REAL(x)[0];
+    sy = REAL(y)[0];
+    nfl = 1;
+    k = 0;
+    
+    
+    for (i=1; i< nrow; i++) {
+	
+	/* si la distance entre localisations successives est inférieure à Lmin, on 
+	   se contente d'en calculer la moyenne (que l'on stockera à la première date)
+	 */
+	ggg = 1;
+	if (length(PA) > 1) {
+	    ggg = REAL(PA)[i-1];
+	}
+	if (!((hypot(REAL(x)[i] - REAL(xn)[k], 
+		     REAL(y)[i] - REAL(yn)[k]) >= Lmin)||((fl!=1)&&(ggg>0.0000001)))) {
+	    nfl++;
+	    sx = sx + REAL(x)[i];
+	    sy = sy + REAL(y)[i];
+	} else {
+	    
+	    /* Si la nouvelle localisation est la première éloignée après un clusters de Lmin,
+	       On commence par stocker la précédente (moyenne des positions)
+	     */
+	    if (nfl > 1) {
+		REAL(xn)[k] = sx/((double) nfl);
+		REAL(yn)[k] = sy/((double) nfl);
+		nfl = 1;
+	    }
+
+	    /* et ensuite on stocke la suivante */
+	    k++;
+	    REAL(xn)[k] = REAL(x)[i];
+	    REAL(yn)[k] = REAL(y)[i];
+	    REAL(daten)[k] = REAL(daten)[k-1] + (REAL(date)[i] - REAL(date)[i-1]);
+
+	    if (length(PA) > 1) {
+		REAL(PAn)[k] = REAL(PA)[i-1];
+	    } else {
+		REAL(PAn)[k] = 1;
+	    }
+	    
+	    /* et au cas où, on garde cette loc en mémoire */
+	    sx = REAL(x)[i];
+	    sy = REAL(y)[i];
+	}
+    }
+
+    /* On renvoie alors les résultats dans un data.frame */
+    PROTECT(df2 = allocVector(VECSXP, 4));
+    SET_VECTOR_ELT(df2, 0, xn);
+    SET_VECTOR_ELT(df2, 1, yn);
+    SET_VECTOR_ELT(df2, 2, daten);
+    SET_VECTOR_ELT(df2, 3, PAn);
+
+    UNPROTECT(9);
+    
+    return(df2);
+}
+
+ 
 /* df contient x,y,date en posix */
-SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr, 
-		  SEXP b, SEXP hab, SEXP xll, SEXP yll, SEXP cs, SEXP nrowc, SEXP PA)
+SEXP fillsegments(SEXP df2, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr, 
+		  SEXP b, SEXP hab, SEXP xll, SEXP yll, SEXP cs, SEXP nrowc, SEXP PA, 
+		  SEXP fl)
 {
     int nrow, nnr, ni, i, m, k, nh, h, lp;
     double dt, dta, Tmax, tau, h2min, Lmin, dist, hmin, xll2, yll2, hm;
-    SEXP x, y, date, resux, resuy, resuh, dfso, hmax, h2max, PAtmp, PA2;
+    SEXP x, y, date, resux, resuy, resuh, dfso, hmax, h2max, PAtmp, PA3, resuda, df;
     
-    /* Le nombre de lignes de ce data.frame */
-    nrow = length(VECTOR_ELT(df,0));
-    nnr = 0;
+
+    /* filter according to lmin */
+    Lmin = REAL(Lminr)[0];
+    PROTECT(df = filtreLmin(df2, Lmin, PA, fl));
+    
+    /* Get all the information */
     nh = length(D);
     if (nh > 1) {
 	xll2 = REAL(xll)[0] - REAL(cs)[0]/2.0;
 	yll2 = REAL(yll)[0] - REAL(cs)[0]/2.0;
-    }
-    
+    }    
     Tmax = REAL(Tmaxr)[0];
     hmin = REAL(hminr)[0];
     h2min = R_pow(hmin, 2.0);
+    tau = REAL(taur)[0];
     
+    /* Calculation of hmax */
     PROTECT(hmax = allocVector(REALSXP, nh+1));
     PROTECT(h2max = allocVector(REALSXP, nh+1));
-
     REAL(hmax)[0] = sqrt(((1.0 - REAL(b)[0]) * h2min) + (REAL(D)[0] * Tmax / 2.0));
     hm = REAL(hmax)[0];
     if (nh > 1) {
@@ -2728,8 +2843,6 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
 	}
 	REAL(hmax)[nh] = hm;
     }
-    Lmin = REAL(Lminr)[0];
-    tau = REAL(taur)[0];
     REAL(h2max)[0] = R_pow(REAL(hmax)[0], 2.0);
     if (nh > 1) {
 	for (i = 1; i <= nh; i++) {
@@ -2738,16 +2851,19 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
     }
 
     /* Get the coordinates and date */
-    PROTECT(x = coerceVector(VECTOR_ELT(df,0), REALSXP));
-    PROTECT(y = coerceVector(VECTOR_ELT(df,1), REALSXP));
-    PROTECT(date = coerceVector(VECTOR_ELT(df,2), REALSXP));
+    x = VECTOR_ELT(df,0);
+    nrow = length(x);
+    y = VECTOR_ELT(df,1);
+    date = VECTOR_ELT(df,2);
+    PA3 = VECTOR_ELT(df,3);
     lp = length(PA);
     PROTECT(PAtmp = allocVector(REALSXP, nrow));
-    PROTECT(PA2 = coerceVector(PA, REALSXP));
+    
     if (lp > 1) {
 	REAL(PAtmp)[0] = 0.0;
 	for (i = 1; i < nrow; i++) {
-	    REAL(PAtmp)[i] = REAL(PAtmp)[i-1] + (REAL(PA2)[i-1] * (REAL(date)[i] - REAL(date)[i-1]));
+	    REAL(PAtmp)[i] = REAL(PAtmp)[i-1] + 
+		(REAL(PA3)[i] * (REAL(date)[i] - REAL(date)[i-1]));
 	}	
     } else {
 	for (i = 0; i < nrow; i++) {
@@ -2757,12 +2873,15 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
     
     
     /* for each segment, calculates the number of points to add */
+    nnr = 0;
     for (i = 0; i < (nrow-1); i++) {
 	dt = REAL(date)[i+1] - REAL(date)[i];
 	dta = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
-	dist = hypot(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
-	if ((dt < Tmax)&&(dist > Lmin)) {
-	    nnr = nnr + (int) round(dta/tau);
+
+	if ((dt < Tmax)&&(dta>0.0000001)) {
+	    nnr = nnr + (int) (round(dta/tau)+0.1);
+	} else {
+	    nnr++;
 	}
     }
     nnr++;
@@ -2771,55 +2890,85 @@ SEXP fillsegments(SEXP df, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lminr
     PROTECT(resux = allocVector(REALSXP, nnr));
     PROTECT(resuy = allocVector(REALSXP, nnr));
     PROTECT(resuh = allocVector(REALSXP, nnr));
+    PROTECT(resuda = allocVector(REALSXP, nnr));
+    
+    /* initialization */
+    REAL(resux)[0] = REAL(x)[0];
+    REAL(resuy)[0] = REAL(y)[0];
+    REAL(resuda)[0] = REAL(PAtmp)[0];
+    REAL(resuh)[0] = sqrt(h2min);
+    k=0;    
     
     /* and finds the coordinates of the points */
-    k=0;
-    for (i = 0; i < (nrow-1); i++) {
-
-	dt = REAL(date)[i+1] - REAL(date)[i];
-	dta = REAL(PAtmp)[i+1] - REAL(PAtmp)[i];
-	dist = hypot(REAL(x)[i+1] - REAL(x)[i], REAL(y)[i+1] - REAL(y)[i]);
-
-	if ((dt < Tmax)&&(dist>Lmin)&&(dta>0.0000001)) {
+    for (i = 1; i < nrow; i++) {
+	
+	dt = REAL(date)[i] - REAL(date)[i-1];
+	dta = REAL(PAtmp)[i] - REAL(PAtmp)[i-1];
+	dist = hypot(REAL(x)[i] - REAL(x)[i-1], REAL(y)[i] - REAL(y)[i-1]);
+	
+	if ((dt < Tmax)&&(dta>0.0000001)) {
+	    
 	    ni = (int) round(dta/tau);
-	    for (m = 0; m < ni; m++) {
-		REAL(resux)[k] = REAL(x)[i]+ 
-			((double) m) * (REAL(x)[i+1] - REAL(x)[i])/((double) ni);
-		REAL(resuy)[k] = REAL(y)[i]+ 
-		    ((double) m) * (REAL(y)[i+1] - REAL(y)[i])/((double) ni);
+
+	    for (m = 1; m < ni; m++) {
+		k++;
+		REAL(resux)[k] = REAL(x)[i-1]+ 
+			((double) m) * (REAL(x)[i] - REAL(x)[i-1])/((double) ni);
+		REAL(resuy)[k] = REAL(y)[i-1]+ 
+		    ((double) m) * (REAL(y)[i] - REAL(y)[i-1])/((double) ni);
+		REAL(resuda)[k] = REAL(PAtmp)[i-1]+ 
+		    ((double) m) * (REAL(PAtmp)[i] - REAL(PAtmp)[i-1])/((double) ni);
+		
 		if (nh < 2) {
-		    REAL(resuh)[k] = sqrt(h2min + 4.0*(((double) m)/((double) ni))*
-					  (1 - ((double) m)/((double) ni))*(REAL(h2max)[0] - h2min)*dta/Tmax);
-		} else {
-		    h = HBT(REAL(resux)[k], REAL(resuy)[k], hab, nrowc, cs, xll2, 
-			    yll2);
-		    if (h == NA_INTEGER) {
+		    if (dist >= Lmin) {
 			REAL(resuh)[k] = sqrt(h2min + 4.0*(((double) m)/((double) ni))*
 					      (1 - ((double) m)/((double) ni))*
-					      (REAL(h2max)[nh] - h2min)*dta/Tmax);
-			
+					      (REAL(h2max)[0] - h2min)*dta/Tmax);
 		    } else {
-			REAL(resuh)[k] = sqrt(h2min + 4.0*(((double) m)/((double) ni))*
-					      (1 - ((double) m)/((double) ni))*
-					      (REAL(h2max)[h] - h2min)*dta/Tmax);
-			
+			REAL(resuh)[k] = sqrt(h2min);
+		    }
+		} else {
+		    if (dist >= Lmin) {
+			h = HBT(REAL(resux)[k], REAL(resuy)[k], hab, nrowc, cs, xll2, 
+				yll2);
+			if (h == NA_INTEGER) {
+			    REAL(resuh)[k] = sqrt(h2min + 4.0*(((double) m)/((double) ni))*
+						  (1 - ((double) m)/((double) ni))*
+						  (REAL(h2max)[nh] - h2min)*dta/Tmax);
+			    
+			} else {
+			    REAL(resuh)[k] = sqrt(h2min + 4.0*(((double) m)/((double) ni))*
+						  (1 - ((double) m)/((double) ni))*
+						  (REAL(h2max)[h] - h2min)*dta/Tmax);
+			    
+			}
+		    } else {
+			REAL(resuh)[k] = sqrt(h2min);
 		    }
 		}
-		k++;
 	    }
+	    k++;
+	    REAL(resux)[k] = REAL(x)[i];
+	    REAL(resuy)[k] = REAL(y)[i];
+	    REAL(resuda)[k] = REAL(PAtmp)[i];
+	    REAL(resuh)[k] = sqrt(h2min);
+	} else {
+	    k++;
+	    REAL(resux)[k] = REAL(x)[i];
+	    REAL(resuy)[k] = REAL(y)[i];
+	    REAL(resuda)[k] = REAL(PAtmp)[i];
+	    REAL(resuh)[k] = sqrt(h2min);
 	}
     }
     
-    REAL(resux)[k] = REAL(x)[nrow-1];
-    REAL(resuy)[k] = REAL(y)[nrow-1];
-    REAL(resuh)[k] = sqrt(h2min);
     
-    PROTECT(dfso = allocVector(VECSXP, 3));
+    PROTECT(dfso = allocVector(VECSXP, 4));
     SET_VECTOR_ELT(dfso, 0, resux);
     SET_VECTOR_ELT(dfso, 1, resuy);
     SET_VECTOR_ELT(dfso, 2, resuh);
+    SET_VECTOR_ELT(dfso, 3, resuda);
 
-    UNPROTECT(11);
+    UNPROTECT(9);
 
     return(dfso);
 }
@@ -2898,12 +3047,12 @@ SEXP mkde(SEXP xyh, SEXP grid)
 
 
 /* bis */
-SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
+SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol, SEXP wi, SEXP threshh)
 {
     
     int nl, nr, nc, nro, nco, i, j, l, c, hmaxdis;
-    SEXP x, y, h, dens, xg, yg, gridso;
-    double xlo, ylo, hmax, dist, xll2, yll2;
+    SEXP x, y, h, dens, xg, yg, gridso, wir;
+    double xlo, ylo, hmax, dist, xll2, yll2, sumwi;
     
     /* on ajuste alors le noyau */
     nl = length(VECTOR_ELT(xyh,0));
@@ -2912,6 +3061,7 @@ SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
     PROTECT(x = coerceVector(VECTOR_ELT(xyh,0), REALSXP));
     PROTECT(y = coerceVector(VECTOR_ELT(xyh,1), REALSXP));
     PROTECT(h = coerceVector(VECTOR_ELT(xyh,2), REALSXP));
+    PROTECT(wir = coerceVector(wi, REALSXP));
     PROTECT(xg = allocVector(REALSXP, INTEGER(nrow)[0]*INTEGER(ncol)[0]));
     PROTECT(yg = allocVector(REALSXP, INTEGER(nrow)[0]*INTEGER(ncol)[0]));
     PROTECT(dens = allocVector(REALSXP, INTEGER(nrow)[0]*INTEGER(ncol)[0]));
@@ -2928,13 +3078,19 @@ SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
     for (i = 0; i < INTEGER(nrow)[0]*INTEGER(ncol)[0]; i++) {
 	REAL(dens)[i] = 0.0;
     }
+
+    sumwi = 0;
+    for (i = 0; i < nl; i++) {
+	sumwi += REAL(wi)[i];
+    }
+
     
     hmax = REAL(h)[0];
     for (j = 1; j < nl; j++) {
 	if (REAL(h)[j] > hmax)
 	    hmax = REAL(h)[j];
     }
-    hmax = hmax * 3.0;
+    hmax = hmax * REAL(threshh)[0];
     xll2 = REAL(xll)[0] - REAL(cs)[0]/2.0;
     yll2 = REAL(yll)[0] - REAL(cs)[0]/2.0;
     hmaxdis = (int) round(hmax / REAL(cs)[0]);
@@ -2953,9 +3109,9 @@ SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
 				     ylo -REAL(yg)[l + (c * (INTEGER(nrow)[0]))]);
 			REAL(dens)[ l + (c * (INTEGER(nrow)[0])) ] =
 			    REAL(dens)[ l + (c * (INTEGER(nrow)[0])) ] +
-			    exp(-(R_pow(dist,2.0))/
-				(2.0 * R_pow(REAL(h)[j], 2.0))) / 
-			    R_pow(REAL(h)[j], 2.0)/(2.0 * M_PI * ((double) nl));
+			    REAL(wir)[j]*exp(-(R_pow(dist,2.0))/
+					     (2.0 * R_pow(REAL(h)[j], 2.0))) / 
+			    R_pow(REAL(h)[j], 2.0)/(2.0 * M_PI * sumwi);
 		    }
 		}
 	    }
@@ -2968,7 +3124,7 @@ SEXP mkdeb(SEXP xyh, SEXP xll, SEXP yll, SEXP cs, SEXP nrow, SEXP ncol)
     SET_VECTOR_ELT(gridso, 1, yg);
     SET_VECTOR_ELT(gridso, 2, dens);
 
-    UNPROTECT(7);
+    UNPROTECT(8);
     return(gridso);
 }
 
@@ -3259,3 +3415,383 @@ SEXP Dmv(SEXP df, SEXP Dr, SEXP pcr)
     UNPROTECT(6);
     return(sor);
 }
+
+
+
+
+
+
+
+/* xi and yi are the center of the circle of radius r
+   x1 and y1 are the coordinates of the location inside the circle
+   x2 and y2 are the coordinates of the location outside
+ */
+double interpLoc(double xi, double yi, double x1, double y1, 
+		 double x2, double y2, double r)
+{
+    double a, u, v, p, d, g;
+    
+    d = hypot(x2-x1, y2-y1);
+    a = atan2(y2-y1, x2-x1);
+    u = ((xi-x1)*cos(a))+((yi-y1)*sin(a));
+    v = ((yi-y1)*cos(a))-((xi-x1)*sin(a));
+    g = sqrt(R_pow(r, 2.0) - R_pow(v, 2.0));
+    p = (u + g)/d;
+    return(p);    
+}
+
+
+SEXP interpLocR(SEXP xi, SEXP yi, SEXP x1, SEXP y1, 
+		SEXP x2, SEXP y2, SEXP r)
+{
+    SEXP res;
+    PROTECT(res = allocVector(REALSXP, 1));
+    REAL(res)[0] = interpLoc(REAL(xi)[0], REAL(yi)[0], REAL(x1)[0], REAL(y1)[0], 
+			     REAL(x2)[0], REAL(y2)[0], REAL(r)[0]);
+    UNPROTECT(1);
+    return(res);
+}
+
+
+SEXP nvisits(SEXP xyt, SEXP distr, SEXP maxt)
+{
+    /* declaring the variables */
+    int n,i, j, *deds, sortie, *nvisi;
+    double *xr, *yr, *tr, dist, maxtr;
+    double refti, refti2, p;
+    SEXP x, y, t, dedsr, nvisit;
+    
+    /* coercing the arguments */
+    PROTECT(x = coerceVector(VECTOR_ELT(xyt,0), REALSXP));
+    PROTECT(y = coerceVector(VECTOR_ELT(xyt,1), REALSXP));
+    PROTECT(t = coerceVector(VECTOR_ELT(xyt,2), REALSXP));
+
+    n = length(x); /* number of relocations */
+    PROTECT(dedsr = allocVector(INTSXP, n)); /* will be used to check whether 
+						the relocation j
+						is within the distance distr 
+						of the relocation i */
+    PROTECT(nvisit = allocVector(INTSXP, n)); /* the output vector */
+
+    /* for the ease of manipulation: gets the pointers */
+    xr = REAL(x);
+    yr = REAL(y);
+    tr = REAL(t);
+    deds = INTEGER(dedsr);
+    nvisi = INTEGER(nvisit);
+
+    /* get the three constants passed as arguments */
+    maxtr = REAL(maxt)[0];
+    dist = REAL(distr)[0];
+    
+    /* Now, calculate the residence time for each relocation */
+    for (i = 0; i < n; i++) {
+	/* At least one visit in the relocation */
+	nvisi[i] = 1;
+	
+	/* checks which relocations are within the distance dist from reloc j */
+	for (j = 0; j < n; j++) {
+	    if (hypot(xr[i]-xr[j], yr[i]-yr[j])<=dist) {
+		deds[j] = 1;
+	    } else {
+		deds[j] = 0;
+	    }
+	}
+	
+	/* calculates the backward number of visits */
+	sortie = 0; /* = 0 when the animal is still 
+		       inside the circle; =1 otherwise */
+	refti = tr[i]; /* last backward time */
+	refti2 = tr[i]; /* current time of circle crossing */
+	
+	
+	/* if this is not the first relocation (otherwise, the number of backward visits is 0) */
+	if (i != 0) {
+	    	    
+	    /* for all previous relocations (because backward) */
+	    for (j = i-1; j>=0; j--) {
+
+		/* if the relocation is outside the circle */
+		if (deds[j]==0) {
+
+		    /* if this is the end of a movement coming from inside */
+		    if (sortie==0) {
+			
+			/* we are outside */
+			sortie = 1;
+
+			/* interpolation of the current time of crossing.
+			   use the parallelogram with a basis equal to the distance dist,
+			   the diagonal corresponding to the vector connecting the
+			   the relocations i and j+1 and the "other side" corresponding
+			   to the segment having a length to be estimated.
+
+			   This parallelogram is included in a rectangle having the
+			   same diagonal as the parallelogram, one side defined by the 
+			   projection of i on the segment (j, j+1) and by the reloc 
+			   j+1 (its length is denoted u below); and the perpendicular 
+			   one defined by the reloc j+1 and the projection of i on 
+			   the vector orthogonal to the segment (j, j+1).
+			   
+			   The space in this rectangle that is not part of the parallelogram
+			   forms two rectangle triangles allowing to solve this problem, 
+			   estimating the length of the "other side" of the parallelogram,
+			   actually equal to p*u. p is the required proportion
+			*/
+			p = interpLoc(xr[i], yr[i], xr[j+1], yr[j+1], 
+				      xr[j], yr[j], dist);
+			refti2 = tr[j+1] + p*(tr[j]-tr[j+1]); // out time
+		    }
+		} else {
+		    if (sortie>0) {
+			/* We note that the animal is now in the circle */
+			sortie = 0;
+
+			/* calculation of the input time */
+			p = interpLoc(xr[i], yr[i], xr[j], yr[j], 
+				       xr[j+1], yr[j+1], dist);
+			refti = tr[j] + p*(tr[j+1]-tr[j]); // in time
+
+			/* increase the number of visits */
+			if (fabs(refti2 - refti) > maxtr) {
+			    nvisi[i]++;
+			}
+
+		    }
+		}
+	    }
+	}
+	
+	
+	/* forward time */
+	sortie = 0;
+	refti = tr[i];
+	refti2 = tr[i];
+	
+	/* if this is not the last relocation (otherwise, n forward visit = 0.0) */
+	if (i < (n-1)) {
+	    
+	    /* for all next relocations */
+	    for (j = i+1; j<n; j++) {
+		
+		/* if the relocation is outside the circle */
+		if (deds[j]==0) {
+		    
+		    /* if this is the first relocation outside */
+		    if (sortie==0) {
+			sortie = 1;
+			/* interpolating the time when the animal come out
+			   of the circle. Same procedure as above
+			 */
+			p = interpLoc(xr[i], yr[i], xr[j-1], yr[j-1], 
+				      xr[j], yr[j], dist);
+			refti2 = tr[j-1] + p*(tr[j]-tr[j-1]);
+		    }
+		} else {
+		    if (sortie>0) {
+			sortie = 0;
+			p = interpLoc(xr[i], yr[i], xr[j], yr[j], 
+				      xr[j-1], yr[j-1], dist);
+			refti = tr[j] + p*(tr[j-1]-tr[j]);
+			
+			if (fabs(refti2 - refti) > maxtr) {
+			    nvisi[i]++;
+			}
+		    }
+		}
+	    }
+	}
+    }
+    
+    UNPROTECT(5);
+    
+    /* output */
+    return(nvisit);
+    
+}
+
+
+
+
+/* residence time for the brb */
+
+SEXP HRresidtime(SEXP xyt, SEXP distr, SEXP maxt)
+{
+    /* declaring the variables */
+    int n,i, j, *deds, sortie;
+    double *xr, *yr, *tr, dist, maxtr, *resur, bti, fti, limitr, refti, a, u, v, p, lrb, lrf;
+    SEXP x, y, t, dedsr, resu;
+    
+    /* coercing the arguments */
+    PROTECT(x = coerceVector(VECTOR_ELT(xyt,0), REALSXP));
+    PROTECT(y = coerceVector(VECTOR_ELT(xyt,1), REALSXP));
+    PROTECT(t = coerceVector(VECTOR_ELT(xyt,2), REALSXP));
+
+    n = length(x); /* number of relocations */
+    PROTECT(dedsr = allocVector(INTSXP, n)); /* will be used to check whether the relocation j
+						is within the distance distr of the relocation i */
+    PROTECT(resu = allocVector(REALSXP, n)); /* the output vector */
+
+
+    /* for the ease of manipulation: gets the pointers */
+    resur=REAL(resu);
+    xr = REAL(x);
+    yr = REAL(y);
+    tr = REAL(t);
+    deds = INTEGER(dedsr);
+
+    /* get the two constants passed as arguments */
+    maxtr = REAL(maxt)[0];
+    dist = REAL(distr)[0];
+
+    /* Now, calculate the residence time for each relocation */
+    for (i = 0; i < n; i++) {
+	
+	/* checks which relocations are within the distance dist from reloc j */
+	for (j = 0; j < n; j++) {
+	    if (hypot(xr[i]-xr[j], yr[i]-yr[j])<=dist) {
+		deds[j] = 1;
+	    } else {
+		deds[j] = 0;
+	    }
+	}
+	
+	/* calculates the backward time */
+	sortie = 0; /* = 0 when the animal is still inside the circle; =1 otherwise */
+	limitr = -5.0; /* used to store the time point when the animal goes out of the circle.
+			  Negative if the animal never goes out
+			*/
+	refti = tr[i]; /* reference time */
+	bti = 0.0; /* The backward time */
+	
+	
+	/* if this is not the first relocation (if it is, bti = 0) */
+	if (i != 0) {
+	    
+	    /* for all previous relocations (because backward) */
+	    for (j = i-1; j>=0; j--) {
+		
+		/* if the relocation is outside the circle */
+		if (deds[j]==0) {
+		    
+		    /* if this is the first relocation outside */
+		    if (sortie==0) {
+			
+			/* interpolating the time when the animal came in
+			   of the circle */
+			a = atan2(yr[j]-yr[j+1], xr[j]-xr[j+1]);
+			u = ((xr[i]-xr[j+1])*cos(a))+((yr[i]-yr[j+1])*sin(a));
+			v = ((yr[i]-yr[j+1])*cos(a))-((xr[i]-xr[j+1])*sin(a));
+			p = (sqrt(R_pow(dist, 2.0) - R_pow(v, 2.0))-fabs(u))/
+			    hypot(xr[j]-xr[j+1], yr[j]-yr[j+1]);
+			limitr = tr[j+1] - p*(tr[j+1]-tr[j]);
+			bti = bti + fabs(refti- limitr);
+			sortie = 1;
+		    } else {
+			/* checks whether the
+			   time is too long outside the circle. In this case,
+			   break the loop. */
+			if (fabs(limitr - tr[j]) > maxtr) {
+			    break;
+			}
+		    }
+		} else {
+		    if (sortie>0) {
+			/* interpolating the time when the animal came out of
+			   the circle */
+			a = atan2(yr[j+1]-yr[j], xr[j+1]-xr[j]);
+			u = ((xr[i]-xr[j])*cos(a))+((yr[i]-yr[j])*sin(a));
+			v = ((yr[i]-yr[j])*cos(a))-((xr[i]-xr[j])*sin(a));
+			p = (sqrt(R_pow(dist, 2.0) - R_pow(v, 2.0))-fabs(u))/
+			    hypot(xr[j]-xr[j+1], yr[j]-yr[j+1]);
+			refti = tr[j] + p*(tr[j+1]-tr[j]);
+			if (fabs(refti - limitr)> maxtr)
+			    break;
+			bti = bti + fabs(tr[j] - refti);
+			refti = tr[j];
+			sortie = 0;
+		    } else {
+			bti = bti + fabs(refti - tr[j]);
+			refti = tr[j];
+		    }
+		}
+	    }
+	}
+
+	/* stores the value of limitr (whether the animal came out of the circle */
+	lrb = limitr;
+
+
+	/* forward time */
+	sortie = 0;
+	limitr = -5.0;
+	refti = tr[i];
+	fti = 0.0; /* forward time */
+	
+	/* if this is not the last relocation (otherwise, fti = 0.0) */
+	if (i < (n-1)) {
+	    
+	    /* for all next relocations */
+	    for (j = i+1; j<n; j++) {
+		
+		/* if the relocation is outside the circle */
+		if (deds[j]==0) {
+		    
+		    /* if this is the first relocation outside */
+		    if (sortie==0) {
+			/* interpolating the time when the animal come out
+			   of the circle
+			 */
+			a = atan2(yr[j]-yr[j-1], xr[j]-xr[j-1]);
+			u = ((xr[i]-xr[j-1])*cos(a))+((yr[i]-yr[j-1])*sin(a));
+			v = ((yr[i]-yr[j-1])*cos(a))-((xr[i]-xr[j-1])*sin(a));
+			p = (sqrt(R_pow(dist, 2.0) - R_pow(v, 2.0))-fabs(u))/
+			    hypot(xr[j]-xr[j-1], yr[j]-yr[j-1]);
+			limitr = tr[j-1] + p*(tr[j]-tr[j-1]);
+			fti = fti + fabs(limitr - refti);
+			sortie = 1;
+		    } else {
+			/* if it is not the first relocation: checks whether the
+			   time is too long outside the circle. In this case,
+			   break the loop. */
+			if (fabs(tr[j] - limitr) > maxtr) {
+			    break;
+			}
+		    }
+		} else {
+		    if (sortie>0) {
+			/* interpolating the time when the animal came in
+			   the circle */
+			a = atan2(yr[j-1]-yr[j], xr[j-1]-xr[j]);
+			u = ((xr[i]-xr[j])*cos(a))+((yr[i]-yr[j])*sin(a));
+			v = ((yr[i]-yr[j])*cos(a))-((xr[i]-xr[j])*sin(a));
+			p = (sqrt(R_pow(dist, 2.0) - R_pow(v, 2.0))-fabs(u))/
+			    hypot(xr[j]-xr[j-1], yr[j]-yr[j-1]);
+			refti = tr[j] - p*(tr[j]-tr[j-1]);
+			if (fabs(refti - limitr)> maxtr)
+			    break;
+			fti = fti + fabs(tr[j] - refti);
+			refti = tr[j];
+			sortie = 0;
+		    } else {
+			fti = fti + fabs(tr[j] - refti);
+			refti = tr[j];
+		    }
+		}
+	    }
+	}
+	lrf = limitr;
+	resur[i] = bti+fti;
+	if (lrb < 0)
+	    resur[i] = 2.0*fti;
+	if (lrf < 0)
+	    resur[i] = 2.0*bti;
+    }
+    
+    UNPROTECT(5);
+    
+    /* output */
+    return(resu);
+    
+}
+ 

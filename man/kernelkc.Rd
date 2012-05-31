@@ -10,16 +10,18 @@
 \description{
   These functions estimate the utilization distribution (UD) in space
   and time of animals monitored using radio-telemetry, using the product
-  kernel estimator advocated by Keating and Cherry (2009).\cr
+  kernel estimator advocated by Keating and Cherry (2009).
 
   Note that this approach has also been useful for the analysis of
-  recoveries in programs involving ringed birds (Calenge et al. in
-  prep., see section examples below).\cr
+  recoveries in programs involving ringed birds (Calenge et al. 2010,
+  see section examples below).
   
   \code{kernelkc} estimate the UD of several animals from an object of
-  class \code{ltraj}.\cr  
+  class \code{ltraj}.
+  
   \code{kernelkcbase} estimate one UD from a data frame with three
-  columns indicating the spatial coordinates and associated timing.\cr  
+  columns indicating the spatial coordinates and associated timing.
+  
   \code{exwc} allows to search for the best value of the
   time smoothing parameter in the case where the time is considered as a
   circular variable (see details).
@@ -78,10 +80,10 @@ exwc(hv)
 \details{
   Keating and Cherry (2009) advocated the estimation of the UD in
   time and space using the product kernel estimator.  These functions
-  implement exactly this methodology.\cr
+  implement exactly this methodology.\
 
-  For the spatial coordinates, the
-  implemented kernel function is the biweight kernel.\cr
+  For the spatial coordinates, the implemented kernel function is the
+  biweight kernel.
 
   Two possible
   approaches are possible to manage the time in the estimation process:
@@ -89,7 +91,7 @@ exwc(hv)
   december 2007 is considered to be one day before the 1st january
   2007), or (ii) the time may be considered as a circular variable
   (e.g., the 31th december 2007 is considered to be one year after the
-  1st january 2007).\cr
+  1st january 2007).
 
   If the time is considered as a linear variable, the kernel function
   used in the estimation process is the biweight kernel.  If the time is
@@ -97,7 +99,7 @@ exwc(hv)
   wrapped Cauchy distribution (as in the article of Keating and Cherry).
   In this latter case, the smoothing parameter should be chosen in the
   interval 0-1, with a value of 1 corresponding to a stronger
-  smoothing.\cr
+  smoothing.
 
   These functions can only be used on objects of class "ltraj", but
   the estimation of the UD in time and space is also possible with other
@@ -106,7 +108,7 @@ exwc(hv)
   probability density function (pdf), i.e. the pdf to relocate an animal
   at a place, given that it has been relocated at time \code{tcalc}
   (i.e. the volume under the UD estimated at time \code{tcalc} is equal
-  to 1 whatever \code{tcalc}).\cr 
+  to 1 whatever \code{tcalc}).
 
   The function \code{exwc} draws a graph of the wrapped
   Cauchy distribution for the chosen \code{h} parameter (for circular
@@ -125,7 +127,7 @@ exwc(hv)
 \value{
   \code{kernelkc} returns a list of class "\code{estUDm}" containing
   objects of class \code{estUD}, mapping one estimate of the UD per burst
-  or id (depending on the value of the parameter \code{byburst}).\cr
+  or id (depending on the value of the parameter \code{byburst}).
 
   \code{kernelkcbase} returns an object of class "\code{estUD}" mapping
   the  estimated UD.
@@ -135,10 +137,11 @@ exwc(hv)
   distributions in space and time. \emph{Ecology}, \bold{90}:
   1971--1980.
 
-  Calenge, C., Guillemain, M., Gauthier-Clerc, M. and Simon, G. in
-  prep.  A new exploratory approach to the study of the spatio-temporal
+  Calenge, C., Guillemain, M., Gauthier-Clerc, M. and Simon, G. 2010.  A
+  new exploratory approach to the study of the spatio-temporal
   distribution of ring recoveries - the example of Teal (Anas crecca)
-  ringed in Camargue, Southern France.
+  ringed in Camargue, Southern France. \emph{Journal of Ornithology},
+  \bold{151}, 945--950.
 
 }
 \author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr}}
@@ -288,7 +291,7 @@ puechc <- puechcirc[1:2]
 
 
 ## Now load the map of the elevation
-data(puech)
+data(puechabonsp)
 
 
 ## compute the time point at which the UD is to be estimated
@@ -309,7 +312,7 @@ re <- lapply(1:length(vv),
                                 extent=0.1)
 
                  ## show the elevation
-                 image(puech$maps, 
+                 image(puechabonsp$map, 
                        xlim=c(698000,704000),
                        ylim=c(3156000,3160000))
                  title(main=vv[i])
@@ -404,8 +407,8 @@ re <- lapply(1:length(vv),
 
 
 ## load the data
-data(puechabon)
-locs <- puechabon$locs
+data(puechabonsp)
+locs <- puechabonsp$relocs
 
 ## keeps only the wild boar Jean
 locs <- locs[slot(locs, "data")[,1]=="Jean",]

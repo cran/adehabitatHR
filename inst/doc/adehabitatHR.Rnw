@@ -1055,6 +1055,7 @@ plot(homerange, col=1:4)
 \end{center}
 
 \subsubsection{Home ranges in raster mode}
+\label{sec:hrrm}
 
 However, the function \texttt{getverticeshr} returns an object of
 class \texttt{SpatialPolygonsDataFrame}, i.e. an object in mode
@@ -1967,6 +1968,127 @@ is also possible to specify a physical boundary that cannot be crossed
 by the animals in this function.
 
 
+\subsubsection{Decomposing the use of space into intensity and recursion}
+
+Benhamou and Riotte-Lambert (2012) noted that, as a whole, the time
+spent at a given location by the animal can be seen as
+the product between the mean residence time per visit times the
+number of visits of the location. It may be interesting, biologically,
+to distinguish these two components, for example to identify the
+places that the animal often uses and the places that are used only
+once, but for a long time. The identification of such components can
+be useful to test hypotheses concerning the habitat selection by the
+animal. Thus, these authors indicate: ``Some areas, in particular
+those that are more profitable, tend to be  exploited more intensively
+during a given visit, involving a longer residence time. An initially
+profitable area may be avoided for a  while once depleted if the
+resources it encompasses renew very slowly, but should tend to be
+revisited quite often otherwise, or if it is depleted only partially
+at each visit''. \\
+
+These authors therefore proposed a modification of the BRB approach to
+allow the estimation of an intensity distribution (ID) reflecting this
+average residence time and of a recursion distribution (RD) reflecting
+the number of visits. This modification relies on the calculation of
+(i) the residence time associated to each relocation interpolated
+using the procedure described in the previous section (roughly, the
+residence time calculated on a given relocation corresponds to the
+time spent by the animal in a circle of radius $r$ centered on this
+relocation, see the vignette of the package adehabitatLT), and (ii)
+the number of visits associated to each relocation (i.e. the number of
+times that the animal performed in a circle of radius $r$ centered on
+the relocation).\\
+
+The function \texttt{BRB} allows to calculate the ID and RD thanks to
+its argument \texttt{type}. For example, consider again the dataset
+\texttt{buffalo} used in the previous section. To estimate the ID or
+the RD, we have to specify:\\
+
+\begin{itemize}
+\item The diffusion parameter $D$: based on the elements given in the
+  previous section, we assumed a parameter $D = 7.36$. For the sake of
+  conciseness, we define a unique diffusion parameter for all habitats;\\
+
+\item As in the previous section, we set \texttt{Tmax = 180} min and
+  \texttt{Lmin = 50} m, \texttt{hmin} = 100 m, and \texttt{tau =
+    300} seconds;\\
+
+\item The radius of the circle used to calculate the residence time
+  and the number of visits was set to \texttt{3*hmin} = 300 m, as in
+  Benhamou and Riotte-Lambert (2012);
+
+\item The time \texttt{maxt} used to calculate the residence time (see
+  the help page of this function in the package adehabitatLT, and the
+  vignette of this package) and the number of visits, i.e. the maximum
+  time threshold that the animal is allowed to spend outside the patch
+  before that we consider that the animal actually left the patch, was
+  set to 2 hours, as in Benhamou and Riotte-Lambert (2012).\\
+\end{itemize}
+
+We estimate the UD, ID and RD with these parameters below:
+
+<<label=figidrd,echo=FALSE,fig=FALSE,eval=FALSE>>=
+id <- BRB(buffalo$traj, D = 7.36, Tmax = 3*3600, Lmin = 50, type = "ID",
+          hmin=100, radius = 300, maxt = 2*3600, tau = 300,
+          grid = 100, extent=0.1)
+rd <- BRB(buffalo$traj, D = 7.36, Tmax = 3*3600, Lmin = 50, type = "RD",
+          hmin=100, radius = 300, maxt = 2*3600, tau = 300,
+          grid = 100, extent=0.1)
+ud <- BRB(buffalo$traj, D = 7.36, Tmax = 3*3600, Lmin = 50, type = "UD",
+          hmin=100, radius = 300, maxt = 2*3600, tau = 300,
+          grid = 100, extent=0.1)
+
+
+par(mfrow = c(2,2), mar=c(0,0,2,0))
+vid <- getvolumeUD(id)
+image(vid)
+contour(vid, add=TRUE, nlevels=1, levels=30,
+        lwd=3, drawlabels=FALSE)
+title("ID")
+
+vrd <- getvolumeUD(rd)
+image(vrd)
+contour(vrd, add=TRUE, nlevels=1, levels=30,
+        lwd=3, drawlabels=FALSE)
+title("RD")
+
+vud <- getvolumeUD(ud)
+image(vud)
+contour(vud, add=TRUE, nlevels=1, levels=95,
+        lwd=3, drawlabels=FALSE)
+title("UD")
+@
+
+<<results=tex,echo=TRUE,fig=FALSE,eval=FALSE>>=
+<<figidrd>>
+@
+
+\begin{center}
+<<results=tex,echo=FALSE>>=
+<<afig>>
+<<figidrd>>
+<<zfig>>
+@
+\end{center}
+
+Note that we used the function \texttt{getvolumeUD} for a clearer
+display of the results. Remember from section \ref{sec:hrrm} that this
+function modifies the UD component of the object passed as argument,
+so that the value of a pixel is equal to the percentage of the
+smallest home range containing this pixel. Here, we also display the
+30\% isopleth calculated from the ID and RD distributions, using the
+function \texttt{contour}, as well as the 95\% isopleth for the UD
+(following here the recommendations of Benhamou and Riotte-Lambert
+2012). In the case of the ID, the contour limits allow to identify
+those patches where the animal spent a long time in average, and in
+the case of the RD, those places that the animal visited often. A
+comparison of the environmental composition at these places and in the
+95\% home-range estimated from the UD would allow to identify the
+environmental characteristics that affect both the speed of the animal
+and the number of visits he performs in a patch (see the vignette of
+the package adehabitatHS for additionnal details about this kind of
+analysis).
+
 
 \subsection{The product kernel algorithm}
 
@@ -2428,7 +2550,11 @@ functions \texttt{LoCoH.k}, \texttt{LoCoH.r} and \texttt{LoCoH.a}):\\
   function \texttt{LoCoH.a};\\
 \end{itemize}
 
-All of these algorithms can take a significant amount of time.
+All of these algorithms can take a significant amount of time.\\
+
+\noindent \textit{Note}: these functions rely on the availability of
+the packages rgeos and gpclib, which may not be available for all OS
+(especially MacOS).
 
 
 \subsection{Example with the Fixed k LoCoH method}
@@ -2447,7 +2573,7 @@ objects can be used (including rasterization with \texttt{MCHu.rast},
 computation of home-range size with \texttt{MCHu2hrsize}, etc.).  A
 visual display of the home ranges can be obtained with:
 
-<<eval=FALSE>>=
+<<eval=FALSE, fig=TRUE>>=
 plot(res)
 @
 
@@ -2481,7 +2607,7 @@ For example, consider the \texttt{puechabonsp} dataset.
 
 <<>>=
 res <- CharHull(puechabonsp$relocs[,1])
-class("res")
+class(res)
 @
 
 The object returned by the function is also of the class \texttt{MCHu}, as
@@ -2559,6 +2685,10 @@ particular field of habitat selection study.
 \item Benhamou, S. and Cornelis, D. 2010. Incorporating movement
   behavior and barriers to improve kernel home range space use
   estimates. Journal of Wildlife Management, 74, 1353--1360.
+\item Benhamou, S. and Riotte-Lambert, L. 2012. Beyond the Utilization
+  Distribution: Identifying home range areas that are intensively
+  exploited or repeatedly visited. Ecological Modelling, 227,
+  112-116.
 \item Benhamou, S. 2011. Dynamic approach to space and habitat use
   based on biased random bridges. PLOS ONE, 6, 1--8.
 \item Calenge, C. 2005. Des outils statistiques pour l'analyse des
@@ -2567,9 +2697,9 @@ particular field of habitat selection study.
 \item Calenge, C. 2006. The package adehabitat for the R software: a
   tool for the analysis of space and habitat use by
   animals. Ecological modelling, 197, 516--519.
-\item Calenge, C., Dray, S. and Royer, M. in press. The concept of
+\item Calenge, C., Dray, S. and Royer-Carenzi, M. 2009. The concept of
   animals trajectories from a data analysis perspective. Ecological
-  Informatics.
+  Informatics, 4, 34-41.
 \item Downs, J.A. and Horner, M.W. 2009. A Characteristic-Hull Based
   Method for Home Range Estimation. Transactions in GIS, 13: 527--537.
 \item Getz, W., Fortmann-Roe, S., Cross, P., Lyons, A., Ryan, S. and
@@ -2580,7 +2710,7 @@ particular field of habitat selection study.
   Analyzing animal movements using Brownian bridges. Ecology, 88,
   2354--2353.
 \item Keating, K. and Cherry, S. 2009. Modeling utilization
-  distributions in space and time Ecology, in press.
+  distributions in space and time Ecology, 90, 1971-1980.
 \item Kenward, R., Clarke, R., Hodder, K. and Walls, S. 2001. Density
   and linkage estimators of home range: nearest neighbor clustering
   defines multinuclear cores. Ecology, 82, 1905--1920.

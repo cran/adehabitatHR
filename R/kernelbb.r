@@ -92,7 +92,7 @@
                as.double(yg), as.integer(length(yg)),as.integer(length(xg)),
                as.integer(nrow(df)), as.double(sig12), as.double (sig22),
                as.double(df$x), as.double(df$y), as.double(date),
-               as.integer(1000000), as.integer(nalpha),
+               as.integer(nalpha),
                PACKAGE="adehabitatHR")
       too <- c(t(matrix(toto[[1]], nrow=length(xg), byrow=TRUE)))
       UD <- data.frame(ud=too)

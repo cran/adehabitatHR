@@ -6,7 +6,8 @@
 \description{
   \code{kernelbb} is used to estimate the utilization distribution of an
   animal using the brownian bridge approach of the kernel method (for
-  autocorrelated relocations; Bullard 1991, Horne et al. 2007). \cr
+  autocorrelated relocations; Bullard 1991, Horne et al. 2007). 
+
   \code{liker} can be used to find the maximum likelihood
   estimation of the parameter sig1, using the approach defined in Horne
   et al. 2007 (see Details).
@@ -56,6 +57,7 @@ liker(tr, rangesig1, sig2, le = 1000,
     functions \code{print}}
 }
 \details{
+  
   The function \code{kernelbb} uses the brownian bridge approach to
   estimate the Utilization Distribution of an animal with serial
   autocorrelation of the relocations (Bullard 1991, Horne et al. 2007).
@@ -69,7 +71,7 @@ liker(tr, rangesig1, sig2, le = 1000,
   with a certain amount of inaccuracy (controled by the parameter sig2,
   see Examples).  Brownian bridges are placed over the different
   sections of the trajectory, and these functions are then summed over the
-  area.  The brownian bridge approach therefore smoothes a trajectory.\cr
+  area.  The brownian bridge approach therefore smoothes a trajectory.
   
   The brownian bridge estimation relies on two smoothing parameters,
   \code{sig1} and \code{sig2}.  The parameter \code{sig1} is related to
@@ -82,8 +84,7 @@ liker(tr, rangesig1, sig2, le = 1000,
   The parameter \code{sig2} is equivalent to the parameter 
   \code{h} of the classical kernel method: it is related to the
   inaccuracy of the relocations, and is supposed known (See examples for
-  an illustration of 
-  the smoothing parameters).\cr
+  an illustration of the smoothing parameters).
 
   The functions \code{getvolumeUD} and \code{getverticeshr} can then be
   used to conpute the home ranges (see \code{kernelbb}).  More

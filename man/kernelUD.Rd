@@ -11,17 +11,23 @@
 \title{Estimation of Kernel Home-Range}
 \description{
   The function \code{kernelUD} estimates the UD of one or several
-  animals.\cr
+  animals.
+  
   \code{plotLSCV} allows to explore the results of the least-square
-  cross-validation algorithm used to find the best smoothing value.\cr
-  \code{image} allows a graphical display of the estimates. \cr
+  cross-validation algorithm used to find the best smoothing value.
+  
+  \code{image} allows a graphical display of the estimates.
+  
   \code{getvolumeUD} and \code{kernel.area} provide utilities
-  for home range and home-range size estimation.\cr
+  for home range and home-range size estimation.
+  
   \code{getverticeshr} stores the home range contour as an object of
   class \code{SpatialPolygonsDataFrame} (package sp), with one row per
-  animal.\cr
+  animal.
+  
   \code{estUDm2spixdf} can be used to convert the result into an object
-  of class \code{SpatialPixelsDataFrame}\cr
+  of class \code{SpatialPixelsDataFrame}
+  
   \code{as.data.frame.estUD} can be used to convert an object of class
   \code{estUD} as a data frame.
 }
@@ -111,13 +117,14 @@ estUDm2spixdf(x)
     functions \code{print} and \code{image}}
 }
 \details{
+
   The Utilization Distribution (UD) is the bivariate function giving the
   probability density that an animal is found at a point according to
   its geographical coordinates.  Using this model, one can define 
   the home range as the minimum area in which an animal has some
   specified probability of being located. The
   functions used here correspond to the approach described in Worton
-  (1995).\cr
+  (1995).
 
   The kernel method has been recommended by many authors for the
   estimation of the utilization distribution (e.g. Worton, 1989, 1995).
@@ -141,11 +148,11 @@ estUDm2spixdf(x)
   solutions).  \code{plotLSCV} allows to have a diagnostic of the
   success of minimization of the cross validation criterion (i.e. to
   know whether the minimum of the CV criterion occurs within the scanned
-  range).  Finally, the UD is then estimated over a grid.\cr
+  range).  Finally, the UD is then estimated over a grid.
   
   The default kernel is the bivariate normal kernel, but the
   Epanechnikov kernel, which requires less computer time is also
-  available for the estimation of the UD. \cr
+  available for the estimation of the UD.
   
   The function \code{getvolumeUD} modifies the UD component of the
   object passed as argument: that the pixel values of the resulting
@@ -153,7 +160,7 @@ estUDm2spixdf(x)
   containing this pixel.  This function is used in the function
   \code{kernel.area}, to compute the home-range size.  Note, that the
   function \code{plot.hrsize} (see the help page of this  function) can
-  be used to display the home-range size estimated at various levels.\cr
+  be used to display the home-range size estimated at various levels.
 
   The parameter \code{boundary} allows to define a barrier that cannot
   be crossed by the animals.  When this parameter is
@@ -168,6 +175,7 @@ estUDm2spixdf(x)
   that \code{-pi/2}.  The UD of all the pixels located within a
   band defined by the boundary and with a width equal to \code{6*h}
   ("external lane") is set to zero.
+
 }
 \value{
   
@@ -177,17 +185,17 @@ estUDm2spixdf(x)
   animal (i.e., belong to the class \code{SpatialPoints}), or (ii) a
   list of elements of class \code{estUD} when the object
   \code{xy} passed as argument contains the relocations of several
-  animals (i.e., belong to the class \code{SpatialPointsDataFrame}).\cr
+  animals (i.e., belong to the class \code{SpatialPointsDataFrame}).
   
   The function \code{getvolumeUD} returns an object of the same class as
-  the object passed as argument (\code{estUD} or \code{estUDm}).  \cr
+  the object passed as argument (\code{estUD} or \code{estUDm}). 
   
   \code{kernel.area} returns a data frame of subclass \code{hrsize},
   with one column per animal and one row per level of
-  estimation of the home range.\cr
+  estimation of the home range.
 
   \code{getverticeshr} returns an object of class
-  \code{SpatialPolygonsDataFrame}.\cr
+  \code{SpatialPolygonsDataFrame}.
 
   \code{estUDm2spixdf} returns an object of class
   \code{SpatialPixelsDataFrame}.

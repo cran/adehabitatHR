@@ -42,7 +42,7 @@ clusthr(xy, unin = c("m", "km"),
   If (ii) is smaller than (i), the cluster "c" gains a new location.  If
   this new location belong to another cluster, the two cluster
   fuses. The process stop when all relocations are assigned to the same
-  cluster.\cr
+  cluster.
 
   At each step of the clustering process, the proportion of all
   relocations which are assigned to a cluster is computed (so that the
@@ -50,7 +50,7 @@ clusthr(xy, unin = c("m", "km"),
   relocations at hand, i.e. to an uncomplete process).
   At a given step, the home range is defined as
   the set of minimum convex polygon enclosing the relocations in the
-  clusters.\cr
+  clusters.
 
   Note that a given home-range contour can be extracted using the
   function \code{getverticeshr}.

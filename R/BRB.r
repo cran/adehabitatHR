@@ -302,7 +302,8 @@ BRB.D <- function(ltr, Tmax=NULL, Lmin=NULL, habitat=NULL, activity=NULL)
 }
 
 
-BRB <- function(ltr, D, Tmax, Lmin, hmin,
+BRB <- function(ltr, D, Tmax, Lmin, hmin, type=c("UD","ID", "RD"), radius = NULL,
+                maxt = NULL, filtershort = TRUE,
                 habitat = NULL, activity = NULL, grid = 200, b=FALSE,
                 same4all=FALSE, extent=0.5, tau = NULL, boundary=NULL)
 {
@@ -319,6 +320,17 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin,
         stop("Lmin should be positive")
     if (hmin < 0)
         stop("hmin should be positive")
+    type <- match.arg(type)
+
+    if (type!="UD") {
+        if (is.null(radius))
+            radius <- 3*hmin
+        if (is.null(maxt))
+            stop(paste("maxt should be specified when type =", type))
+        if (length(radius) > 1)
+            stop("Only one radius allowed in this function")
+    }
+
     if (is.null(tau)) {
         tau <- min(unlist(lapply(ltr, function(x) na.omit(x$dt))))/10
     }
@@ -535,8 +547,29 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin,
         kk <- D[[i]]
         so <- as.data.frame(.Call("fillsegments", df, Tmax, tau,
                                   hmin, kk, Lmin, b, as.integer(h2-1),
-                                  xll, yll, cs, as.integer(nr), act, PACKAGE="adehabitatHR"))
-        names(so) <- c("x","y", "h")
+                                  xll, yll, cs, as.integer(nr), act, as.integer(filtershort),
+                                  PACKAGE="adehabitatHR"))
+        names(so) <- c("x","y", "h", "t")
+
+        ## The type of UD fillsegments should also return interpolated time
+        if (type == "UD") {
+            wi <- rep(1, nrow(so))
+            so <- so[,1:3]
+        }
+        if (type == "ID") {
+            wi <- 1/as.double(.Call("nvisits", so[,c(1,2,4)], radius, maxt,
+                                    PACKAGE="adehabitatHR"))
+            so <- so[,1:3]
+        }
+        if (type == "RD") {
+            wi <- .Call("HRresidtime", so[,c(1,2,4)], radius, maxt, PACKAGE="adehabitatHR")
+            if (all(is.na(wi)))
+                warning(paste("Too large radius for burst\n",
+                              "The residence time is missing for all the relocations of one burst\n"))
+            so <- so[!is.na(wi),]
+            wi <- 1/wi[!is.na(wi)]
+            so <- so[,1:3]
+        }
 
 
         ## In case of boundary: checks that it is OK and mirror the points
@@ -546,8 +579,10 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin,
         }
 
         ## Kernel smoothing
+        threshh <- 3
         sor2 <- as.data.frame(.Call("mkdeb", so, xli, yli, csi, as.integer(nro),
-                                    as.integer(nco), PACKAGE="adehabitatHR"))
+                                    as.integer(nco), wi, as.double(threshh),
+                                    PACKAGE="adehabitatHR"))
         names(sor2) <- c("x","y","dens")
         coordinates(sor2) <- c("x","y")
         gridded(sor2) <- TRUE
@@ -727,3 +762,4 @@ BRB.likD <- function(ltr, Dr=c(0.1,100),
     class(val) <- "DBRB"
     return(val)
 }
+

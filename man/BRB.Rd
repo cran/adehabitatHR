@@ -8,12 +8,18 @@
 \description{
   This function estimates the utilization distribution of one/several
   animals using a biased random bridge approach (Benhamou and Cornelis
-  2010, Benhamou 2011).
+  2010, Benhamou 2011).  This function also allows the decomposition of
+  the utilization distribution into (i) an intensity distribution
+  reflecting the average time spent by the animal in the habitat
+  patches, and (ii) a recursion distribution reflecting the number of
+  visits of the animal in the habitat patches (Benhamou and
+  Riotte-Lambert, 2012).
 }
 \usage{
-BRB(ltr, D, Tmax, Lmin, hmin,
-    habitat = NULL, activity = NULL, grid = 200, b = FALSE,
-    same4all = FALSE, extent = 0.5, tau = NULL, boundary = NULL)
+BRB(ltr, D, Tmax, Lmin, hmin, type=c("UD","ID", "RD"), radius = NULL,
+    maxt = NULL, filtershort = TRUE, habitat = NULL, activity = NULL,
+    grid = 200, b=FALSE, same4all=FALSE, extent=0.5, tau = NULL,
+    boundary=NULL) 
 
 BRB.D(ltr, Tmax = NULL, Lmin = NULL, habitat = NULL, activity = NULL)
 
@@ -27,9 +33,11 @@ BRB.likD(ltr, Dr=c(0.1,100),
     an object of class \code{ltraj}.
   }
   \item{D}{
-    a number corresponding to the diffusion parameter used for the
-    estimation.  Alternatively this parameter may be an object of class
-    \code{DBRB} returned by the function \code{BRB.D}.
+    a number corresponding to the diffusion parameter (in squared
+    "units" per second, where "units" denote the units of the relocation
+    coordinates) used for the estimation.  Alternatively this parameter
+    may be an object of class \code{DBRB} returned by the function
+    \code{BRB.D}.
   }
   \item{Dr}{
     a vector of length two giving the lower and upper limits of the
@@ -37,29 +45,59 @@ BRB.likD(ltr, Dr=c(0.1,100),
     found.
   }
   \item{Tmax}{
-    the maximum duration in seconds of a step built by successive
+    the maximum duration (in seconds) allowed for a step built by successive
     relocations.  All steps characterized by a duration dt greater than
     \code{Tmax} are not taken into account in the calculations.
   }
   \item{Lmin}{
-    the minimum distance between successive relocations.  For all steps
-    characterized by a distance d lower than \code{Lmin}, the animal is
-    considered active and immobile and the diffusion parameter is set to
-    0 (see details below).  The distance should be specified in units
-    of the relocation coordinates (i.e. in metres if they are specified
-    in metres).
+    the minimum distance (in units of the coordinates) between successive 
+    relocations, defining intensive use or resting (See details).  The
+    distance should be specified in units of the relocation coordinates
+    (i.e. in metres if they are specified in metres).
   }
   \item{hmin}{
     The minimum smoothing parameter (in units of the relocations
     coordinates), applied to all recorded relocations. See details for a
     description of this parameter.
   }
+  \item{type}{
+    The type of distribution expected by the user: \code{"UD"} returns
+    the utilization distribution using the approach described by
+    Benhamou and Cornelis (2010).  \code{"ID"} returns the intensity
+    distribution described in Benhamou and Riotte-Lambert (2012), i.e. a
+    distribution reflecting the average time spent in habitat patches.
+    \code{"RD"} returns the recursion distribution described in Benhamou
+    and Riotte-Lambert (2012), i.e. a distribution reflecting the number
+    of visits in habitat patches.  
+  }
+  \item{radius}{
+    If \code{type = "ID"} or \code{"RD"}, the radius of the patches (in
+    units of the relocation coordinates) used in the calculation of the
+    residence time or the number of visits.  If \code{NULL}, the radius
+    is set to \code{3*hmin}.
+  }
+  \item{maxt}{
+    If \code{type = "ID"} or \code{"RD"}, maximum time threshold (in
+    seconds) that the animal is allowed to spend outside the patch
+    before that we consider that the animal actually left the patch (see
+    \code{?residenceTime}).
+  }
+  \item{filtershort}{
+    logical indicating the behaviour of the function
+    when the length of a step is lower than \code{Lmin} (see details).
+    It must be set to TRUE if track segments shorter than
+    Lmin are assumed to correspond to resting periods, which thereby
+    will be filtered out systematically, or to FALSE to take these short
+    track segments into account when not associated to resting (animals
+    active without moving more than Lmin). They then will be given a
+    null diffusion coefficient.
+  }
   \item{habitat}{
-    optionnaly, an object of class \code{SpatialPixelsDataFrame} with
+    optionally, an object of class \code{SpatialPixelsDataFrame} with
     one column describing the habitat type on the area.
   }
   \item{activity}{
-    optionnally, a character indicating the name of the variable in the
+    optionally, a character indicating the name of the variable in the
     infolocs component of \code{ltr} indicating the proportion of time
     between relocation i and relocation i+1 during which the animal was
     active (Users of adehabitatLT prior to version 0.3 should read the
@@ -99,6 +137,7 @@ BRB.likD(ltr, Dr=c(0.1,100),
   }
 }
 \details{
+
   The function \code{BRB} uses the biased random bridge approach 
   to estimate the Utilization Distribution of an animal with serial
   autocorrelation of the relocations.  This approach is similar to the
@@ -112,8 +151,7 @@ BRB.likD(ltr, Dr=c(0.1,100),
   diffusive movement: is is supposed that the animal movement is
   governed by a drift component (a general tendency to move in the
   direction of the next relocation) and a diffusion component (tendency
-  to move in other directions than the direction of the drift).\cr
-
+  to move in other directions than the direction of the drift).
   
   The BRB approach is based on the biased random walk model.  This model
   is the following: at a given time t, the speed of the animal is drawn
@@ -127,8 +165,7 @@ BRB.likD(ltr, Dr=c(0.1,100),
   the pdf that the animal is located at a given place r = (x,y) at time
   ti (with t1 < ti < t2), given that it is located at r1,r2 at times
   t1,t2, and given that the animal moves according a biased random walk
-  with an advection component determined by r1 and r2.\cr
-
+  with an advection component determined by r1 and r2.
   
   Benhamou (2011) proposed an approximation for this pdf, noting
   that it can be approximated by a circular bivariate normal
@@ -141,18 +178,16 @@ BRB.likD(ltr, Dr=c(0.1,100),
   diffusion parameter \code{D} can be estimated for each habitat type is
   a habitat map is available.  Note that the function \code{BRB.likD}
   can be used alternatively to estimate the diffusion coefficient using
-  the maximum likelihood method.\cr
+  the maximum likelihood method.
 
-  
   An important aspect of the BRB approach is that the drift component is
   allowed to change in direction and strength from one step to the
   other, but should remain constant during each of them.  For this
   reason, it is required to set an upper time threshold \code{Tmax}.
   Steps characterized by a longer duration are not taken into account
   into the estimation of the pdf. This upper threshold should be based
-  on biological grounds.\cr
+  on biological grounds.
 
-  
   As for the Brownian bridge approach, this conditional pdf based on
   biased random walks takes an infinite value at times ti = t1 and ti =
   t2 (because, at these times, the relocation of the animal is known
@@ -181,7 +216,7 @@ BRB.likD(ltr, Dr=c(0.1,100),
   sample of possible locations at which the animal may be found at that
   time, given its current motivational state and history. Consequently,
   hmin should be large enough to encompass potential locations occurring
-  in the same habitat patch as the recorded location".\cr
+  in the same habitat patch as the recorded location".
 
   Practically, the BRB approach can be carried out with the help of the
   movement-based kernel density estimation (MKDE) developed by Benhamou
@@ -196,41 +231,31 @@ BRB.likD(ltr, Dr=c(0.1,100),
   otherwise.  Note that this smoothing parameter may be a 
   function of the habitat type where the interpolated relocation occurs
   if the diffusion parameters are available for each habitat types.
-  Note that if a given step covers a distance lower than \code{Lmin},
-  the diffusion parameter is locally set to 0, so that the smoothing
-  parameter hi is set to \code{hmin} for this step. This procedure
-  allows the user to give more weight to the immediate surroundings of
-  this relocation, which is a sensible choice if the animal was active
-  though immobile (indicating an intensive use of these immediate
-  surroundings). Note however that this choice may not be sensible if
-  the animal is inactive, depending on the type of UD that is
-  computed.  It remains a sensible choice only if a total UD is computed
-  (which means that activity is never taken into account whatever the
-  distance between relocations).  In contrast, if an activity UD is
-  computed, resting relocations should be filtered out (as well as
-  possibly resting parts that may occur between relocations, thanks to
-  activity data when available). When a variable containing the activity
-  is available, the function \code{BRB} will automatically identify most
-  of those relocations that will be ignored in the calculation (because
-  of this inactivity.  Note however that activtiy value may sometimes be
-  relatively high while the animal is resting, e.g. if disturbed by
-  flies, possibly requiring manual correction of activity values based
-  on the distance moved between relocations). When this activity
-  variable is not available, if distances lower than \code{Lmin} can be
-  assumed to correspond to resting, computing an UD that represents the
-  activity distribution in space with highest accuracy simply requires
-  to create a fake activity variable whose value is 1 for any relocation
-  followed by another relocation at distance larger than \code{Lmin} and
-  0 otherwise.\cr
-  
-  Moreover, note that it is often more sensible to use the activity time
-  instead of the raw time in these calculations.  That is, if ai is the
-  proportion of the time duration Ti during which the animal was active,
-  it is recommended to base the calculations on ai*Ti.  The name of the
-  variable containing the ai in the \code{infolocs} component should be
-  passed as the parameter \code{activity} (see \code{?infolocs} for
-  additionnal information on this component).\cr
 
+  The special case where a given step covers a distance lower than
+  \code{Lmin} merits further details.  When the parameter
+  \code{filtershort = TRUE}, it is always assumed that the animal was
+  resting at this time, and this step is filtered out before the
+  estimation.  When the parameter \code{filtershort = FALSE}, this
+  assumption is not made.  In this case, the behaviour of the function
+  depends on the availability of a variable measuring the activity of
+  the animal (when the name of the variable containing the ai in the
+  \code{infolocs} component is passed as the parameter \code{activity};
+  see \code{?infolocs} for additionnal information on this component).
+  If the animal was active during the step, the smoothing parameter hi
+  is set to \code{hmin} for this step. This procedure allows to give
+  more weight to the immediate surroundings of this relocation
+  (indicating an intensive use of these immediate surroundings).  If the
+  animal was inactive, then the animal was resting and the step is
+  filtered out before the estimation.  Note however that activity value
+  may sometimes be relatively high while the animal is resting, e.g. if
+  disturbed by flies, possibly requiring manual correction of activity
+  values based on the distance moved between relocations).
+
+  If no activity variable is available and \code{filtershort = FALSE},
+  it is always suppose that the animal was active between the two
+  relocations, the step is not filtered out and the
+  smoothing parameter hi is set to \code{hmin} for this step.
   
   The parameter \code{boundary} allows to define a barrier that cannot
   be crossed by the animals.  When this parameter is
@@ -244,13 +269,21 @@ BRB.likD(ltr, Dr=c(0.1,100),
   between two line segments should be greater that \code{pi/2} or lower
   that \code{-pi/2}.  The UD of all the pixels located within a
   band defined by the boundary and with a width equal to \code{6*h}
-  ("external lane") is set to zero.\cr
+  ("external lane") is set to zero.
 
+  Benhamou and Riotte-Lambert (2012) showed that the space use at any
+  given location, as estimated by this approach, can be seen as the
+  product between the mean residence time per visit times the number of
+  visits of the location.  They proposed an approach allowing the
+  decomposition of the UD into two components: (i) the intensity
+  distribution reflecting this average residence time and (ii) a
+  recursion distribution reflecting the number of visits.  This function
+  allows to estimate these two components, by setting the argument
+  \code{type} to \code{"ID"} and \code{"RD"} respectively.  
   
   Note that all the methods available to deal with objects of class
   \code{estUDm} are available to deal with the results of the function
   \code{BRB} (see \code{?kernelUD}).
-
   
 }
 \value{
@@ -272,6 +305,10 @@ BRB.likD(ltr, Dr=c(0.1,100),
   Space Use Estimates. \emph{Journal of Wildlife Management}, \bold{74},
   1353--1360.
 
+  Benhamou, S. and Riotte-Lambert, L. (2012) Beyond the Utilization
+  Distribution: Identifying home range areas that are intensively
+  exploited or repeatedly visited. \emph{Ecological Modelling},
+  \bold{227},  112--116.
 }
 \author{
   Clement Calenge \email{clement.calenge@oncfs.gouv.fr}, based on a C
@@ -287,12 +324,6 @@ BRB.likD(ltr, Dr=c(0.1,100),
   activity described the proportion of activity time between relocation
   i-1 and i.  This inconsistency has now been corrected since version
   0.3.
-}
-\section{Note}{
-  In some cases, it may be useful to set
-  Benhamou (2011) indicates ""For all steps characterized by a distance d lower than \code{Lmin},
-  the animal is considered active and immobile and the diffusion
-  parameter is set to 0.
 }
 \seealso{
   \code{\link{kernelbb}} for the Brownian bridge kernel estimation,
@@ -349,6 +380,35 @@ ud
 
 ## Show the UD.
 image(ud)
+
+\dontrun{
+## Example of the decomposition of the UD into a recursion distribution
+## and a intensity distribution (Benhamou and Riotte-Lambert 2012).
+##
+## 1. Intensity Distribution using the same parameters as Benhamou and
+## Riotte-Lambert (2012)
+
+id <- BRB(buffalo$traj, D = 440/60, Tmax = 3*3600, Lmin = 50, type = "ID",
+          hmin=100, radius = 300, maxt = 2*3600, activity="act", filtershort=FALSE,
+          grid = 200, extent=0.1)
+
+rd <- BRB(buffalo$traj, D = 440/60, Tmax = 3*3600, Lmin = 50, type = "RD",
+          hmin=100, radius = 300, maxt = 2*3600, activity="act", filtershort=FALSE,
+          grid = 200, extent=0.1)
+
+ud <- BRB(buffalo$traj, D = 440/60, Tmax = 3*3600, Lmin = 50, 
+          hmin=100, radius = 300, maxt = 2*3600, activity="act", filtershort=FALSE,
+          grid = 200, extent=0.1)
+
+par(mfrow = c(2,2), mar=c(0,0,2,0))
+image(getvolumeUD(id))
+title("ID")
+image(getvolumeUD(rd))
+title("RD")
+image(getvolumeUD(ud))
+title("UD")
+}
+
 
 
 

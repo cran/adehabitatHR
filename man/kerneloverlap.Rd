@@ -36,17 +36,18 @@ kerneloverlaphr(x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
     distribution.}
 }
 \details{
+
   Fieberg and Kochanny (2005) made an extensive review of the indices of
   overlap between utilization distributions (UD) of two animals.  The
   function \code{kerneloverlap} implements these indices.  The argument
-  \code{method} allows to choose an index\cr
+  \code{method} allows to choose an index.
 
   The choice \code{method="HR"} computes the proportion of the home
   range of one animal covered by the home range of another one, i.e.:
   \deqn{HR_{i,j} = A_{i,j} / A_i}{HR[i,j] = A[i,j] / A[i]},
   where \eqn{A_{i,j}}{A[i,j]} is the area of the intersection between
   the two home ranges and \eqn{A_i}{A[i]} is the area of the home range
-  of the animal i.\cr
+  of the animal i.
 
   The choice \code{method="PHR"} computes the volume under the UD of the
   animal j that is inside the home range of the animal i (i.e., the
@@ -54,12 +55,12 @@ kerneloverlaphr(x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
   \deqn{PHR_{i,j} = \int \int_{A_i} UD_j(x,y) dxdy}{PHR[i,j] =
   integral_over_x integral_over_y A[i] UD[j](x,y) dxdy} where
   \eqn{UD_j(x,y)}{UD[j](x,y)} is the value of the utilization
-  distribution of the animal j at the point x,y.\cr
+  distribution of the animal j at the point x,y.
 
   The choice \code{method="VI"} computes the volume of the intersection
   between the two UD, i.e.:
   \deqn{VI = \int_x \int_y min(UD_i(x,y),UD_j(x,y)) dxdy}{VI =
-  integral_over_x integral_over_y min(UD[i](x,y),UD[j](x,y)) dxdy}\cr
+  integral_over_x integral_over_y min(UD[i](x,y),UD[j](x,y)) dxdy}
 
   Other choices rely on the computation of the joint distribution of the
   two animals under the hypothesis of independence UD[i](x,y) *
@@ -73,12 +74,12 @@ kerneloverlaphr(x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
   Hurlbert index of niche overlap:
   \deqn{UDOI = A_{i,j} \int_x \int_y UD_i(x,y) \times
   UD_j(x,y)}{UDOI = A[i,j] integral_over_x integral_over_y UD[i](x,y) *
-  UD[j](x,y)}\cr
+  UD[j](x,y)}
   
   The choice \code{method="HD"} computes the Hellinger's distance:
   \deqn{HD = \int_x \int_y ((\sqrt UD_i(x,y) - \sqrt UD_j(x,y))^2
   dxdy)^{1/2}}{HD = integral_over_x integral_over_y ((sqrt(UD[i](x,y) -
-  sqrt(UD[j](x,y)))^2 dxdy)^(1/2))}\cr 
+  sqrt(UD[j](x,y)))^2 dxdy)^(1/2))}
 
 }
 \value{

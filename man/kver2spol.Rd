@@ -4,11 +4,11 @@
 \title{Conversion of old classes from adehabitat to classes from adehabitatHR}
 \description{
   These functions convert home ranges available in adehabitat toward
-  classes available in the package \code{adehabitatHR}.\cr
-  \cr
+  classes available in the package \code{adehabitatHR}.
+
   \code{kver2spol} converts an object of class \code{kver} into an
   object of class \code{SpatialPolygons}.
-  \cr
+
   \code{khr2estUDm} converts an object of class \code{khr} (kernel UD)
   into an object of class \code{estUDm}.
   

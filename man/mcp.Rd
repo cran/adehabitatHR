@@ -54,15 +54,17 @@ hr.rast(mcp, w)
   removal of \code{(100 minus percent)} percent of the relocations the
   farthest away from the centroid of the home range (computed by the
   arithmetic mean of the coordinates of the relocations for each
-  animal).\cr
+  animal).
 }
 \value{
   \code{mcp} returns an object of class \code{SpatialPolygonsDataFrame},
   in which the first column contains the ID of the animals, and the
-  second contains the home range size.\cr
+  second contains the home range size.
+  
   \code{mcp.area} returns a data frame of class \code{hrsize}, 
   with one column per animal and one row per level of
-  estimation of the home range.\cr
+  estimation of the home range.
+
   \code{hr.rast} returns an object of class
   \code{SpatialPixelsDataFrame}.
 }
