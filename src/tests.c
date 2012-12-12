@@ -1340,17 +1340,17 @@ double euclidean_distance(double x1, double y1, double x2, double y2)
 }
 
 
-double comdi(double *x, double *y, double *dists, 
+int comdi(double *x, double *y, double *dists, 
 	     int n)
 {
     int ii,jj,kk;
-
+    
     kk=0;
     
     for(ii=1; ii <= n-1; ii++){
 	for(jj=ii+1; jj<=n; jj++){
-	    dists[kk] = euclidean_distance(x[ii], y[ii], x[jj],y[jj]);
 	    kk++;
+	    dists[kk] = euclidean_distance(x[ii], y[ii], x[jj],y[jj]);
 	}
     }
     return (kk);

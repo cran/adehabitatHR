@@ -37,47 +37,48 @@ kernelkc <- function(tr, h, tcalc, t0, grid=40, circular=FALSE,
     }
     xy <- do.call("rbind",tr)[,c("x","y")]
     xy <- xy[!is.na(xy[,1]),]
-    gr <- grid
     resultats <- list()
 
-    if (is.list(gr)) {
-        if (is.null(names(gr)))
-            stop("when grid is a list, it should have named elements")
-        nn <- names(gr)
-        lev <- names(tr)
-        if (length(lev) != length(nn))
-            stop("the length of the grid list should be equal to the number of levels of id/burst")
-        if (!all(lev %in% nn))
-            stop("some levels of id/bursts do not have corresponding grids")
-    }
     if (same4all) {
         if (inherits(grid, "SpatialPoints"))
             stop("when same4all is TRUE, grid should be a number")
-        if (!is.list(gr)) {
-            if (length(as.vector(gr)) == 1) {
-                grid <- .makegridUD(xy, grid, extent)
-            }
-        } else {
-            stop("when same4all=TRUE, a list of grid cannot be passed as \"grid\"")
-        }
+        grid <- .makegridUD(xy, grid, extent)
     }
 
     for (i in 1:length(tr)) {
 
+        if (is.list(grid)) {
+            grida <- grid[names(tr)[i]][[1]]
+        } else {
+            grida <- grid
+        }
+        if (!inherits(grida, "SpatialPixels")) {
+            if ((!is.numeric(grida)) | (length(grida) != 1))
+                stop("grid should be a number or an object inheriting the class SpatialPixels")
+            grida <- .makegridUD(xy, grida, extent)
+        }
+        gridded(grida) <- TRUE
+        fullgrid(grida) <- TRUE
+        grrw <- gridparameters(grida)
+        pfs <- proj4string(grida)
+        if (nrow(grrw) > 2)
+            stop("grid should be defined in two dimensions")
+        if (is.loaded("adehabitatMA")) {
+            opteps <- adehabitatMA::adeoptions()$epsilon
+        }
+        else {
+            opteps <- 1e-08
+        }
+        if ((grrw[1, 2] - grrw[2, 2]) > opteps)
+            stop("the cellsize should be the same in x and y directions")
+        xyg <- coordinates(grida)
+        xg <- unique(xyg[, 1])
+        yg <- unique(xyg[, 2])
+
+
         dft <- tr[[i]]
         dft <- dft[!is.na(dft[,1]),]
         df <- dft[, c("x", "y")]
-        if (!is.list(gr)) {
-            if (length(as.vector(gr)) == 1) {
-                if (!is.numeric(gr))
-                    stop("grid should be an object of class asc or a number")
-                if (!same4all) {
-                    grid <- .makegridUD(xy, gr, extent)
-                }
-            }
-        } else {
-            grid <- gr[[names(tr)[i]]]
-        }
 
         x <- tr[[i]]
         xy <- x[,c("x","y")]
@@ -91,25 +92,6 @@ kernelkc <- function(tr, h, tcalc, t0, grid=40, circular=FALSE,
             da <- (da-unclass(t0))%%cycle
             da <- (da/cycle)*2*pi
         }
-
-
-        gridded(grid) <- TRUE
-        fullgrid(grid) <- TRUE
-        grrw <- gridparameters(grid)
-        pfs <- proj4string(grid)
-        if (nrow(grrw) > 2)
-            stop("grid should be defined in two dimensions")
-        if (is.loaded("adehabitatMA")) {
-            opteps <- adehabitatMA::adeoptions()$epsilon
-        } else {
-            opteps <- 1e-08
-        }
-        if ((grrw[1, 2] - grrw[2, 2])> opteps)
-            stop("the cellsize should be the same in x and y directions")
-
-        xyg <- coordinates(grid)
-        xg <- unique(xyg[,1])
-        yg <- unique(xyg[,2])
 
         circular <- as.numeric(circular)
         xyd <- cbind(xy,da)

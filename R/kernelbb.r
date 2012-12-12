@@ -56,7 +56,7 @@
       df<-dft[,c("x","y")]
 
       if (!is.list(gr)) {
-          if (!inherits(grid, "SpatialPoints")) {
+          if (!inherits(gr, "SpatialPoints")) {
               if (length(as.vector(gr)) == 1) {
                   if (!is.numeric(gr))
                       stop("non convenient grid")

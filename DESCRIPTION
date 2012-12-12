@@ -1,6 +1,6 @@
 Package: adehabitatHR
-Version: 0.4.2
-Date: 2012/05/31
+Version: 0.4.4
+Date: 2012/12/12
 Depends: R (>= 2.10.0), sp, methods, deldir, ade4, adehabitatMA,
         adehabitatLT
 Suggests: maptools, tkrplot, MASS, rgeos, gpclib
@@ -11,6 +11,6 @@ Description: A collection of tools for the estimation of animals home
         range
 License: GPL (>= 2)
 URL: https://trac.faunalia.it/animove/
-Packaged: 2012-05-31 09:09:42 UTC; calenge
+Packaged: 2012-12-12 10:12:28 UTC; calenge
 Repository: CRAN
-Date/Publication: 2012-05-31 10:07:16
+Date/Publication: 2012-12-12 12:14:26

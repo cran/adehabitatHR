@@ -54,8 +54,10 @@ exwc(hv)
     at which the time cycle begins (see examples).}
   \item{grid}{a number giving the size of the grid on which the UD should
     be estimated.  Alternatively, this parameter may be an object
-    of class \code{asc}, or a list of objects of class \code{asc}, with
-    named elements corresponding to each level of the burst/id}
+    of class \code{SpatialPixels}.  In addition, for the function
+    \code{kernelkc} this parameter can be a list of objects of class
+    \code{SpatialPixels}, with named elements corresponding to each
+    level of the burst/id}
   \item{circular}{logical.  Indicates whether the time should be
     considered as a circular variable (e.g., the 31th december 2007 is
     considered to be one day before the 1st january 2007) or not (e.g.,
