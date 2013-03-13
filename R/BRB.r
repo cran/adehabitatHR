@@ -669,7 +669,7 @@ BRB.likD <- function(ltr, Dr=c(0.1,100),
             ## get the rasterized trajectory
             tr <- ii[[i]]
             ## overlay with the map
-            ov <- overlay(habitat, tr)
+            ov <- over(tr, geometry(habitat))
             ## get the pixels of the map
             mel <- rep(NA, length(ov))
             mel[!is.na(ov)] <- habitat[na.omit(ov),][[1]]

@@ -40,7 +40,7 @@ getverticeshr.estUD <- function(x, percent=95, ida=NULL,
         zz <- rbind(zz,zz[1,])
         tmp <- SpatialPolygons(list(Polygons(list(Polygon(zz)),
                                              as.character(i))))
-        return(!is.na(overlay(tmp, x)))
+        return(!is.na(over(x, tmp)))
     }))
     spatpol <- as.data.frame(spatpol)
     hol <- unlist(lapply(1:ncol(spatpol), function(i) {

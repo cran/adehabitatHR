@@ -240,7 +240,7 @@ MCHu.rast <- function(x, spdf, percent=100)
         x <- x[lb,]
 
         for (i in nrow(as.data.frame(x)):1) {
-            uu <- !is.na(overlay(spdf,x[i,]))
+            uu <- !is.na(over(spdf,geometry(x[i,])))
             tmp[uu] <- df$percent[i]
         }
         tmp[tmp==0] <- NA
