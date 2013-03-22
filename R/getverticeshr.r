@@ -39,7 +39,7 @@ getverticeshr.estUD <- function(x, percent=95, ida=NULL,
         zz <- cbind(y$x,y$y)
         zz <- rbind(zz,zz[1,])
         tmp <- SpatialPolygons(list(Polygons(list(Polygon(zz)),
-                                             as.character(i))))
+                                             as.character(i))), proj4string=CRS(pfs))
         return(!is.na(over(x, tmp)))
     }))
     spatpol <- as.data.frame(spatpol)

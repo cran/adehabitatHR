@@ -18,7 +18,7 @@ findmax <- function(x)
     toto <- c(matrix(toto, ncol=ncol(z), byrow=TRUE))
     xy <- expand.grid(x$x,x$y)
     xyb <- xy[which(toto>0.5),]
-    ov <- z[over(SpatialPoints(xyb), geometry(x2))]
+    ov <- z[over(SpatialPoints(xyb, proj4string=CRS(proj4string(x2))), geometry(x2))]
     xyb <- SpatialPoints(xyb[!is.na(ov),])
     return(xyb)
 }
