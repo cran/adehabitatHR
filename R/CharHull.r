@@ -3,19 +3,19 @@
     require("deldir")
     xy <- as.data.frame(xy)
     names(xy) <- c("x","y")
-    tri <- deldir(xy)
+    tri <- deldir(xy[,1], xy[,2])
     tri <- triang.list(tri)
     tri <- lapply(1:length(tri), function(i) {
         rbind(tri[[i]], tri[[i]][1,])
     })
     area <- sapply(tri, function(x) {
-        .arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(x)), 1))))
+        .arcpspdf(SpatialPolygons(list(Polygons(list(Polygon(x[,2:3])), 1))))
     })
     tri <- tri[order(area)]
     area <- area[order(area)]
     df <- data.frame(area=area, percent=100*c(c(1:length(area))/length(area)))
     sp <- SpatialPolygons(lapply(1:length(tri), function(i) {
-        Polygons(list(Polygon(as.matrix(tri[[i]]))), i)
+        Polygons(list(Polygon(as.matrix(tri[[i]][,2:3]))), i)
     }))
     res <- SpatialPolygonsDataFrame(sp, df)
     return(res)
