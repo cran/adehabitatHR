@@ -11,6 +11,15 @@ kerneloverlap <- function(xy, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"),
     ## UD estimation
     x <- kernelUD(xy, same4all=TRUE, ...)
     vol <- getvolumeUD(x)
+    ## Checks that the UD is distributed over several pixels
+    tmp <- lapply(1:length(vol), function(i) {
+        y <- vol[[i]]
+        su <- sum(y[[1]]<95)
+        if (su<5)
+            warning(paste("For animal ", names(vol)[i], ", the most of the UD is distributed ",
+                          "in less than 5 pixels.\n The results will probably be inconsistent.\n",
+                          "Try to increase the parameter grid.\n"))
+    })
     x <- lapply(x, function(y) {
         coo <- coordinates(y)
         y[order(coo[,1], coo[,2]),]

@@ -395,7 +395,7 @@ kernelUD <- function (xy, h = "href", grid = 60,
             id <- rep("a", nrow(as.data.frame(xy)))
             m <- 2
         } else {
-            id <- as.data.frame(xy)[,1]
+            id <- xy[[1]]
             m <- 1
         }
     } else {
@@ -471,7 +471,7 @@ estUDm2spixdf <- function(x)
     if (!ii)
         stop("this function can be used only when the same grid was used for all animals")
 
-    res <- do.call("data.frame", lapply(x, function(y) as.data.frame(y)[,1]))
+    res <- do.call("data.frame", lapply(x, function(y) y[[1]]))
     coordinates(res) <- coordinates(x[[1]])
     gridded(res) <- TRUE
     if (!is.na(proj4string(x[[1]])))

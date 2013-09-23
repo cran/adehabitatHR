@@ -25,7 +25,7 @@
             warning("xy should contain only one column (the id of the animals), id ignored")
             id <- factor(rep("a", nrow(as.data.frame(xy))))
         } else {
-            id <- as.data.frame(xy)[,1]
+            id <- xy[[1]]
         }
     } else {
         id <- factor(rep("a", nrow(as.data.frame(xy))))

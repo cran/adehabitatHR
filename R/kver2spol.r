@@ -3,8 +3,6 @@ kver2spol <- function(kv)
     x <- kv
     if (!inherits(x, "kver"))
         stop("x should be of class \"kver\"")
-    if (!require(sp))
-        stop("sp package needed")
     lipols <- lapply(1:length(x), function(i) {
         y <- x[[i]]
         class(y) <- c("data.frame","list")

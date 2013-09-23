@@ -923,15 +923,9 @@ void taballoc (double ***tab, int l1, int c1)
 {
     int i, j;
     
-    if ( (*tab = (double **) calloc(l1+1, sizeof(double *))) != 0) {
-	for (i=0;i<=l1;i++) {
-	    if ( (*(*tab+i)=(double *) calloc(c1+1, sizeof(double))) == 0 ) {
-		return;
-		for (j=0;j<i;j++) {
-		    free(*(*tab+j));
-		}
-	    }
-	}
+    *tab = Calloc(l1+1, double *);
+    for (i=0;i<=l1;i++) {
+	*(*tab+i)= Calloc(c1+1, double);
     }
     
     **(*tab) = l1;
@@ -944,12 +938,9 @@ void vecalloc (double **vec, int n)
  * Memory Allocation for a vector of length n
  --------------------------------------------------*/
 {
-    if ( (*vec = (double *) calloc(n+1, sizeof(double))) != 0) {
-	**vec = n;
-	return;
-    } else {
-	return;
-    }
+    *vec = Calloc(n+1, double);
+    **vec = n;
+    return;
 }
 
 /*****************/
@@ -958,12 +949,8 @@ void vecintalloc (int **vec, int n)
  * Memory allocation for an integer vector of length  n
  --------------------------------------------------*/
 {
-    if ( (*vec = (int *) calloc(n+1, sizeof(int))) != NULL) {
-	**vec = n;
-	return;
-    } else {
-	return;
-    }
+    *vec = Calloc(n+1, int);
+    **vec = n;
 }
 
 /***********************************************************************/
@@ -976,9 +963,9 @@ void freetab (double **tab)
     
     n = *(*(tab));
     for (i=0;i<=n;i++) {
-	free((char *) *(tab+i) );
+	Free(*(tab+i));
     }
-    free((char *) tab);
+    Free(tab);
 }
 
 /***********************************************************************/
@@ -987,7 +974,7 @@ void freevec (double *vec)
  * Free memory for a vector
  --------------------------------------------------*/
 {
-    free((char *) vec);	
+    Free(vec);	
 }
 
 /***********************************************************************/
@@ -997,7 +984,7 @@ void freeintvec (int *vec)
 --------------------------------------------------*/
 {
     
-    free((char *) vec);
+    Free(vec);
     
 }
 

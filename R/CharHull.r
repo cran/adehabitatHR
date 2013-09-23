@@ -1,6 +1,5 @@
 .charhull <- function(xy)
 {
-    require("deldir")
     xy <- as.data.frame(xy)
     names(xy) <- c("x","y")
     tri <- deldir(xy[,1], xy[,2])

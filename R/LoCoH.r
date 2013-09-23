@@ -11,9 +11,6 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
         stop("The package maptools is required for this function")
     if (!require(rgeos))
         stop("the package rgeos is required for this function")
-    if (!require(gpclib))
-        stop("the package gpclib is required for this function")
-    gpclibPermit()
     pfs <- proj4string(xy)
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
@@ -134,7 +131,7 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
             proj4string(res) <- CRS(pfs)
         return(res)
     } else {
-        id <- as.data.frame(xy)[,1]
+        id <- as.data.frame(xy)[[1]]
         xy <- as.data.frame(coordinates(xy))
         lixy <- split(xy, id)
         res <- lapply(lixy, function(x) {
@@ -279,9 +276,6 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
         stop("xy should be defined in two dimensions")
     if (!require(rgeos))
         stop("The package rgeos is required for this function")
-    if (!require(gpclib))
-        stop("the package gpclib is required for this function")
-    gpclibPermit()
     pfs <- proj4string(xy)
     m <- 1
     duplicates <- match.arg(duplicates)
@@ -514,9 +508,6 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         stop("xy should be defined in two dimensions")
     if (!require(rgeos))
         stop("The package rgeos is required for this function")
-    if (!require(gpclib))
-        stop("the package gpclib is required for this function")
-    gpclibPermit()
     pfs <- proj4string(xy)
     unin <- match.arg(unin)
     unout <- match.arg(unout)

@@ -589,7 +589,7 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin, type=c("UD","ID", "RD"), radius = NULL
 
         ## clean the other side of the boundary
         if (!is.null(boundary)) {
-            sor2 <- adehabitatHR:::.fbboun(sor2, boundary, sigg, max(so$h))
+            sor2 <- .fbboun(sor2, boundary, sigg, max(so$h))
         }
         sor2 <- new("estUD", sor2)
         slot(sor2, "h") <- list(values = list(hmin=hmin, D=D), interp = so,

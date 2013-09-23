@@ -132,8 +132,8 @@ estUDm2spixdf(x)
   smoothing parameter is the \emph{ad hoc} method, i.e. for a bivariate
   normal kernel
   \deqn{h = \sigma n^{- \frac{1}{6}}}{h = Sigma*n^(-1/6)}
-  where \deqn{\sigma = 0.5 (\sigma(x)+\sigma(y))}{Sigma =
-    0.5*(sd(x)+sd(y))} which supposes that the UD is
+  where \deqn{\sigma^2 = 0.5 (var(x)+var(y))}{Sigma^2 =
+    0.5*(var(x)+var(y))} which supposes that the UD is
   bivariate normal.  If an Epanechnikov kernel is used, this value is
   multiplied by 1.77 (Silverman, 1986, p. 86).
   Alternatively, the smoothing parameter h may be
