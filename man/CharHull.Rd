@@ -60,7 +60,7 @@ Clement Calenge \email{clement.calenge@oncfs.gouv.fr}
 }
 \examples{
 
-
+\dontrun{
 data(puechabonsp)
 lo<-puechabonsp$relocs[,1]
      
@@ -77,7 +77,7 @@ MCHu2hrsize(res)
 ver <- getverticeshr(res)
 ver
 plot(ver)
-
+}
 
 }
 \keyword{spatial}

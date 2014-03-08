@@ -35,7 +35,7 @@
 
 kernelUD(xy, h = "href", grid = 60,
          same4all = FALSE, hlim = c(0.1, 1.5),
-         kern = c("bivnorm", "epa"), extent = 0.5,
+         kern = c("bivnorm", "epa"), extent = 1,
          boundary = NULL)
 
 \method{print}{estUDm}(x, \dots)
@@ -72,10 +72,10 @@ estUDm2spixdf(x)
     Alternatively, \code{h} may be set to any given numeric value}
   \item{grid}{a number giving the size of the grid on
     which the UD should be estimated.  Alternatively, this parameter may
-    be an object inheriting the class \code{SpatialPixels}.  For the
-    function \code{kernelUD}, it may in addition be a list of objects of
-    class \code{SpatialPixels}, with named elements corresponding to each
-    level of the factor id.}
+    be an object inheriting the class \code{SpatialPixels}, that will be
+    used for all animals.  For the function \code{kernelUD}, it may in
+    addition be a list of objects of class \code{SpatialPixels}, with
+    named elements corresponding to each level of the factor id.}
   \item{hlim}{a numeric vector of length two.  If \code{h = "LSCV"},
     the function minimizes the cross-validation criterion for values of
     h ranging from \code{hlim[1]*href} to \code{hlim[2]*href}, where
@@ -90,7 +90,9 @@ estUDm2spixdf(x)
       diff(range(abscissa.relocations)))}, and similarly for the ordinate).}
   \item{same4all}{logical. If \code{TRUE}, the same grid
     is used for all animals.  If \code{FALSE}, one grid per
-    animal is used}
+    animal is used.  Note that when \code{same4all = TRUE}, the grid
+    used for the estimation is calculated by the function (so that the
+    parameter \code{grid} cannot be a \code{SpatialPixels} object).}
   \item{boundary}{If, not \code{NULL}, an object inheriting the class
     \code{SpatialLines} defining a barrier that cannot be crossed by the
     animals.  There are constraints on the shape of the barrier that

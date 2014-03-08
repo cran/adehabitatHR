@@ -379,7 +379,7 @@ image.estUD <- function(x, ...)
 ## multiple UD estimation
 kernelUD <- function (xy, h = "href", grid = 60,
                       same4all = FALSE, hlim = c(0.1, 1.5),
-                      kern = c("bivnorm", "epa"), extent = 0.5,
+                      kern = c("bivnorm", "epa"), extent = 1,
                       boundary = NULL)
 {
     ## Verifications
@@ -414,7 +414,7 @@ kernelUD <- function (xy, h = "href", grid = 60,
     xy <- as.data.frame(coordinates(xy))
 
     if (same4all) {
-        if (inherits(grid, "SpatialPoints"))
+        if (inherits(grid, "SpatialPixels"))
             stop("when same4all is TRUE, grid should be a number")
         grid <- .makegridUD(xy, grid, extent)
     }

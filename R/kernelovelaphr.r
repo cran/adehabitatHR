@@ -23,8 +23,8 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
     for (i in 1:length(x)) {
         for (j in 1:i) {
             if (method == "HR") {
-                vi <- as.data.frame(vol[[i]])[, 1]
-                vj <- as.data.frame(vol[[j]])[, 1]
+                vi <- vol[[i]][[1]]
+                vj <- vol[[j]][[1]]
                 vi[vi <= percent] <- 1
                 vi[vi > percent] <- 0
                 vj[vj <= percent] <- 1
@@ -34,10 +34,10 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
                 res[j, i] <- sum(vk)/sum(vj)
             }
             if (method == "PHR") {
-                vi <- as.data.frame(x[[i]])[, 1]
-                vj <- as.data.frame(x[[j]])[, 1]
-                ai <- as.data.frame(vol[[i]])[, 1]
-                aj <- as.data.frame(vol[[j]])[, 1]
+                vi <- x[[i]][[1]]
+                vj <- x[[j]][[1]]
+                ai <- vol[[i]][[1]]
+                aj <- vol[[j]][[1]]
                 ai[ai <= percent] <- 1
                 ai[ai > percent] <- 0
                 aj[aj <= percent] <- 1
@@ -54,10 +54,10 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
                 }
             }
             if (method == "VI") {
-                vi <- c(as.data.frame(x[[i]])[, 1])
-                vj <- c(as.data.frame(x[[j]])[, 1])
-                ai <- as.data.frame(vol[[i]])[, 1]
-                aj <- as.data.frame(vol[[j]])[, 1]
+                vi <- x[[i]][[1]]
+                vj <- x[[j]][[1]]
+                ai <- vol[[i]][[1]]
+                aj <- vol[[j]][[1]]
                 ai[ai <= percent] <- 1
                 ai[ai > percent] <- 0
                 aj[aj <= percent] <- 1
@@ -74,10 +74,10 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
                 }
             }
             if (method == "BA") {
-                vi <- c(as.data.frame(x[[i]])[, 1])
-                vj <- c(as.data.frame(x[[j]])[, 1])
-                ai <- as.data.frame(vol[[i]])[, 1]
-                aj <- as.data.frame(vol[[j]])[, 1]
+                vi <- x[[i]][[1]]
+                vj <- x[[j]][[1]]
+                ai <- vol[[i]][[1]]
+                aj <- vol[[j]][[1]]
                 ai[ai <= percent] <- 1
                 ai[ai > percent] <- 0
                 aj[aj <= percent] <- 1
@@ -94,10 +94,10 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
                 }
             }
             if (method == "UDOI") {
-                vi <- c(as.data.frame(x[[i]])[, 1])
-                vj <- c(as.data.frame(x[[j]])[, 1])
-                ai <- as.data.frame(vol[[i]])[, 1]
-                aj <- as.data.frame(vol[[j]])[, 1]
+                vi <- x[[i]][[1]]
+                vj <- x[[j]][[1]]
+                ai <- vol[[i]][[1]]
+                aj <- vol[[j]][[1]]
                 ai[ai <= percent] <- 1
                 ai[ai > percent] <- 0
                 aj[aj <= percent] <- 1
@@ -116,10 +116,10 @@ kerneloverlaphr <- function (x, method = c("HR", "PHR", "VI", "BA", "UDOI", "HD"
                 }
             }
             if (method == "HD") {
-                vi <- c(as.data.frame(x[[i]])[, 1])
-                vj <- c(as.data.frame(x[[j]])[, 1])
-                ai <- as.data.frame(vol[[i]])[, 1]
-                aj <- as.data.frame(vol[[j]])[, 1]
+                vi <- x[[i]][[1]]
+                vj <- x[[j]][[1]]
+                ai <- vol[[i]][[1]]
+                aj <- vol[[j]][[1]]
                 ai[ai <= percent] <- 1
                 ai[ai > percent] <- 0
                 aj[aj <= percent] <- 1

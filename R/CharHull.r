@@ -25,6 +25,10 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
 {
     if (!inherits(xy, "SpatialPoints"))
         stop("xy should inherit the class SpatialPoints")
+    if (!require(rgeos))
+        stop("the package rgeos is required for this function")
+    if (!require(maptools))
+        stop("the package maptools is required for this function")
     pfs <- proj4string(xy)
     if (inherits(xy, "SpatialPointsDataFrame")) {
         if (ncol(xy) != 1) {
@@ -36,8 +40,7 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
             id <- xy[[1]]
             m <- 2
         }
-    }
-    else {
+    }  else {
         m <- 1
         id <- rep("a", nrow(coordinates(xy)))
     }
@@ -77,22 +80,42 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
 
 
         resa <- .charhull(x)
+
+        pol <- as(resa, "SpatialPolygons")
+        lip <- list(pol[1])
+        for (j in 2:nrow(resa)) {
+            poo <- rbind(pol[j], lip[[j-1]])
+            pls <- slot(poo, "polygons")
+            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
+            slot(poo, "polygons") <- pls1
+            lip[[j]] <- rgeos::gUnionCascaded(poo, id = rep(j,
+                                                   length(row.names(poo))))
+        }
+        are <- .arcpspdf(lip[[1]])
+        for (j in 2:length(lip)) {
+            are[j] <- .arcpspdf(lip[[j]])
+        }
+        spP <- do.call("rbind", lip)
         if (unin == "m") {
             if (unout == "ha")
-                resa[[1]] <- resa[[1]]/10000
+                are <- are/10000
             if (unout == "km2")
-                resa[[1]] <- resa[[1]]/1e+06
+                are <- are/1e+06
         }
         if (unin == "km") {
             if (unout == "ha")
-                resa[[1]] <- resa[[1]] * 100
+                are <- are * 100
             if (unout == "m2")
-                resa[[1]] <- resa[[1]] * 1e+06
+                are <- are * 1e+06
         }
-        res[[i]] <- resa
+        df <- data.frame(area = are, percent = resa[[2]])
+        resa <- SpatialPolygonsDataFrame(spP, df)
         if (!is.na(pfs))
-            proj4string(res[[i]]) <- CRS(pfs)
+            proj4string(resa) <- CRS(pfs)
+        res[[i]] <- resa
     }
+
+
     if (m == 1) {
         return(res[[1]])
     }

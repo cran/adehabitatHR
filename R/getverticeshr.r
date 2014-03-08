@@ -15,6 +15,16 @@ getverticeshr.estUD <- function(x, percent=95, ida=NULL,
     if (!slot(x, "vol"))
         x<-getvolumeUD(x, standardize=standardize)
 
+    ## Check that all the contour are within the study area limits
+    tmp <- x[[1]]
+    gp <- gridparameters(x)[,3]
+    tmpm <- matrix(tmp, ncol=gp[2], nrow=gp[1], byrow = TRUE)
+    ma <- min(c(tmpm[c(1:nrow(tmpm)), c(1,ncol(tmpm))],
+                tmpm[c(1,nrow(tmpm)), c(1:ncol(tmpm))]))
+    if (any(percent>=ma))
+        stop(paste("The grid is too small to allow the estimation of home-range.\nYou should rerun kernelUD with a larger extent parameter", sep=""))
+
+
     if (length(percent)>1)
         stop("percent should be of length 1")
 
