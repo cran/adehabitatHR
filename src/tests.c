@@ -106,7 +106,9 @@ void findmaxgrid(double *grille, int *nlig, int *ncol);
 double alea (void)
 {
     double w;
-    w = ((double) rand())/ (double)RAND_MAX;
+    GetRNGstate();
+    w = unif_rand();
+    PutRNGstate();
     return (w);
 }
 
@@ -454,7 +456,7 @@ void getpermutation (int *numero, int repet)
  * two calls returns different results (seed=clock+repet)
  ------------------------*/
 {
-    int i, n, seed;
+    int i, n;
     int *alea;
     
     n=numero[0];
@@ -470,11 +472,10 @@ void getpermutation (int *numero, int repet)
     /*-------------
      * affects random numbers in alea
      ----------------*/
-    seed = clock();
-    seed = seed + repet;
-    srand(seed);
     for (i=1;i<=n;i++) {
-	alea[i]=rand();
+	GetRNGstate();
+	alea[i] = unif_rand();
+	PutRNGstate();
     }
     
     trirapideint (alea , numero, 1, n);
@@ -921,7 +922,7 @@ void taballoc (double ***tab, int l1, int c1)
  * Dynamic Memory Allocation for a table (l1, c1)
  --------------------------------------------------*/
 {
-    int i, j;
+    int i;
     
     *tab = Calloc(l1+1, double *);
     for (i=0;i<=l1;i++) {
@@ -1190,7 +1191,7 @@ void epanechnikov(double *Xo, double *Yo, double *xg, double *yg,
     
     /* Computes again the values xg and yg */
     for (i=1; i<=nlg; i++) {
-	xgb[i] = abs(xg[i]-X);
+	xgb[i] = fabs(xg[i]-X);
 	if (xgb[i] < h) {
 	    if (imin == 0) {
 		imin = i;
@@ -1203,7 +1204,7 @@ void epanechnikov(double *Xo, double *Yo, double *xg, double *yg,
 	}
     }
     for (i=1; i<=ncg; i++) {
-	ygb[i] = abs(yg[i]-Y);
+	ygb[i] = fabs(yg[i]-Y);
 	if (ygb[i] < h) {
 	    if (jmin == 0) {
 		jmin = i;
@@ -1601,7 +1602,7 @@ void integrno(double *XG, double *X1, double *X2,
 	ny = ny1;
 	if (ny2 <= ny1)
 	    ny = ny2;
-	*res = *res + (nx2 - nx1) * (ny + (abs(ny2 - ny1) / 2));
+	*res = *res + (nx2 - nx1) * (ny + (fabs(ny2 - ny1) / 2));
     }
     
     /* Free memory */

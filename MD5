@@ -1,8 +1,8 @@
-d39cea470abae8785a39ba5e0b24cb9b *DESCRIPTION
+0d8e08476da970c03712765e21ab3662 *DESCRIPTION
 378472cd04c4e04860eb6bba24b3c6a6 *NAMESPACE
 c9213508ece6ce98afec907b542d9998 *R/BRB.r
 a6834977257f69b85a010847809d9981 *R/CharHull.r
-e77e3a6bd3d1e13e96e07b2aadd8a0ad *R/LoCoH.r
+388f432b1d991c1e0ec940d67e183b03 *R/LoCoH.r
 0a7fb88104cac3759d838e89b5ae214c *R/clusthr.r
 34898728e501813c6b9eb6c890992a4a *R/findmax.r
 5d0c11139d879d63d9af47f9ad768a4a *R/getverticeshr.r
@@ -20,7 +20,7 @@ ef646a6f7c6c8d7737841c7e1948f2a0 *R/kver2spol.r
 6f1b26d5613a48a9c124b618f0c99a66 *R/mcp.area.r
 1ced5f2866bac43215e1d68cf63dda85 *R/mcp.r
 db1bc475ee008167734b0f14d933dd22 *R/plot.hrsize.r
-5462b26ab803712b154c843c69fe25ce *build/vignette.rds
+c10ddb9a2848eae397664472e1c4e1be *build/vignette.rds
 77730204057935c931ae66b90bbbf9c7 *inst/CITATION
 7a30fb922eef15b9bdf25e97d45991ce *inst/doc/adehabitatHR.R
 6465a56a85670bb224161f9007a1c719 *inst/doc/adehabitatHR.Rnw
@@ -39,5 +39,5 @@ e76e3045505e17f3f8b7acba49d8eec8 *man/estUD-class.Rd
 e6a67bf1074b29d930bb80f607b191c6 *man/kerneloverlap.Rd
 27ebbcf913670b46464b1b5b626f5799 *man/kver2spol.Rd
 1ad8826634f740f74ff7495fc85111b0 *man/mcp.Rd
-c6bf4961a5ad5f50dd22512a4ecb7d5a *src/tests.c
+eb76d65031b94d0ea16ec1b2048f50f3 *src/tests.c
 6465a56a85670bb224161f9007a1c719 *vignettes/adehabitatHR.Rnw

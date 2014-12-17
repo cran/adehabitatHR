@@ -375,7 +375,7 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
                 poo <- lip[[i-1]]
             }
             pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, checkPolygonsHoles)
+            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
             slot(poo, "polygons") <- pls1
 
             lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
@@ -604,7 +604,7 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
                 poo <- lip[[i-1]]
             }
             pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, checkPolygonsHoles)
+            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
             slot(poo, "polygons") <- pls1
 
             lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
@@ -789,11 +789,3 @@ plot.MCHu <- function(x, percent="all", points=NULL, ...)
         })
     }
 }
-
-
-
-
-
-
-
-
