@@ -17,7 +17,7 @@ the {\tt adehabitatHR} Package }
   Office national de la classe et de la faune
   sauvage\\
   Saint Benoist -- 78610 Auffargis -- France.}
-\date{Mar 2011}
+\date{Mar 2015}
 
 \begin{document}
 
@@ -401,8 +401,12 @@ Similarly, the function \texttt{writePolyShape} from the package
 \texttt{maptools} can be used to export the object \texttt{cp} to a
 shapefile, so that it can be read into a GIS:
 
-<<eval=FALSE>>=
+
+<<>>=
 library(maptools)
+@
+
+<<eval=FALSE>>=
 writePolyShape(cp, "homerange")
 @
 
@@ -410,7 +414,7 @@ The resulting shapefils can be read in any GIS.
 
 \subsection{Overlay operations}
 
-The function \texttt{overlay} of the package \texttt{sp} allows to
+The function \texttt{over} of the package \texttt{sp} allows to
 combine points (including grid of pixels) and polygons for
 points-in-polygon operations (see the help page of this function).
 For example, the element \texttt{map} of the dataset
@@ -423,22 +427,22 @@ head(as.data.frame(puechabonsp$map))
 
 This object is of the class \texttt{SpatialPixelsDataFrame}.
 We may identify the pixels of this map enclosed in each home range
-using the function \texttt{overlay} from the package \texttt{sp}.
+using the function \texttt{over} from the package \texttt{sp}.
 For example, to identify the pixels enclosed in the home range of the
 second animal:
 
 <<>>=
-enc <- overlay(puechabonsp$map, cp[2,])
+enc <- over(puechabonsp$map, cp[,2], fn=function(x) return(1))
 head(enc)
 @
 
-The result is a vector, taking the value NA if the pixel is outside
-the home-range, and 1 otherwise.  We may transform this vector into a
+The result is a data.frame with one variable containing the value 1 if
+a pixel of the map is included in a home range, and NA if the pixel is
+outside the home-range.  We may transform this vector into a
 \texttt{SpatialPixelsDataFrame}, using the functions of the package
 \texttt{sp}:
 
 <<>>=
-enc <- data.frame(enc)
 coordinates(enc) <- coordinates(puechabonsp$map)
 gridded(enc) <- TRUE
 @

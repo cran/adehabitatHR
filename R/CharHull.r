@@ -25,10 +25,6 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
 {
     if (!inherits(xy, "SpatialPoints"))
         stop("xy should inherit the class SpatialPoints")
-    if (!require(rgeos))
-        stop("the package rgeos is required for this function")
-    if (!require(maptools))
-        stop("the package maptools is required for this function")
     pfs <- proj4string(xy)
     if (inherits(xy, "SpatialPointsDataFrame")) {
         if (ncol(xy) != 1) {

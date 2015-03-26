@@ -218,7 +218,7 @@ estUDm2spixdf(x)
 
   Seaman, D.E. and Powell, R.A. (1998) \emph{Kernel home range estimation
     program (kernelhr)}. Documentation of the
-  program. \url{ftp://ftp.im.nbs.gov/pub/software/CSE/wsb2695/KERNELHR.ZIP}.
+  program.
 
   Benhamou, S. and Cornelis, D. (2010) Incorporating Movement Behavior
   and Barriers to Improve Biological Relevance of Kernel Home Range

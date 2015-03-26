@@ -242,49 +242,53 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 32: adehabitatHR.Rnw:404-406 (eval = FALSE)
+### code chunk number 32: adehabitatHR.Rnw:405-406
 ###################################################
-## library(maptools)
+library(maptools)
+
+
+###################################################
+### code chunk number 33: adehabitatHR.Rnw:409-410 (eval = FALSE)
+###################################################
 ## writePolyShape(cp, "homerange")
 
 
 ###################################################
-### code chunk number 33: adehabitatHR.Rnw:420-421
+### code chunk number 34: adehabitatHR.Rnw:424-425
 ###################################################
 head(as.data.frame(puechabonsp$map))
 
 
 ###################################################
-### code chunk number 34: adehabitatHR.Rnw:430-432
+### code chunk number 35: adehabitatHR.Rnw:434-436
 ###################################################
-enc <- overlay(puechabonsp$map, cp[2,])
+enc <- over(puechabonsp$map, cp[,2], fn=function(x) return(1))
 head(enc)
 
 
 ###################################################
-### code chunk number 35: adehabitatHR.Rnw:440-443
+### code chunk number 36: adehabitatHR.Rnw:445-447
 ###################################################
-enc <- data.frame(enc)
 coordinates(enc) <- coordinates(puechabonsp$map)
 gridded(enc) <- TRUE
 
 
 ###################################################
-### code chunk number 36: fig5 (eval = FALSE)
+### code chunk number 37: fig5 (eval = FALSE)
 ###################################################
 ## image(puechabonsp$map)
 ## image(enc, add=TRUE, col="black", useRasterImage=FALSE)
 
 
 ###################################################
-### code chunk number 37: adehabitatHR.Rnw:453-454 (eval = FALSE)
+### code chunk number 38: adehabitatHR.Rnw:457-458 (eval = FALSE)
 ###################################################
 ## image(puechabonsp$map)
 ## image(enc, add=TRUE, col="black", useRasterImage=FALSE)
 
 
 ###################################################
-### code chunk number 38: adehabitatHR.Rnw:458-461
+### code chunk number 39: adehabitatHR.Rnw:462-465
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -296,13 +300,13 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 39: adehabitatHR.Rnw:469-470
+### code chunk number 40: adehabitatHR.Rnw:473-474
 ###################################################
 cprast <- hr.rast(cp, puechabonsp$map)
 
 
 ###################################################
-### code chunk number 40: sldkslsd (eval = FALSE)
+### code chunk number 41: sldkslsd (eval = FALSE)
 ###################################################
 ## par(mar=c(0,0,0,0))
 ## par(mfrow=c(2,2))
@@ -313,7 +317,7 @@ cprast <- hr.rast(cp, puechabonsp$map)
 
 
 ###################################################
-### code chunk number 41: adehabitatHR.Rnw:485-486 (eval = FALSE)
+### code chunk number 42: adehabitatHR.Rnw:489-490 (eval = FALSE)
 ###################################################
 ## par(mar=c(0,0,0,0))
 ## par(mfrow=c(2,2))
@@ -324,7 +328,7 @@ cprast <- hr.rast(cp, puechabonsp$map)
 
 
 ###################################################
-### code chunk number 42: adehabitatHR.Rnw:490-493
+### code chunk number 43: adehabitatHR.Rnw:494-497
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -340,25 +344,25 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 43: adehabitatHR.Rnw:504-505
+### code chunk number 44: adehabitatHR.Rnw:508-509
 ###################################################
 as.data.frame(cp)
 
 
 ###################################################
-### code chunk number 44: fig6 (eval = FALSE)
+### code chunk number 45: fig6 (eval = FALSE)
 ###################################################
 ## hrs <- mcp.area(puechabonsp$relocs[,1], percent=seq(50, 100, by = 5))
 
 
 ###################################################
-### code chunk number 45: adehabitatHR.Rnw:526-527 (eval = FALSE)
+### code chunk number 46: adehabitatHR.Rnw:530-531 (eval = FALSE)
 ###################################################
 ## hrs <- mcp.area(puechabonsp$relocs[,1], percent=seq(50, 100, by = 5))
 
 
 ###################################################
-### code chunk number 46: adehabitatHR.Rnw:531-534
+### code chunk number 47: adehabitatHR.Rnw:535-538
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -369,13 +373,13 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 47: adehabitatHR.Rnw:551-552
+### code chunk number 48: adehabitatHR.Rnw:555-556
 ###################################################
 hrs
 
 
 ###################################################
-### code chunk number 48: fig7 (eval = FALSE)
+### code chunk number 49: fig7 (eval = FALSE)
 ###################################################
 ## xy1 <- matrix(rnorm(200), ncol=2)
 ## xy2 <- matrix(rnorm(200, mean=3), ncol=2)
@@ -392,7 +396,7 @@ hrs
 
 
 ###################################################
-### code chunk number 49: adehabitatHR.Rnw:602-608
+### code chunk number 50: adehabitatHR.Rnw:606-612
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -414,7 +418,7 @@ cat("\\includegraphics[height=7cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 50: kdksks (eval = FALSE)
+### code chunk number 51: kdksks (eval = FALSE)
 ###################################################
 ## par(mfrow=c(2,2))
 ## par(mar=c(0,0,2,0))
@@ -432,7 +436,7 @@ cat("\\includegraphics[height=7cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 51: adehabitatHR.Rnw:693-696
+### code chunk number 52: adehabitatHR.Rnw:697-700
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -455,7 +459,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 52: adehabitatHR.Rnw:763-766
+### code chunk number 53: adehabitatHR.Rnw:767-770
 ###################################################
 data(puechabonsp)
 kud <- kernelUD(puechabonsp$relocs[,1], h="href")
@@ -463,19 +467,19 @@ kud
 
 
 ###################################################
-### code chunk number 53: fig8 (eval = FALSE)
+### code chunk number 54: fig8 (eval = FALSE)
 ###################################################
 ## image(kud)
 
 
 ###################################################
-### code chunk number 54: adehabitatHR.Rnw:778-779 (eval = FALSE)
+### code chunk number 55: adehabitatHR.Rnw:782-783 (eval = FALSE)
 ###################################################
 ## image(kud)
 
 
 ###################################################
-### code chunk number 55: adehabitatHR.Rnw:784-787
+### code chunk number 56: adehabitatHR.Rnw:788-791
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -486,27 +490,27 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 56: adehabitatHR.Rnw:795-796
+### code chunk number 57: adehabitatHR.Rnw:799-800
 ###################################################
 kud[[1]]@h
 
 
 ###################################################
-### code chunk number 57: fig9 (eval = FALSE)
+### code chunk number 58: fig9 (eval = FALSE)
 ###################################################
 ## kudl <- kernelUD(puechabonsp$relocs[,1], h="LSCV")
 ## image(kudl)
 
 
 ###################################################
-### code chunk number 58: adehabitatHR.Rnw:816-817 (eval = FALSE)
+### code chunk number 59: adehabitatHR.Rnw:820-821 (eval = FALSE)
 ###################################################
 ## kudl <- kernelUD(puechabonsp$relocs[,1], h="LSCV")
 ## image(kudl)
 
 
 ###################################################
-### code chunk number 59: adehabitatHR.Rnw:822-825
+### code chunk number 60: adehabitatHR.Rnw:826-829
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -518,19 +522,19 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 60: fig10 (eval = FALSE)
+### code chunk number 61: fig10 (eval = FALSE)
 ###################################################
 ## plotLSCV(kudl)
 
 
 ###################################################
-### code chunk number 61: adehabitatHR.Rnw:842-843 (eval = FALSE)
+### code chunk number 62: adehabitatHR.Rnw:846-847 (eval = FALSE)
 ###################################################
 ## plotLSCV(kudl)
 
 
 ###################################################
-### code chunk number 62: adehabitatHR.Rnw:848-851
+### code chunk number 63: adehabitatHR.Rnw:852-855
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -541,7 +545,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 63: kskdkkds (eval = FALSE)
+### code chunk number 64: kskdkkds (eval = FALSE)
 ###################################################
 ## ## The relocations of "Brock"
 ## locs <- puechabonsp$relocs
@@ -569,7 +573,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 64: adehabitatHR.Rnw:941-942 (eval = FALSE)
+### code chunk number 65: adehabitatHR.Rnw:945-946 (eval = FALSE)
 ###################################################
 ## ## The relocations of "Brock"
 ## locs <- puechabonsp$relocs
@@ -597,7 +601,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 65: adehabitatHR.Rnw:946-949
+### code chunk number 66: adehabitatHR.Rnw:950-953
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -630,21 +634,21 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 66: kskkssqq (eval = FALSE)
+### code chunk number 67: kskkssqq (eval = FALSE)
 ###################################################
 ## kus <- kernelUD(puechabonsp$relocs[,1], same4all=TRUE)
 ## image(kus)
 
 
 ###################################################
-### code chunk number 67: adehabitatHR.Rnw:963-964 (eval = FALSE)
+### code chunk number 68: adehabitatHR.Rnw:967-968 (eval = FALSE)
 ###################################################
 ## kus <- kernelUD(puechabonsp$relocs[,1], same4all=TRUE)
 ## image(kus)
 
 
 ###################################################
-### code chunk number 68: adehabitatHR.Rnw:968-971
+### code chunk number 69: adehabitatHR.Rnw:972-975
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -656,39 +660,39 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 69: adehabitatHR.Rnw:978-980
+### code chunk number 70: adehabitatHR.Rnw:982-984
 ###################################################
 ii <- estUDm2spixdf(kus)
 class(ii)
 
 
 ###################################################
-### code chunk number 70: adehabitatHR.Rnw:1000-1001
+### code chunk number 71: adehabitatHR.Rnw:1004-1005
 ###################################################
 kudm <- kernelUD(puechabonsp$relocs[,1], grid=puechabonsp$map)
 
 
 ###################################################
-### code chunk number 71: adehabitatHR.Rnw:1028-1030
+### code chunk number 72: adehabitatHR.Rnw:1032-1034
 ###################################################
 homerange <- getverticeshr(kudl)
 class(homerange)
 
 
 ###################################################
-### code chunk number 72: fig11 (eval = FALSE)
+### code chunk number 73: fig11 (eval = FALSE)
 ###################################################
 ## plot(homerange, col=1:4)
 
 
 ###################################################
-### code chunk number 73: adehabitatHR.Rnw:1045-1046 (eval = FALSE)
+### code chunk number 74: adehabitatHR.Rnw:1049-1050 (eval = FALSE)
 ###################################################
 ## plot(homerange, col=1:4)
 
 
 ###################################################
-### code chunk number 74: adehabitatHR.Rnw:1050-1053
+### code chunk number 75: adehabitatHR.Rnw:1054-1057
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -699,14 +703,14 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 75: adehabitatHR.Rnw:1070-1072
+### code chunk number 76: adehabitatHR.Rnw:1074-1076
 ###################################################
 vud <- getvolumeUD(kudl)
 vud
 
 
 ###################################################
-### code chunk number 76: fig12 (eval = FALSE)
+### code chunk number 77: fig12 (eval = FALSE)
 ###################################################
 ## 
 ## ## Set up graphical parameters
@@ -732,7 +736,7 @@ vud
 
 
 ###################################################
-### code chunk number 77: adehabitatHR.Rnw:1103-1104 (eval = FALSE)
+### code chunk number 78: adehabitatHR.Rnw:1107-1108 (eval = FALSE)
 ###################################################
 ## 
 ## ## Set up graphical parameters
@@ -758,7 +762,7 @@ vud
 
 
 ###################################################
-### code chunk number 78: adehabitatHR.Rnw:1108-1111
+### code chunk number 79: adehabitatHR.Rnw:1112-1115
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -789,7 +793,7 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 79: kdkdkdk (eval = FALSE)
+### code chunk number 80: kdkdkdk (eval = FALSE)
 ###################################################
 ## ## store the volume under the UD (as computed by getvolumeUD)
 ## ## of the first animal in fud
@@ -814,7 +818,7 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 80: adehabitatHR.Rnw:1145-1146 (eval = FALSE)
+### code chunk number 81: adehabitatHR.Rnw:1149-1150 (eval = FALSE)
 ###################################################
 ## ## store the volume under the UD (as computed by getvolumeUD)
 ## ## of the first animal in fud
@@ -839,7 +843,7 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 81: adehabitatHR.Rnw:1150-1153
+### code chunk number 82: adehabitatHR.Rnw:1154-1157
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -869,20 +873,20 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 82: adehabitatHR.Rnw:1166-1167
+### code chunk number 83: adehabitatHR.Rnw:1170-1171
 ###################################################
 as.data.frame(homerange)
 
 
 ###################################################
-### code chunk number 83: adehabitatHR.Rnw:1179-1181
+### code chunk number 84: adehabitatHR.Rnw:1183-1185
 ###################################################
 ii <- kernel.area(kudl, percent=seq(50, 95, by=5))
 ii
 
 
 ###################################################
-### code chunk number 84: figggf (eval = FALSE)
+### code chunk number 85: figggf (eval = FALSE)
 ###################################################
 ## par(mar=c(0,0,0,0))
 ## plot(c(0,1),asp=1, ty="n")
@@ -922,7 +926,7 @@ ii
 
 
 ###################################################
-### code chunk number 85: adehabitatHR.Rnw:1244-1247
+### code chunk number 86: adehabitatHR.Rnw:1248-1251
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -967,19 +971,19 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 86: mapelev (eval = FALSE)
+### code chunk number 87: mapelev (eval = FALSE)
 ###################################################
 ## image(puechabonsp$map)
 
 
 ###################################################
-### code chunk number 87: adehabitatHR.Rnw:1290-1291 (eval = FALSE)
+### code chunk number 88: adehabitatHR.Rnw:1294-1295 (eval = FALSE)
 ###################################################
 ## image(puechabonsp$map)
 
 
 ###################################################
-### code chunk number 88: adehabitatHR.Rnw:1295-1298
+### code chunk number 89: adehabitatHR.Rnw:1299-1302
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -990,7 +994,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 89: figboundary (eval = FALSE)
+### code chunk number 90: figboundary (eval = FALSE)
 ###################################################
 ## bound <- structure(list(x = c(701751.385381925, 701019.24105475,
 ##                         700739.303517889,
@@ -1009,7 +1013,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 90: adehabitatHR.Rnw:1327-1328 (eval = FALSE)
+### code chunk number 91: adehabitatHR.Rnw:1331-1332 (eval = FALSE)
 ###################################################
 ## bound <- structure(list(x = c(701751.385381925, 701019.24105475,
 ##                         700739.303517889,
@@ -1028,7 +1032,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 91: adehabitatHR.Rnw:1332-1335
+### code chunk number 92: adehabitatHR.Rnw:1336-1339
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1052,7 +1056,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 92: adehabitatHR.Rnw:1342-1347
+### code chunk number 93: adehabitatHR.Rnw:1346-1351
 ###################################################
 ## We convert bound to SpatialLines:
 bound <- do.call("cbind",bound)
@@ -1062,21 +1066,21 @@ barrier <- SpatialLines(list(Sli1))
 
 
 ###################################################
-### code chunk number 93: imagekudbound (eval = FALSE)
+### code chunk number 94: imagekudbound (eval = FALSE)
 ###################################################
 ## kud <- kernelUD(puechabonsp$relocs[,1], h=100, grid=100, boundary=barrier)
 ## image(kud)
 
 
 ###################################################
-### code chunk number 94: adehabitatHR.Rnw:1358-1359 (eval = FALSE)
+### code chunk number 95: adehabitatHR.Rnw:1362-1363 (eval = FALSE)
 ###################################################
 ## kud <- kernelUD(puechabonsp$relocs[,1], h=100, grid=100, boundary=barrier)
 ## image(kud)
 
 
 ###################################################
-### code chunk number 95: adehabitatHR.Rnw:1363-1366
+### code chunk number 96: adehabitatHR.Rnw:1367-1370
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1088,7 +1092,7 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 96: brownbrid (eval = FALSE)
+### code chunk number 97: brownbrid (eval = FALSE)
 ###################################################
 ## par(mar=c(0,0,0,0))
 ## xx <- c(0,1)
@@ -1106,7 +1110,7 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 97: adehabitatHR.Rnw:1407-1410
+### code chunk number 98: adehabitatHR.Rnw:1411-1414
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1129,13 +1133,13 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 98: adehabitatHR.Rnw:1420-1421
+### code chunk number 99: adehabitatHR.Rnw:1424-1425
 ###################################################
 pt <- 16
 
 
 ###################################################
-### code chunk number 99: tutorkbb (eval = FALSE)
+### code chunk number 100: tutorkbb (eval = FALSE)
 ###################################################
 ## set.seed(2098)
 ## pts1 <- data.frame(x = rnorm(25, mean = 4.5, sd = 0.05),
@@ -1186,7 +1190,7 @@ pt <- 16
 
 
 ###################################################
-### code chunk number 100: adehabitatHR.Rnw:1475-1478
+### code chunk number 101: adehabitatHR.Rnw:1479-1482
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1242,20 +1246,20 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 101: adehabitatHR.Rnw:1482-1483
+### code chunk number 102: adehabitatHR.Rnw:1486-1487
 ###################################################
 pt <- 25
 
 
 ###################################################
-### code chunk number 102: adehabitatHR.Rnw:1525-1527
+### code chunk number 103: adehabitatHR.Rnw:1529-1531
 ###################################################
 wi <- 800
 pt <- 18
 
 
 ###################################################
-### code chunk number 103: ploth (eval = FALSE)
+### code chunk number 104: ploth (eval = FALSE)
 ###################################################
 ## xx <- c(0,1)
 ## yy <- c(0,1)
@@ -1288,7 +1292,7 @@ pt <- 18
 
 
 ###################################################
-### code chunk number 104: adehabitatHR.Rnw:1563-1566
+### code chunk number 105: adehabitatHR.Rnw:1567-1570
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1326,14 +1330,14 @@ cat("\\includegraphics[height=14cm,width=14cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 105: adehabitatHR.Rnw:1571-1573
+### code chunk number 106: adehabitatHR.Rnw:1575-1577
 ###################################################
 wi <- 600
 pt <- 25
 
 
 ###################################################
-### code chunk number 106: adehabitatHR.Rnw:1590-1593
+### code chunk number 107: adehabitatHR.Rnw:1594-1597
 ###################################################
 data(puechcirc)
 x <- puechcirc[1]
@@ -1341,19 +1345,19 @@ x
 
 
 ###################################################
-### code chunk number 107: plotpuechcirc (eval = FALSE)
+### code chunk number 108: plotpuechcirc (eval = FALSE)
 ###################################################
 ## plot(x)
 
 
 ###################################################
-### code chunk number 108: adehabitatHR.Rnw:1602-1603 (eval = FALSE)
+### code chunk number 109: adehabitatHR.Rnw:1606-1607 (eval = FALSE)
 ###################################################
 ## plot(x)
 
 
 ###################################################
-### code chunk number 109: adehabitatHR.Rnw:1607-1610
+### code chunk number 110: adehabitatHR.Rnw:1611-1614
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1364,19 +1368,19 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 110: liker1 (eval = FALSE)
+### code chunk number 111: liker1 (eval = FALSE)
 ###################################################
 ## lik <- liker(x, sig2 = 58, rangesig1 = c(10, 100))
 
 
 ###################################################
-### code chunk number 111: adehabitatHR.Rnw:1627-1628 (eval = FALSE)
+### code chunk number 112: adehabitatHR.Rnw:1631-1632 (eval = FALSE)
 ###################################################
 ## lik <- liker(x, sig2 = 58, rangesig1 = c(10, 100))
 
 
 ###################################################
-### code chunk number 112: adehabitatHR.Rnw:1632-1635
+### code chunk number 113: adehabitatHR.Rnw:1636-1639
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1387,19 +1391,19 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 113: liker2 (eval = FALSE)
+### code chunk number 114: liker2 (eval = FALSE)
 ###################################################
 ## lik2 <- liker(x, sig2 = 58, rangesig1 = c(1, 10))
 
 
 ###################################################
-### code chunk number 114: adehabitatHR.Rnw:1646-1647 (eval = FALSE)
+### code chunk number 115: adehabitatHR.Rnw:1650-1651 (eval = FALSE)
 ###################################################
 ## lik2 <- liker(x, sig2 = 58, rangesig1 = c(1, 10))
 
 
 ###################################################
-### code chunk number 115: adehabitatHR.Rnw:1651-1654
+### code chunk number 116: adehabitatHR.Rnw:1655-1658
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1410,34 +1414,34 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 116: adehabitatHR.Rnw:1660-1661
+### code chunk number 117: adehabitatHR.Rnw:1664-1665
 ###################################################
 lik2
 
 
 ###################################################
-### code chunk number 117: adehabitatHR.Rnw:1667-1669
+### code chunk number 118: adehabitatHR.Rnw:1671-1673
 ###################################################
 tata <- kernelbb(x, sig1 = 6.23, sig2 = 58, grid = 50)
 tata
 
 
 ###################################################
-### code chunk number 118: UDkbb (eval = FALSE)
+### code chunk number 119: UDkbb (eval = FALSE)
 ###################################################
 ## image(tata)
 ## plot(getverticeshr(tata, 95), add=TRUE, lwd=2)
 
 
 ###################################################
-### code chunk number 119: adehabitatHR.Rnw:1681-1682 (eval = FALSE)
+### code chunk number 120: adehabitatHR.Rnw:1685-1686 (eval = FALSE)
 ###################################################
 ## image(tata)
 ## plot(getverticeshr(tata, 95), add=TRUE, lwd=2)
 
 
 ###################################################
-### code chunk number 120: adehabitatHR.Rnw:1686-1689
+### code chunk number 121: adehabitatHR.Rnw:1690-1693
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1449,7 +1453,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 121: figexe1 (eval = FALSE)
+### code chunk number 122: figexe1 (eval = FALSE)
 ###################################################
 ## par(mar=c(0,0,0,0))
 ## plot(c(0,1,2,3),c(0,1,0,1), pch=16, cex=4, xlim=c(-0.5, 3.5),
@@ -1461,7 +1465,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 122: adehabitatHR.Rnw:1716-1719
+### code chunk number 123: adehabitatHR.Rnw:1720-1723
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1478,7 +1482,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 123: figillustrbb (eval = FALSE)
+### code chunk number 124: figillustrbb (eval = FALSE)
 ###################################################
 ## x1 <- c(0,0)
 ## x2 <- c(1,1)
@@ -1515,7 +1519,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 124: adehabitatHR.Rnw:1814-1817
+### code chunk number 125: adehabitatHR.Rnw:1818-1821
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1557,7 +1561,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 125: adehabitatHR.Rnw:1883-1886
+### code chunk number 126: adehabitatHR.Rnw:1887-1890
 ###################################################
 data(buffalo)
 tr <- buffalo$traj
@@ -1565,19 +1569,19 @@ tr
 
 
 ###################################################
-### code chunk number 126: trajbuff (eval = FALSE)
+### code chunk number 127: trajbuff (eval = FALSE)
 ###################################################
 ## plot(tr, spixdf=buffalo$habitat)
 
 
 ###################################################
-### code chunk number 127: adehabitatHR.Rnw:1897-1898 (eval = FALSE)
+### code chunk number 128: adehabitatHR.Rnw:1901-1902 (eval = FALSE)
 ###################################################
 ## plot(tr, spixdf=buffalo$habitat)
 
 
 ###################################################
-### code chunk number 128: adehabitatHR.Rnw:1902-1905
+### code chunk number 129: adehabitatHR.Rnw:1906-1909
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1588,14 +1592,14 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 129: adehabitatHR.Rnw:1919-1921
+### code chunk number 130: adehabitatHR.Rnw:1923-1925
 ###################################################
 vv <- BRB.D(tr, Tmax=180*60, Lmin=50, habitat=buffalo$habitat, activity="act")
 vv
 
 
 ###################################################
-### code chunk number 130: adehabitatHR.Rnw:1936-1940
+### code chunk number 131: adehabitatHR.Rnw:1940-1944
 ###################################################
 ud <- BRB(tr, D = vv, Tmax = 180*60, tau = 300, Lmin = 50, hmin=100,
           habitat = buffalo$habitat, activity = "act", grid = 100, b=0,
@@ -1604,19 +1608,19 @@ ud
 
 
 ###################################################
-### code chunk number 131: imagebrb (eval = FALSE)
+### code chunk number 132: imagebrb (eval = FALSE)
 ###################################################
 ## image(ud)
 
 
 ###################################################
-### code chunk number 132: adehabitatHR.Rnw:1954-1955 (eval = FALSE)
+### code chunk number 133: adehabitatHR.Rnw:1958-1959 (eval = FALSE)
 ###################################################
 ## image(ud)
 
 
 ###################################################
-### code chunk number 133: adehabitatHR.Rnw:1959-1962
+### code chunk number 134: adehabitatHR.Rnw:1963-1966
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1627,7 +1631,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 134: figidrd (eval = FALSE)
+### code chunk number 135: figidrd (eval = FALSE)
 ###################################################
 ## id <- BRB(buffalo$traj, D = 7.36, Tmax = 3*3600, Lmin = 50, type = "ID",
 ##           hmin=100, radius = 300, maxt = 2*3600, tau = 300,
@@ -1661,7 +1665,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 135: adehabitatHR.Rnw:2062-2063 (eval = FALSE)
+### code chunk number 136: adehabitatHR.Rnw:2066-2067 (eval = FALSE)
 ###################################################
 ## id <- BRB(buffalo$traj, D = 7.36, Tmax = 3*3600, Lmin = 50, type = "ID",
 ##           hmin=100, radius = 300, maxt = 2*3600, tau = 300,
@@ -1695,7 +1699,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 136: adehabitatHR.Rnw:2067-2070
+### code chunk number 137: adehabitatHR.Rnw:2071-2074
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1734,14 +1738,14 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 137: adehabitatHR.Rnw:2148-2150
+### code chunk number 138: adehabitatHR.Rnw:2152-2154
 ###################################################
 data(bear)
 bear
 
 
 ###################################################
-### code chunk number 138: adehabitatHR.Rnw:2159-2162
+### code chunk number 139: adehabitatHR.Rnw:2163-2166
 ###################################################
 uu <- kernelkc(bear, h = c(1000,1000,72*3600),
                tcalc= as.POSIXct("2004-05-01"), grid=50)
@@ -1749,19 +1753,19 @@ uu
 
 
 ###################################################
-### code chunk number 139: plotuu (eval = FALSE)
+### code chunk number 140: plotuu (eval = FALSE)
 ###################################################
 ## plot(bear, spixdf=uu)
 
 
 ###################################################
-### code chunk number 140: adehabitatHR.Rnw:2173-2174 (eval = FALSE)
+### code chunk number 141: adehabitatHR.Rnw:2177-2178 (eval = FALSE)
 ###################################################
 ## plot(bear, spixdf=uu)
 
 
 ###################################################
-### code chunk number 141: adehabitatHR.Rnw:2178-2181
+### code chunk number 142: adehabitatHR.Rnw:2182-2185
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1772,13 +1776,13 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 142: adehabitatHR.Rnw:2189-2190
+### code chunk number 143: adehabitatHR.Rnw:2193-2194
 ###################################################
 sum(slot(uu,"data")[,1])*(gridparameters(uu)[1,2]^2)
 
 
 ###################################################
-### code chunk number 143: plotver (eval = FALSE)
+### code chunk number 144: plotver (eval = FALSE)
 ###################################################
 ## ver <- getverticeshr(uu, percent=95, standardize=TRUE)
 ## image(uu)
@@ -1786,7 +1790,7 @@ sum(slot(uu,"data")[,1])*(gridparameters(uu)[1,2]^2)
 
 
 ###################################################
-### code chunk number 144: adehabitatHR.Rnw:2214-2215 (eval = FALSE)
+### code chunk number 145: adehabitatHR.Rnw:2218-2219 (eval = FALSE)
 ###################################################
 ## ver <- getverticeshr(uu, percent=95, standardize=TRUE)
 ## image(uu)
@@ -1794,7 +1798,7 @@ sum(slot(uu,"data")[,1])*(gridparameters(uu)[1,2]^2)
 
 
 ###################################################
-### code chunk number 145: adehabitatHR.Rnw:2219-2222
+### code chunk number 146: adehabitatHR.Rnw:2223-2226
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1807,7 +1811,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 146: adehabitatHR.Rnw:2234-2266 (eval = FALSE)
+### code chunk number 147: adehabitatHR.Rnw:2238-2270 (eval = FALSE)
 ###################################################
 ## ## compute the sequence of dates at which the UD is to be
 ## ## estimated
@@ -1844,25 +1848,25 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 147: adehabitatHR.Rnw:2290-2291
+### code chunk number 148: adehabitatHR.Rnw:2294-2295
 ###################################################
 t0 <- as.POSIXct("2012-12-25 00:00")
 
 
 ###################################################
-### code chunk number 148: exwc (eval = FALSE)
+### code chunk number 149: exwc (eval = FALSE)
 ###################################################
 ## exwc(0.2)
 
 
 ###################################################
-### code chunk number 149: adehabitatHR.Rnw:2302-2303 (eval = FALSE)
+### code chunk number 150: adehabitatHR.Rnw:2306-2307 (eval = FALSE)
 ###################################################
 ## exwc(0.2)
 
 
 ###################################################
-### code chunk number 150: adehabitatHR.Rnw:2307-2310
+### code chunk number 151: adehabitatHR.Rnw:2311-2314
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1873,7 +1877,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 151: imagekernelkc1 (eval = FALSE)
+### code chunk number 152: imagekernelkc1 (eval = FALSE)
 ###################################################
 ## uu <- kernelkc(bear, h=c(1000,1000,0.2), cycle=24*3600,
 ##                tcalc=3*3600, t0=t0, circular=TRUE)
@@ -1881,7 +1885,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 152: adehabitatHR.Rnw:2326-2327 (eval = FALSE)
+### code chunk number 153: adehabitatHR.Rnw:2330-2331 (eval = FALSE)
 ###################################################
 ## uu <- kernelkc(bear, h=c(1000,1000,0.2), cycle=24*3600,
 ##                tcalc=3*3600, t0=t0, circular=TRUE)
@@ -1889,7 +1893,7 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 153: adehabitatHR.Rnw:2331-2334
+### code chunk number 154: adehabitatHR.Rnw:2335-2338
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1902,26 +1906,26 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 154: adehabitatHR.Rnw:2396-2398
+### code chunk number 155: adehabitatHR.Rnw:2400-2402
 ###################################################
 uu <- clusthr(puechabonsp$relocs[,1])
 class(uu)
 
 
 ###################################################
-### code chunk number 155: kkkssssm (eval = FALSE)
+### code chunk number 156: kkkssssm (eval = FALSE)
 ###################################################
 ## plot(uu)
 
 
 ###################################################
-### code chunk number 156: adehabitatHR.Rnw:2411-2412 (eval = FALSE)
+### code chunk number 157: adehabitatHR.Rnw:2415-2416 (eval = FALSE)
 ###################################################
 ## plot(uu)
 
 
 ###################################################
-### code chunk number 157: adehabitatHR.Rnw:2416-2419
+### code chunk number 158: adehabitatHR.Rnw:2420-2423
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1932,25 +1936,25 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 158: adehabitatHR.Rnw:2426-2427
+### code chunk number 159: adehabitatHR.Rnw:2430-2431
 ###################################################
 as.data.frame(uu[[3]])
 
 
 ###################################################
-### code chunk number 159: ksqkskq (eval = FALSE)
+### code chunk number 160: ksqkskq (eval = FALSE)
 ###################################################
 ## plot(uu[[3]][26,])
 
 
 ###################################################
-### code chunk number 160: adehabitatHR.Rnw:2439-2440 (eval = FALSE)
+### code chunk number 161: adehabitatHR.Rnw:2443-2444 (eval = FALSE)
 ###################################################
 ## plot(uu[[3]][26,])
 
 
 ###################################################
-### code chunk number 161: adehabitatHR.Rnw:2444-2447
+### code chunk number 162: adehabitatHR.Rnw:2448-2451
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1961,21 +1965,21 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 162: sldlsl (eval = FALSE)
+### code chunk number 163: sldlsl (eval = FALSE)
 ###################################################
 ## uur <- MCHu.rast(uu, puechabonsp$map, percent=90)
 ## image(uur, 3)
 
 
 ###################################################
-### code chunk number 163: adehabitatHR.Rnw:2464-2465 (eval = FALSE)
+### code chunk number 164: adehabitatHR.Rnw:2468-2469 (eval = FALSE)
 ###################################################
 ## uur <- MCHu.rast(uu, puechabonsp$map, percent=90)
 ## image(uur, 3)
 
 
 ###################################################
-### code chunk number 164: adehabitatHR.Rnw:2469-2472
+### code chunk number 165: adehabitatHR.Rnw:2473-2476
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -1987,25 +1991,25 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 165: adehabitatHR.Rnw:2483-2484
+### code chunk number 166: adehabitatHR.Rnw:2487-2488
 ###################################################
 head(as.data.frame(uu[[1]]))
 
 
 ###################################################
-### code chunk number 166: slqllqq (eval = FALSE)
+### code chunk number 167: slqllqq (eval = FALSE)
 ###################################################
 ## ii <- MCHu2hrsize(uu, percent=seq(50, 100, by=5))
 
 
 ###################################################
-### code chunk number 167: adehabitatHR.Rnw:2498-2499 (eval = FALSE)
+### code chunk number 168: adehabitatHR.Rnw:2502-2503 (eval = FALSE)
 ###################################################
 ## ii <- MCHu2hrsize(uu, percent=seq(50, 100, by=5))
 
 
 ###################################################
-### code chunk number 168: adehabitatHR.Rnw:2503-2506
+### code chunk number 169: adehabitatHR.Rnw:2507-2510
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")
@@ -2016,45 +2020,45 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 169: adehabitatHR.Rnw:2565-2566 (eval = FALSE)
+### code chunk number 170: adehabitatHR.Rnw:2569-2570 (eval = FALSE)
 ###################################################
 ## res <- LoCoH.k(puechabonsp$relocs[,1], 10)
 
 
 ###################################################
-### code chunk number 170: adehabitatHR.Rnw:2576-2577 (eval = FALSE)
+### code chunk number 171: adehabitatHR.Rnw:2580-2581 (eval = FALSE)
 ###################################################
 ## plot(res)
 
 
 ###################################################
-### code chunk number 171: adehabitatHR.Rnw:2584-2586 (eval = FALSE)
+### code chunk number 172: adehabitatHR.Rnw:2588-2590 (eval = FALSE)
 ###################################################
 ## LoCoH.k.area(puechabonsp$relocs[,1], krange=seq(4, 15, length=5),
 ##              percent=100)
 
 
 ###################################################
-### code chunk number 172: adehabitatHR.Rnw:2608-2610
+### code chunk number 173: adehabitatHR.Rnw:2612-2614
 ###################################################
 res <- CharHull(puechabonsp$relocs[,1])
 class(res)
 
 
 ###################################################
-### code chunk number 173: plotcharhul (eval = FALSE)
+### code chunk number 174: plotcharhul (eval = FALSE)
 ###################################################
 ## plot(res)
 
 
 ###################################################
-### code chunk number 174: adehabitatHR.Rnw:2626-2627 (eval = FALSE)
+### code chunk number 175: adehabitatHR.Rnw:2630-2631 (eval = FALSE)
 ###################################################
 ## plot(res)
 
 
 ###################################################
-### code chunk number 175: adehabitatHR.Rnw:2631-2634
+### code chunk number 176: adehabitatHR.Rnw:2635-2638
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")

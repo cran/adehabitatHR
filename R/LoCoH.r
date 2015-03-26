@@ -7,10 +7,6 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
 {
     if (!inherits(xy, "SpatialPoints"))
         stop("xy should inherit the class \"SpatialPoints\"")
-    if (!require(maptools))
-        stop("The package maptools is required for this function")
-    if (!require(rgeos))
-        stop("the package rgeos is required for this function")
     pfs <- proj4string(xy)
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
@@ -274,8 +270,6 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
         stop("xy should inherit the class \"SpatialPoints\"")
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
-    if (!require(rgeos))
-        stop("The package rgeos is required for this function")
     pfs <- proj4string(xy)
     m <- 1
     duplicates <- match.arg(duplicates)
@@ -506,8 +500,6 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         stop("xy should inherit the class \"SpatialPoints\"")
     if (ncol(coordinates(xy))>2)
         stop("xy should be defined in two dimensions")
-    if (!require(rgeos))
-        stop("The package rgeos is required for this function")
     pfs <- proj4string(xy)
     unin <- match.arg(unin)
     unout <- match.arg(unout)
