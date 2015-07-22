@@ -1,6 +1,6 @@
-fe6b30da889e09319b8de0ebc6c5592b *DESCRIPTION
-378472cd04c4e04860eb6bba24b3c6a6 *NAMESPACE
-c9213508ece6ce98afec907b542d9998 *R/BRB.r
+e41ec00189e9604fa1b0463e785b33d8 *DESCRIPTION
+66b2d2315e09a2cf384b70edfa67fa6d *NAMESPACE
+eb6009e86a43484b5a34d56875ad8db2 *R/BRB.r
 b1dc3b276d331cb2fc1b479b2088363a *R/CharHull.r
 8785961a673dbdf53c26f08d4eb39ae5 *R/LoCoH.r
 0a7fb88104cac3759d838e89b5ae214c *R/clusthr.r
@@ -39,5 +39,5 @@ e76e3045505e17f3f8b7acba49d8eec8 *man/estUD-class.Rd
 e6a67bf1074b29d930bb80f607b191c6 *man/kerneloverlap.Rd
 27ebbcf913670b46464b1b5b626f5799 *man/kver2spol.Rd
 1ad8826634f740f74ff7495fc85111b0 *man/mcp.Rd
-eb76d65031b94d0ea16ec1b2048f50f3 *src/tests.c
+618c9fcef2d39a61467763b63e0deeec *src/tests.c
 d35476e3d24b0b351e33a1691d0f9ee7 *vignettes/adehabitatHR.Rnw

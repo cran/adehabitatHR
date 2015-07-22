@@ -336,6 +336,9 @@ BRB <- function(ltr, D, Tmax, Lmin, hmin, type=c("UD","ID", "RD"), radius = NULL
     }
     b <- as.numeric(b)
 
+    if (min(unlist(lapply(ltr, function(x) na.omit(x$dt))))<tau)
+        stop("tau is larger than the shorter time lag between successive relocations.\nTry to decrease tau.")
+
 
     ## checks that everything is OK with D:
     if (inherits(D, "DBRB")) {
@@ -762,4 +765,3 @@ BRB.likD <- function(ltr, Dr=c(0.1,100),
     class(val) <- "DBRB"
     return(val)
 }
-

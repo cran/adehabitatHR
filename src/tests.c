@@ -474,7 +474,7 @@ void getpermutation (int *numero, int repet)
      ----------------*/
     for (i=1;i<=n;i++) {
 	GetRNGstate();
-	alea[i] = unif_rand();
+	alea[i] = ((int) 1e8*(unif_rand()));
 	PutRNGstate();
     }
     
@@ -3293,9 +3293,13 @@ SEXP calculDparhab(SEXP df, SEXP hab, SEXP xll, SEXP yll, SEXP cs, SEXP nrow,
     }
     
     for (i = 0; i < k; i++) {
-	REAL(Dh)[i] = 
-	    REAL(Dh)[i] / 
-	    (4.0 * ((double) INTEGER(Nc)[i]));	    
+	if (INTEGER(Nc)[i]>0) {
+	    REAL(Dh)[i] = 
+		REAL(Dh)[i] / 
+		(4.0 * ((double) INTEGER(Nc)[i]));	    
+	} else {
+	    REAL(Dh)[i] = R_NaN;
+	}
     }
 
     PROTECT(dfso = allocVector(VECSXP, 2));
