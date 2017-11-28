@@ -1,5 +1,5 @@
-e41ec00189e9604fa1b0463e785b33d8 *DESCRIPTION
-66b2d2315e09a2cf384b70edfa67fa6d *NAMESPACE
+d89a8ac0ff54b3fb19604fcc165f2c12 *DESCRIPTION
+36b4f11ef53a37858aa90c23dd88f89a *NAMESPACE
 eb6009e86a43484b5a34d56875ad8db2 *R/BRB.r
 b1dc3b276d331cb2fc1b479b2088363a *R/CharHull.r
 8785961a673dbdf53c26f08d4eb39ae5 *R/LoCoH.r
@@ -10,8 +10,8 @@ b1dc3b276d331cb2fc1b479b2088363a *R/CharHull.r
 fca5ca1bd62122d6a66a4ef3947ad19a *R/hidden.r
 e09951875ab37c9f1dd599c3a3a1b4f1 *R/hr.rast.r
 019197e2699db20e47fb40e105368436 *R/kernel.area.r
-c45ccaad582c461dbddb4849e399df2b *R/kernelUD.r
-f83a9e501134805db45adf2b8607e47d *R/kernelbb.r
+16b26425f27cdb46a9d77337f22dcfa6 *R/kernelUD.r
+1acb6558966b416fe2f19878e732bad3 *R/kernelbb.r
 96ac0afc048d8c8804171335bb401098 *R/kernelkc.r
 171cbd5601cc6e5fba370e74814662f4 *R/kernelovelaphr.r
 1840d02b0e03c232f55cbe89b48dea2e *R/kerneloverlap.r
@@ -20,11 +20,11 @@ ef646a6f7c6c8d7737841c7e1948f2a0 *R/kver2spol.r
 6f1b26d5613a48a9c124b618f0c99a66 *R/mcp.area.r
 1ced5f2866bac43215e1d68cf63dda85 *R/mcp.r
 db1bc475ee008167734b0f14d933dd22 *R/plot.hrsize.r
-377f49a246b0949cc6994492b801c914 *build/vignette.rds
+4eb3b1a6162ab2e7c4af9ad7fe654419 *build/vignette.rds
 77730204057935c931ae66b90bbbf9c7 *inst/CITATION
 6a6215ce58ac8437ca7c5d79335464a6 *inst/doc/adehabitatHR.R
 d35476e3d24b0b351e33a1691d0f9ee7 *inst/doc/adehabitatHR.Rnw
-dc07fded5df2ac53dcd99653b9126630 *inst/doc/adehabitatHR.pdf
+321ee97bbd8feb2416e535860ff5bf52 *inst/doc/adehabitatHR.pdf
 5499f0bde73f04343f6b302fce8a596f *man/BRB.Rd
 1392cec2a26aae503d71db890dda975d *man/CharHull.Rd
 034d4f09a1b7f3c0b7716d0567bd6d81 *man/LoCoH.Rd
@@ -39,5 +39,6 @@ e76e3045505e17f3f8b7acba49d8eec8 *man/estUD-class.Rd
 e6a67bf1074b29d930bb80f607b191c6 *man/kerneloverlap.Rd
 27ebbcf913670b46464b1b5b626f5799 *man/kver2spol.Rd
 1ad8826634f740f74ff7495fc85111b0 *man/mcp.Rd
-618c9fcef2d39a61467763b63e0deeec *src/tests.c
+c23f11c337f3dac7e4710e74887fb051 *src/init.c
+6873e6cc4fdbd39b3a9ce9412aa75468 *src/tests.c
 d35476e3d24b0b351e33a1691d0f9ee7 *vignettes/adehabitatHR.Rnw

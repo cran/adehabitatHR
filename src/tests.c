@@ -58,7 +58,7 @@ void calcvolume(double *grille, int *ncolgri, int *nliggri, double *cellsize);
 void integrno(double *XG, double *X1, double *X2, 
 	      double *T, double *sig1,
 	      double *sig2, double *alpha, double *res);
-void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
+void kernelbbc(double *grille, double *xgri, double *ygri, int *ncolgri,
 	      int *nliggri, int *nloc, double *sig1, double *sig2, 
 	      double *xlo, double *ylo, double *Tr, 
 	      int *nalpha);
@@ -1652,7 +1652,7 @@ void udbbnoeud(double *XG, double **XY, double *T, double *sig1,
 
 
 /* Main Function */
-void kernelbb(double *grille, double *xgri, double *ygri, int *ncolgri,
+void kernelbbc(double *grille, double *xgri, double *ygri, int *ncolgri,
 	      int *nliggri, int *nloc, double *sig1, double *sig2, 
 	      double *xlo, double *ylo, double *Tr,  
 	      int *nalpha)

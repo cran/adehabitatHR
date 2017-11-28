@@ -88,7 +88,7 @@
       yg <- unique(xyg[,2])
 
       date<-as.double(dft$date)-min(as.double(dft$date))
-      toto<-.C("kernelbb", double(length(xg)*length(yg)), as.double(xg),
+      toto<-.C("kernelbbc", double(length(xg)*length(yg)), as.double(xg),
                as.double(yg), as.integer(length(yg)),as.integer(length(xg)),
                as.integer(nrow(df)), as.double(sig12), as.double (sig22),
                as.double(df$x), as.double(df$y), as.double(date),

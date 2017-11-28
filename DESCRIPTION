@@ -1,6 +1,6 @@
 Package: adehabitatHR
-Version: 0.4.14
-Date: 2015-07-22
+Version: 0.4.15
+Date: 2017-11-28
 Depends: R (>= 3.0.1), sp, methods, deldir, ade4, adehabitatMA,
         adehabitatLT
 Suggests: maptools, tkrplot, MASS, rgeos
@@ -11,6 +11,6 @@ Maintainer: Clement Calenge <clement.calenge@oncfs.gouv.fr>
 Description: A collection of tools for the estimation of animals home range.
 License: GPL (>= 2)
 NeedsCompilation: yes
-Packaged: 2015-07-22 08:21:24 UTC; calenge
+Packaged: 2017-11-28 21:31:26 UTC; calenge
 Repository: CRAN
-Date/Publication: 2015-07-22 12:37:22
+Date/Publication: 2017-11-28 22:07:15 UTC

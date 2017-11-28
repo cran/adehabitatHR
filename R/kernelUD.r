@@ -569,5 +569,3 @@ setMethod("show", "estUD",
           par(opar)
       }
   }
-
-
