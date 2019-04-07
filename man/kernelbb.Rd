@@ -173,6 +173,7 @@ plot(getverticeshr(tata, 95), add=TRUE, lwd=2)
 
 
 ## Take an illustrative example: we simulate a trajectory
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(2098)
 pts1 <- data.frame(x = rnorm(25, mean = 4.5, sd = 0.05),
                    y = rnorm(25, mean = 4.5, sd = 0.05))

@@ -17,7 +17,7 @@ the {\tt adehabitatHR} Package }
   Office national de la classe et de la faune
   sauvage\\
   Saint Benoist -- 78610 Auffargis -- France.}
-\date{Mar 2015}
+\date{Mar 2019}
 
 \begin{document}
 
@@ -105,6 +105,7 @@ library(adehabitatHR)
 @
 
 <<echo=FALSE,print=FALSE>>=
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(13431)
 @
 
@@ -1426,6 +1427,7 @@ pt <- 16
 @
 
 <<label=tutorkbb,echo=FALSE,fig=FALSE,eval=FALSE>>=
+suppressWarnings(RNGversion("3.5.0"))
 set.seed(2098)
 pts1 <- data.frame(x = rnorm(25, mean = 4.5, sd = 0.05),
                    y = rnorm(25, mean = 4.5, sd = 0.05))
