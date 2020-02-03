@@ -111,7 +111,7 @@ liker(tr, rangesig1, sig2, le = 1000,
   Analyzing animal movements using brownian bridge. \emph{Ecology},
   \bold{in press}.
 }
-\author{ Clement Calenge \email{clement.calenge@oncfs.gouv.fr} }
+\author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 
 \seealso{\code{\link{as.ltraj}} for further information concerning
   objects of class \code{ltraj}. \code{\link{kernelUD}} for the

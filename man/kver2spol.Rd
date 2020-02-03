@@ -21,5 +21,5 @@ khr2estUDm(x)
   \item{kv}{an object of class \code{kver}.}
   \item{x}{an object of class \code{khr}.}
 }
-\author{ Clement Calenge \email{clement.calenge@oncfs.gouv.fr}}
+\author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr}}
 \keyword{hplot}

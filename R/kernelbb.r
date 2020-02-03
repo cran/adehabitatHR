@@ -119,7 +119,45 @@
 liker <- function (tr, rangesig1, sig2, le=1000,
                    byburst = FALSE, plotit=TRUE)
 {
-    x <- adehabitatLT:::.ltraj2traj(tr)
+
+    locchecktz <- function(x)
+    {
+        if (!inherits(x, "ltraj"))
+            stop("x should be of class \"ltraj\"")
+        tz <- lapply(x, function(y) attr(y$date, "tzone"))
+        atz <- all(sapply(1:length(tz), function(i) identical(tz[[i]],tz[[1]])))
+        if (!atz)
+            stop("multiple time zones not allowed in objects of class ltraj")
+        if (is.null(tz[[1]]))
+            return("")
+        if (tz[[1]]=="")
+            return("")
+        return(tz[[1]])
+    }
+
+    locltraj2traj <- function(x)
+    {
+        if (!inherits(x, "ltraj"))
+            stop("x should be of class \"ltraj\"")
+        if (!attr(x,"typeII"))
+            stop("x should be of type II (time recorded")
+        id <- factor(unlist(lapply(x, function(y)
+            id <- rep(attr(y,"id"), nrow(y)))))
+        burst <- factor(unlist(lapply(x, function(y)
+            id <- rep(attr(y,"burst"), nrow(y)))))
+        if (attr(x,"typeII"))
+            tz <- locchecktz(x)
+        if (!is.null(infolocs(x)))
+            infol <- do.call("rbind", infolocs(x))
+        res <- do.call("rbind", x)
+        res <- cbind(id,burst,res)
+        if (!is.null(infolocs(x)))
+            res <- cbind(res, infol)
+        class(res) <- c("traj","data.frame")
+        return(res)
+    }
+
+    x <- locltraj2traj(tr)
     if (!inherits(x, "traj"))
         stop("tr should be of class \"ltraj\"")
 

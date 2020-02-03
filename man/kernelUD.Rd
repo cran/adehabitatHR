@@ -226,7 +226,7 @@ estUDm2spixdf(x)
   1353--1360.
 
 }
-\author{ Clement Calenge \email{clement.calenge@oncfs.gouv.fr} }
+\author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 
 \seealso{\code{\link{mcp}} for help on the function \code{plot.hrsize}. 
 }

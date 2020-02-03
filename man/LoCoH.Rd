@@ -130,7 +130,7 @@ LoCoH.a.area(xy, arange, percent=100, unin = c("m", "km"),
   All of these algorithms can take a significant amount of time.  Time
   taken increases exponentially with the size of the data set.
 }
-\author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr}\cr
+\author{Clement Calenge \email{clement.calenge@ofb.gouv.fr}\cr
   with contributions from Scott Fortmann-Roe \email{scottfr@gmail.com}}
 \seealso{\code{\link{MCHu}}, \code{\link{getverticeshr}}.}
 \references{

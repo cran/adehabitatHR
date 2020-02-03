@@ -76,8 +76,6 @@ exwc(hv)
     estimation (the extent of the grid on the abscissa is equal
     to \code{(min(xy[,1]) + extent * diff(range(xy[,1])))}). }
   \item{hv}{a value of smoothing parameter for the time dimension.}
-  \item{\dots}{additional arguments to be passed to the function
-    \code{contour}.}
 }
 \details{
   Keating and Cherry (2009) advocated the estimation of the UD in
@@ -146,7 +144,7 @@ exwc(hv)
   \bold{151}, 945--950.
 
 }
-\author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr}}
+\author{Clement Calenge \email{clement.calenge@ofb.gouv.fr}}
 \seealso{\code{\link{as.ltraj}} for additional information on objects of
   class \code{ltraj}, \code{\link{kernelUD}} for the "classical" kernel
   home range estimates. }

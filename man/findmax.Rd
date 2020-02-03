@@ -20,7 +20,7 @@
   an object of class \code{SpatialPoints} containing the x and y
   coordinates of the local maxima.
 }
-\author{ Clement Calenge \email{clement.calenge@oncfs.gouv.fr} }
+\author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 \seealso{ \code{\link[sp]{SpatialPixelsDataFrame-class}} for additionnal
   information on objects of class \code{SpatialPixelsDataFrame}.}
 \examples{

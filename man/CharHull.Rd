@@ -47,7 +47,7 @@ CharHull(xy, unin = c("m", "km"),
   527--537. 
 }
 \author{
-Clement Calenge \email{clement.calenge@oncfs.gouv.fr}
+Clement Calenge \email{clement.calenge@ofb.gouv.fr}
 }
 \note{
   This function relies on the package \code{deldir}.

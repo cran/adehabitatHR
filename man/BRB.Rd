@@ -311,7 +311,7 @@ BRB.likD(ltr, Dr=c(0.1,100),
   \bold{227},  112--116.
 }
 \author{
-  Clement Calenge \email{clement.calenge@oncfs.gouv.fr}, based on a C
+  Clement Calenge \email{clement.calenge@ofb.gouv.fr}, based on a C
   translation of the Pascal source code of the program provided by Simon
   Benhamou.
 }

@@ -35,7 +35,7 @@
       the object }
   }
 }
-\author{ Clement Calenge \email{clement.calenge@oncfs.gouv.fr} }
+\author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 
 \seealso{ \code{\linkS4class{SpatialPixelsDataFrame}} for additional
   information about this class, and \code{\link{kernelUD}} for

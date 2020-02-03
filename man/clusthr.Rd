@@ -68,7 +68,7 @@ clusthr(xy, unin = c("m", "km"),
   and linkage estimators of homre range: nearest neighbor clustering
   defines multinuclear cores. \emph{Ecology}, \bold{82}, 1905--1920.
 }
-\author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr}}
+\author{Clement Calenge \email{clement.calenge@ofb.gouv.fr}}
 \seealso{\code{\link{MCHu}} for further information on the class
   \code{MCHu}, and \code{\link[sp]{SpatialPolygonsDataFrame-class}} for
   additional information on this class. See \code{\link{getverticeshr}}

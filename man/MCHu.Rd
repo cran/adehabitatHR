@@ -68,7 +68,7 @@ spoldf2MCHu(spdf, nam="a")
   The function \code{MCHu2hrsize} returns an object of class
   \code{hrsize} (see \code{?mcp.area}).
 }
-\author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr}}
+\author{Clement Calenge \email{clement.calenge@ofb.gouv.fr}}
 \seealso{\code{\link{clusthr}} and \code{\link{LoCoH}} for home range
   estimation methods returning this class of objects.}
 \examples{

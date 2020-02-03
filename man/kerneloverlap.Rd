@@ -91,7 +91,7 @@ Fieberg, J. and Kochanny, C.O. (2005) Quantifying home-range overlap: the
 importance of the utilization distribution. \emph{Journal of Wildlife
   Management}, \bold{69}, 1346--1359.
 }
-\author{Clement Calenge \email{clement.calenge@oncfs.gouv.fr},
+\author{Clement Calenge \email{clement.calenge@ofb.gouv.fr},
   based on a work of John Fieberg}
 \seealso{\code{\link{kernelUD}} for additional information on kernel
   estimation of home ranges}

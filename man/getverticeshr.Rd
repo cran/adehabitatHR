@@ -55,7 +55,7 @@ getverticeshr(x, percent = 95, \dots)
   selected home range contours of the animals.
 }
 \author{
-Clement Calenge \email{clement.calenge@oncfs.gouv.fr}
+Clement Calenge \email{clement.calenge@ofb.gouv.fr}
 }
 \note{
   The function \code{getverticeshr.default} is present for compatibility
