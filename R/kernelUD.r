@@ -145,7 +145,7 @@ image.estUD <- function(x, ...)
 
     if (typh=="LSCV") {
         CV<-data.frame(h=hvec, CV=CV)
-        convergence<-min(CV[,2])!=CV[1,2]
+        convergence<-(min(CV[,2])!=CV[1,2] & min(CV[,2])!=CV[nrow(CV),2])
         hli <-list(CV=CV, convergence=convergence, h=htmp, meth="LSCV")
     } else {
         if (typh=="href") {
