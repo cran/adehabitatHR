@@ -893,7 +893,7 @@ void prodmatAAtB (double **a, double **b)
 void prodmatAtBrandomC (double **a, double **b, double **c, int*permut)
 /*--------------------------------------------------
  * Produit matriciel AtB
- * les lignes de B sont permutÚes par la permutation permut
+ * les lignes de B sont permutes par la permutation permut
  --------------------------------------------------*/
 {
     int j, k, i, i0, lig, col, col2;
@@ -1353,7 +1353,7 @@ void CVmise(int *nloc, double *xlo, double *ylo,
     int i, nlo, nh, ndist;
     double *xl, *yl, h, *dists;
     
-    /* Allocation de mémoire */
+    /* Allocation de memoire */
     nlo = *nloc;
     nh = *nhteste;
     
@@ -2691,7 +2691,7 @@ SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
     int nrow, i, k, nfl, fl;
     double sx, sy, ggg;
     
-    /* récup des vecteurs */
+    /* recup des vecteurs */
     PROTECT(x = coerceVector(VECTOR_ELT(df,0), REALSXP));
     PROTECT(y = coerceVector(VECTOR_ELT(df,1), REALSXP));
     PROTECT(date = coerceVector(VECTOR_ELT(df,2), REALSXP));
@@ -2716,13 +2716,13 @@ SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
 	}
     }
     
-    /* allocation mémoire */
+    /* allocation memoire */
     PROTECT(xn = allocVector(REALSXP, k));
     PROTECT(yn = allocVector(REALSXP, k));
     PROTECT(daten = allocVector(REALSXP, k));
     PROTECT(PAn = allocVector(REALSXP, k));
 
-    /* préparation de la boucle */
+    /* preparation de la boucle */
     REAL(xn)[0] = REAL(x)[0];
     REAL(yn)[0] = REAL(y)[0];
     REAL(daten)[0] = REAL(date)[0];
@@ -2739,8 +2739,8 @@ SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
     
     for (i=1; i< nrow; i++) {
 	
-	/* si la distance entre localisations successives est inférieure à Lmin, on 
-	   se contente d'en calculer la moyenne (que l'on stockera à la première date)
+	/* si la distance entre localisations successives est inferieure a Lmin, on 
+	   se contente d'en calculer la moyenne (que l'on stockera a la premiere date)
 	 */
 	ggg = 1;
 	if (length(PA) > 1) {
@@ -2753,8 +2753,8 @@ SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
 	    sy = sy + REAL(y)[i];
 	} else {
 	    
-	    /* Si la nouvelle localisation est la première éloignée après un clusters de Lmin,
-	       On commence par stocker la précédente (moyenne des positions)
+	    /* Si la nouvelle localisation est la premiere eloignee apres un clusters de Lmin,
+	       On commence par stocker la precedente (moyenne des positions)
 	     */
 	    if (nfl > 1) {
 		REAL(xn)[k] = sx/((double) nfl);
@@ -2774,13 +2774,13 @@ SEXP filtreLmin(SEXP df, double Lmin, SEXP PA2, SEXP fll)
 		REAL(PAn)[k] = 1;
 	    }
 	    
-	    /* et au cas où, on garde cette loc en mémoire */
+	    /* et au cas ou, on garde cette loc en memoire */
 	    sx = REAL(x)[i];
 	    sy = REAL(y)[i];
 	}
     }
 
-    /* On renvoie alors les résultats dans un data.frame */
+    /* On renvoie alors les resultats dans un data.frame */
     PROTECT(df2 = allocVector(VECSXP, 4));
     SET_VECTOR_ELT(df2, 0, xn);
     SET_VECTOR_ELT(df2, 1, yn);
@@ -2962,7 +2962,7 @@ SEXP fillsegments(SEXP df2, SEXP Tmaxr, SEXP taur, SEXP hminr, SEXP D, SEXP Lmin
 }
 
 
-/* On calcule maintenant, sur la base d'une grille passée, l'estimation kernel */
+/* On calcule maintenant, sur la base d'une grille passee, l'estimation kernel */
 SEXP mkde(SEXP xyh, SEXP grid)
 {
     

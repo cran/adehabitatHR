@@ -207,7 +207,7 @@ estUDm2spixdf(x)
 
   Silverman, B.W. (1986)
   \emph{Density estimation for statistics and data
-    analysis}. London: Chapman \& Hall.
+    analysis}. London: Chapman and Hall.
   
   Worton, B.J. (1989) Kernel methods for estimating the utilization
   distribution in home-range studies. \emph{Ecology}, \bold{70}, 164--168.
