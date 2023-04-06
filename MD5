@@ -1,8 +1,8 @@
-1d66b1d38a029bd67e3ba4d85b01ef0e *DESCRIPTION
-36b4f11ef53a37858aa90c23dd88f89a *NAMESPACE
+6d9f8e0b9f7ef49cade8831ba80f9d99 *DESCRIPTION
+54756e8bf0a9e587bfc2deffd8db1fda *NAMESPACE
 eb6009e86a43484b5a34d56875ad8db2 *R/BRB.r
-b1dc3b276d331cb2fc1b479b2088363a *R/CharHull.r
-8785961a673dbdf53c26f08d4eb39ae5 *R/LoCoH.r
+4d021396827d4627788ba08e55ff85be *R/CharHull.r
+fc0b51a7b5ab8c135ffcecc1581d2366 *R/LoCoH.r
 0a7fb88104cac3759d838e89b5ae214c *R/clusthr.r
 34898728e501813c6b9eb6c890992a4a *R/findmax.r
 5d0c11139d879d63d9af47f9ad768a4a *R/getverticeshr.r
@@ -20,12 +20,13 @@ ef646a6f7c6c8d7737841c7e1948f2a0 *R/kver2spol.r
 6f1b26d5613a48a9c124b618f0c99a66 *R/mcp.area.r
 1ced5f2866bac43215e1d68cf63dda85 *R/mcp.r
 db1bc475ee008167734b0f14d933dd22 *R/plot.hrsize.r
-77730204057935c931ae66b90bbbf9c7 *inst/CITATION
-2013d460546024d171e0c8980ef96304 *inst/doc/adehabitatHR.R
-68f83a5d5a36a67d5e2e5fb620ef1dd3 *inst/doc/adehabitatHR.pdf
+e5e3994c845d332d17db82e96d70c838 *build/vignette.rds
+50850607b8dedb16fd27d7dfc93be1b2 *inst/doc/adehabitatHR.R
+d6a4aa8661cf5e9c2fe20244a971fcec *inst/doc/adehabitatHR.Rnw
+ab11c8f578792180e08172e03b386589 *inst/doc/adehabitatHR.pdf
 3f0e289443022c656eb85ed3a95b95ab *man/BRB.Rd
 4da97791963925a89688d54387cff275 *man/CharHull.Rd
-6822ff4df8e411749f9b86c5455d92cc *man/LoCoH.Rd
+842ee17f9a0a6f6347490c02ab9340f8 *man/LoCoH.Rd
 5388e59bc773b5a1100e22fcce6b403a *man/MCHu.Rd
 57bfab94ceff194e8d19fd7ee44bc08c *man/clusthr.Rd
 c13159100dfd222c2e7dff1a116f4b7b *man/estUD-class.Rd
@@ -39,4 +40,4 @@ a9674f3910e314ad2340ab404aced803 *man/kernelbb.Rd
 59b89d06022d3932ead0d123a27c27ff *man/mcp.Rd
 c23f11c337f3dac7e4710e74887fb051 *src/init.c
 b18809b7da2863bbef070136505301a9 *src/tests.c
-47a7b5bda283df33e63b46d6c39c6688 *vignettes/adehabitatHR.Rnw
+d6a4aa8661cf5e9c2fe20244a971fcec *vignettes/adehabitatHR.Rnw

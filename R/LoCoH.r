@@ -1,6 +1,4 @@
-
 ## k-Locoh
-
 LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
                     unout = c("ha", "m2", "km2"),
                     duplicates=c("random","remove"), amount = NULL)
@@ -83,31 +81,26 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
         oo <- oo[order(ar),]
         ar <- ar[order(ar)]
 
-        ## then, "incremental" union:
-        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
-        n <- k
-        dej <- unlist(oo[1,])
 
+        ## then, "incremental" union:
+        lipsf <- lapply(1:length(pol), function(i)
+            sf::st_sf(data.frame(id=i,sf::st_sfc(sf::st_polygon(list(rbind(pol[[i]], pol[[i]][1,])))))))
+        dej <- unlist(oo[1,])
+        n <- k
+        lipsf2 <- list(lipsf[[1]])
         for (i in 2:nrow(xy)) {
-            poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
-            pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
-            slot(poo, "polygons") <- pls1
-            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+            ## Union des polygones progressive
+            lipsf2[[i]] <- sf::st_sf(data.frame(id=i,sf::st_union(rbind(lipsf[[i]],lipsf2[[i-1]]))))
             dej <- c(dej, unlist(oo[i,!(unlist(oo[i,])%in%dej)]))
             n[i] <- length(dej)
         }
+        lipsfg <- as(do.call(rbind, lipsf2), "Spatial")
 
         ## Compute the area
-        are <- .arcpspdf(lip[[1]])
-        for (i in 2:nrow(xy)) {
-            are[i] <- .arcpspdf(lip[[i]])
+        are <- .arcpspdf(lipsfg[1,])
+        for (j in 2:length(lipsfg)) {
+            are[j] <- .arcpspdf(lipsfg[j,])
         }
-
-        ## And the results, as a SpatialPolygonDataFrame object
-        spP <- do.call("rbind", lip)
-
-        ## The data frame:
         if (unin == "m") {
             if (unout == "ha")
                 are <- are/10000
@@ -122,7 +115,8 @@ LoCoH.k <- function(xy, k=5, unin = c("m", "km"),
         }
 
         df <- data.frame(area=are, percent=100*n/nrow(xy))
-        res <- SpatialPolygonsDataFrame(spP, df)
+        res <- SpatialPolygonsDataFrame(lipsfg, df)
+
         if (!is.na(pfs))
             proj4string(res) <- CRS(pfs)
         return(res)
@@ -261,7 +255,6 @@ MCHu.rast <- function(x, spdf, percent=100)
 
 
 ### R LoCoH
-
 LoCoH.r <- function(xy, r, unin = c("m", "km"),
                     unout = c("ha", "m2", "km2"),
                     duplicates=c("random","remove"), amount = NULL)
@@ -358,33 +351,38 @@ LoCoH.r <- function(xy, r, unin = c("m", "km"),
         if (max==0)
             stop("the distance is too small: there were only isolated points\nPlease increase the value of r")
 
+
+
         ## then, "incremental" union:
-        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
+        lipsf <- lapply(1:length(pol), function(i) {
+            if (nrow(pol[[i]])>2) {
+                return(sf::st_sf(data.frame(id=i,sf::st_sfc(sf::st_polygon(list(rbind(pol[[i]], pol[[i]][1,])))))))
+            } else {
+                return(NULL)
+            }
+        })
         dej <- oo[[1]]
         n <- num[1]
-        for (i in 2:nrow(xy)) {
-            if (nrow(pol[[i]])>2) {
-                poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
-            } else {
-                poo <- lip[[i-1]]
-            }
-            pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
-            slot(poo, "polygons") <- pls1
 
-            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+        for (i in 2:nrow(xy)) {
+            if (!is.null(lipsf[[i]])) {
+                poo <- rbind(lipsf[[i]], lipsf[[i-1]])
+            } else {
+                poo <- lipsf[[i-1]]
+            }
+            lipsf[[i]] <- sf::st_sf(data.frame(id=i,sf::st_geometry(sf::st_union(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- .arcpspdf(lip[[1]])
+        are <- .arcpspdf(as(lipsf[[1]], "Spatial"))
         for (i in 2:nrow(xy)) {
-            are[i] <- .arcpspdf(lip[[i]])
+            are[i] <- .arcpspdf(as(lipsf[[i]], "Spatial"))
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
-        spP <- do.call("rbind", lip)
+        spP <- as(do.call("rbind", lipsf),"Spatial")
 
         ## The data frame:
         n[n>max] <- max
@@ -491,7 +489,6 @@ LoCoH.r.area <- function(xy, rrange, percent=100, unin = c("m", "km"),
 
 
 ### A LoCoH
-
 LoCoH.a <- function(xy, a, unin = c("m", "km"),
                     unout = c("ha", "m2", "km2"),
                     duplicates=c("random","remove"), amount = NULL)
@@ -586,35 +583,37 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         num <- num[ind]
 
         ## then, "incremental" union:
-        lip <- list(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[1]], pol[[1]][1,]))), 1))))
+        lipsf <- lapply(1:length(pol), function(i) {
+            if (nrow(pol[[i]])>2) {
+                return(sf::st_sf(data.frame(id=i,sf::st_sfc(sf::st_polygon(list(rbind(pol[[i]], pol[[i]][1,])))))))
+            } else {
+                return(NULL)
+            }
+        })
         dej <- oo[[1]]
         n <- num[1]
-        for (i in 2:nrow(xy)) {
-            if (nrow(pol[[i]])>3) {
-                poo <- rbind(SpatialPolygons(list(Polygons(list(Polygon(rbind(pol[[i]],pol[[i]][1,]))), i))), lip[[i-1]])
-            } else {
-                poo <- lip[[i-1]]
-            }
-            pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
-            slot(poo, "polygons") <- pls1
 
-            lip[[i]] <- rgeos::gUnionCascaded(poo, id=rep(i, length(row.names(poo))))
+        for (i in 2:nrow(xy)) {
+            if (!is.null(lipsf[[i]])) {
+                poo <- rbind(lipsf[[i]], lipsf[[i-1]])
+            } else {
+                poo <- lipsf[[i-1]]
+            }
+            lipsf[[i]] <- sf::st_sf(data.frame(id=i,sf::st_geometry(sf::st_union(poo))))
             dej <- c(dej, oo[[i]][!(oo[[i]]%in%dej)])
             n[i] <- length(dej)
         }
 
         ## Compute the area
-        are <- .arcpspdf(lip[[1]])
+        are <- .arcpspdf(as(lipsf[[1]], "Spatial"))
         for (i in 2:nrow(xy)) {
-            are[i] <- .arcpspdf(lip[[i]])
+            are[i] <- .arcpspdf(as(lipsf[[i]], "Spatial"))
         }
 
         ## And the results, as a SpatialPolygonDataFrame object
-        spP <- do.call("rbind", lip)
+        spP <- as(do.call("rbind", lipsf),"Spatial")
 
         ## The data frame:
-        df <- data.frame(area=are, percent=100*n/nrow(xy))
         if (unin == "m") {
             if (unout == "ha")
                 are <- are/10000
@@ -629,6 +628,7 @@ LoCoH.a <- function(xy, a, unin = c("m", "km"),
         }
 
 
+        df <- data.frame(area=are, percent=100*n/nrow(xy))
         res <- SpatialPolygonsDataFrame(spP, df)
         if (!is.na(pfs))
             proj4string(res) <- CRS(pfs)

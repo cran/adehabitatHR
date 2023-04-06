@@ -98,7 +98,7 @@ LoCoH.a.area(xy, arange, percent=100, unin = c("m", "km"),
 }
 \note{
 
-  These functions rely on the packages rgeos, gpclib, and maptools.
+  These functions rely on the package sf.
 
   The LoCoH family of methods for locating Utilization Distributions
   consists of three algorithms: Fixed k LoCoH, Fixed r LoCoH, and

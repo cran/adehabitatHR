@@ -1,6 +1,6 @@
 useDynLib(adehabitatHR, .registration=TRUE)
 
-import(sp,adehabitatLT,methods,deldir,ade4,adehabitatMA)
+import(sp,adehabitatLT,methods,ade4,adehabitatMA)
 importFrom("graphics", "box", "grid", "image", "lines", "par", "title")
 importFrom("grDevices", "chull", "contourLines", "grey", "n2mfrow")
 importFrom("stats", "na.omit", "quantile", "var")

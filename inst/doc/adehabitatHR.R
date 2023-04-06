@@ -245,13 +245,13 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 ###################################################
 ### code chunk number 32: adehabitatHR.Rnw:406-407
 ###################################################
-library(maptools)
+library(sf)
 
 
 ###################################################
 ### code chunk number 33: adehabitatHR.Rnw:410-411 (eval = FALSE)
 ###################################################
-## writePolyShape(cp, "homerange")
+## st_write(st_as_sf(cp), "homerange.shp")
 
 
 ###################################################
@@ -2024,26 +2024,26 @@ cat("\\includegraphics[height=7cm,width=7cm]{", file, "}\n\n", sep="")
 
 
 ###################################################
-### code chunk number 170: adehabitatHR.Rnw:2572-2573 (eval = FALSE)
+### code chunk number 170: adehabitatHR.Rnw:2568-2569 (eval = FALSE)
 ###################################################
 ## res <- LoCoH.k(puechabonsp$relocs[,1], 10)
 
 
 ###################################################
-### code chunk number 171: adehabitatHR.Rnw:2583-2584 (eval = FALSE)
+### code chunk number 171: adehabitatHR.Rnw:2579-2580 (eval = FALSE)
 ###################################################
 ## plot(res)
 
 
 ###################################################
-### code chunk number 172: adehabitatHR.Rnw:2591-2593 (eval = FALSE)
+### code chunk number 172: adehabitatHR.Rnw:2587-2589 (eval = FALSE)
 ###################################################
 ## LoCoH.k.area(puechabonsp$relocs[,1], krange=seq(4, 15, length=5),
 ##              percent=100)
 
 
 ###################################################
-### code chunk number 173: adehabitatHR.Rnw:2615-2617
+### code chunk number 173: adehabitatHR.Rnw:2611-2613
 ###################################################
 res <- CharHull(puechabonsp$relocs[,1])
 class(res)
@@ -2056,13 +2056,13 @@ class(res)
 
 
 ###################################################
-### code chunk number 175: adehabitatHR.Rnw:2633-2634 (eval = FALSE)
+### code chunk number 175: adehabitatHR.Rnw:2629-2630 (eval = FALSE)
 ###################################################
 ## plot(res)
 
 
 ###################################################
-### code chunk number 176: adehabitatHR.Rnw:2638-2641
+### code chunk number 176: adehabitatHR.Rnw:2634-2637
 ###################################################
 .PngNo <- .PngNo + 1; file <- paste("Fig-bitmap-",
           .PngNo, ".png", sep="")

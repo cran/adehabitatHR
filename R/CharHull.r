@@ -2,8 +2,8 @@
 {
     xy <- as.data.frame(xy)
     names(xy) <- c("x","y")
-    tri <- deldir(xy[,1], xy[,2])
-    tri <- triang.list(tri)
+    tri <- deldir::deldir(xy[,1], xy[,2])
+    tri <- deldir::triang.list(tri)
     tri <- lapply(1:length(tri), function(i) {
         rbind(tri[[i]], tri[[i]][1,])
     })
@@ -77,21 +77,16 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
 
         resa <- .charhull(x)
 
-        pol <- as(resa, "SpatialPolygons")
-        lip <- list(pol[1])
-        for (j in 2:nrow(resa)) {
-            poo <- rbind(pol[j], lip[[j-1]])
-            pls <- slot(poo, "polygons")
-            pls1 <- lapply(pls, maptools::checkPolygonsHoles)
-            slot(poo, "polygons") <- pls1
-            lip[[j]] <- rgeos::gUnionCascaded(poo, id = rep(j,
-                                                   length(row.names(poo))))
+        resasf <- sf::st_as_sf(resa)
+        lipsf <- list(sf::st_sf(data.frame(id=1, sf::st_geometry(resasf[1,]))))
+        for (j in 2:nrow(resasf)) {
+            lipsf[[j]] <- sf::st_sf(data.frame(id=j,sf::st_union(resasf[1:j,])))
         }
-        are <- .arcpspdf(lip[[1]])
-        for (j in 2:length(lip)) {
-            are[j] <- .arcpspdf(lip[[j]])
+        lipsfg <- as(do.call(rbind, lipsf), "Spatial")
+        are <- .arcpspdf(lipsfg[1,])
+        for (j in 2:length(lipsfg)) {
+            are[j] <- .arcpspdf(lipsfg[j,])
         }
-        spP <- do.call("rbind", lip)
         if (unin == "m") {
             if (unout == "ha")
                 are <- are/10000
@@ -104,8 +99,8 @@ CharHull <-  function(xy, unin = c("m", "km"), unout = c("ha", "m2", "km2"),
             if (unout == "m2")
                 are <- are * 1e+06
         }
-        df <- data.frame(area = are, percent = resa[[2]])
-        resa <- SpatialPolygonsDataFrame(spP, df)
+        df <- data.frame(area = are, percent = resasf[[2]])
+        resa <- SpatialPolygonsDataFrame(as(lipsfg,"SpatialPolygons"), df)
         if (!is.na(pfs))
             proj4string(resa) <- CRS(pfs)
         res[[i]] <- resa
