@@ -25,7 +25,7 @@
   }
 }
 \section{Extends}{
-  Class \code{"\linkS4class{SpatialPixelsDataFrame}"}, directly.
+  Class \code{"\link[sp]{SpatialPixelsDataFrame-class}"}, directly.
 }
 \section{Methods}{
   \describe{
@@ -37,7 +37,7 @@
 }
 \author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 
-\seealso{ \code{\linkS4class{SpatialPixelsDataFrame}} for additional
+\seealso{ \code{\link[sp]{SpatialPixelsDataFrame-class}} for additional
   information about this class, and \code{\link{kernelUD}} for
   additional information about the methods generating such objects.
 }

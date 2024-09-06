@@ -924,9 +924,9 @@ void taballoc (double ***tab, int l1, int c1)
 {
     int i;
     
-    *tab = Calloc(l1+1, double *);
+    *tab = R_Calloc(l1+1, double *);
     for (i=0;i<=l1;i++) {
-	*(*tab+i)= Calloc(c1+1, double);
+	*(*tab+i)= R_Calloc(c1+1, double);
     }
     
     **(*tab) = l1;
@@ -939,7 +939,7 @@ void vecalloc (double **vec, int n)
  * Memory Allocation for a vector of length n
  --------------------------------------------------*/
 {
-    *vec = Calloc(n+1, double);
+    *vec = R_Calloc(n+1, double);
     **vec = n;
     return;
 }
@@ -950,7 +950,7 @@ void vecintalloc (int **vec, int n)
  * Memory allocation for an integer vector of length  n
  --------------------------------------------------*/
 {
-    *vec = Calloc(n+1, int);
+    *vec = R_Calloc(n+1, int);
     **vec = n;
 }
 
@@ -964,9 +964,9 @@ void freetab (double **tab)
     
     n = *(*(tab));
     for (i=0;i<=n;i++) {
-	Free(*(tab+i));
+	R_Free(*(tab+i));
     }
-    Free(tab);
+    R_Free(tab);
 }
 
 /***********************************************************************/
@@ -975,7 +975,7 @@ void freevec (double *vec)
  * Free memory for a vector
  --------------------------------------------------*/
 {
-    Free(vec);	
+    R_Free(vec);	
 }
 
 /***********************************************************************/
@@ -985,7 +985,7 @@ void freeintvec (int *vec)
 --------------------------------------------------*/
 {
     
-    Free(vec);
+    R_Free(vec);
     
 }
 

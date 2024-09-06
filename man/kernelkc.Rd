@@ -145,7 +145,7 @@ exwc(hv)
 
 }
 \author{Clement Calenge \email{clement.calenge@ofb.gouv.fr}}
-\seealso{\code{\link{as.ltraj}} for additional information on objects of
+\seealso{\code{\link[adehabitatLT]{as.ltraj}} for additional information on objects of
   class \code{ltraj}, \code{\link{kernelUD}} for the "classical" kernel
   home range estimates. }
 \examples{

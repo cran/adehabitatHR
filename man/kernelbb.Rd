@@ -113,7 +113,7 @@ liker(tr, rangesig1, sig2, le = 1000,
 }
 \author{ Clement Calenge \email{clement.calenge@ofb.gouv.fr} }
 
-\seealso{\code{\link{as.ltraj}} for further information concerning
+\seealso{\code{\link[adehabitatLT]{as.ltraj}} for further information concerning
   objects of class \code{ltraj}. \code{\link{kernelUD}} for the
   classical kernel estimation. ,  \code{\link{mcp}} for
   estimation of home ranges using the minimum convex polygon, and for

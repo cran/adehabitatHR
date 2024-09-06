@@ -329,8 +329,8 @@ BRB.likD(ltr, Dr=c(0.1,100),
   \code{\link{kernelbb}} for the Brownian bridge kernel estimation,
     \code{\link{kernelUD}} and \code{\link{estUD-class}} for additional
     information about objects of class \code{estUDm} and \code{estUD},
-    \code{\link{infolocs}} for additional information about the
-    \code{infolocs} component, \code{\link{as.ltraj}} for additional
+    \code{\link[adehabitatLT]{infolocs}} for additional information about the
+    \code{infolocs} component, \code{\link[adehabitatLT]{as.ltraj}} for additional
     information about the class \code{ltraj}.
 }
 \examples{
